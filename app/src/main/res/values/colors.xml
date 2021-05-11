@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#466DA8</color>
+    <color name="colorPrimaryDark">#17325A</color>
+    <color name="colorAccent">#17325A</color>
+
+    <color name="main_button_background_color">#466DA8</color>
+    <color name="fifty_percent_main_color">#80466DA8</color>
+
+</resources>

@@ -1,0 +1,106 @@
+<resources>
+    <string name="app_name">Pill Helper</string>
+
+    <!--Main activity-->
+    <string name="login_enter_text">Entrar</string>
+    <string name="login_sign_in_text">Criar Cadastro</string>
+    <string name="text_welcome_main">Seja bem-vindo</string>
+
+    <!--Login Shared Pref keys-->
+    <string name="mainValueKey">com.example.projetointegrado.mainValue</string>
+    <string name="passwordKey">com.example.projetointegrado.password</string>
+    <string name="checkboxKey">com.example.projetointegrado.checkbox</string>
+    <string name="loginTypeKey">com.example.projetointegrado.loginType</string>
+
+    <!--Cadastro activity-->
+    <string name="email_cadastro_text">E-mail</string>
+    <string name="telefone_cadastro_text">Telefone</string>
+    <string name="senha_cadastro_text">Senha</string>
+    <string name="back_button_text">Voltar</string>
+    <string name="sign_in_button_text">Cadastrar</string>
+    <string name="login_type_email">E-mail</string>
+    <string name="login_type_phone">Celular</string>
+    <string name="login_type_senha">Senha</string>
+    <string name="menu_alarme">Alarmes</string>
+    <string name="menu_caixas">Caixas</string>
+    <string name="login_back_button">Voltar</string>
+
+    <!--Box founded activity-->
+    <string name="option_agree_box_text">Confirmar</string>
+    <string name="register_text_box">Caixa reconhecida</string>
+    <string name="register_box_title">Cadastrar caixa</string>
+
+    <!-- Cadastro alarme activity-->
+    <string name="medicine_name">Nome do medicamento</string>
+    <string name="dosage">Dosagem (mg)</string>
+    <string name="quantity">Quantidade</string>
+    <string name="box_quantity">Quantidade na caixa</string>
+    <string name="box_position">Posição na caixa</string>
+    <string name="time">Perioticidade:</string>
+    <string name="next_register_alarm">Próximo</string>
+    <string name="register_alarm_title">Cadastrar Alarme</string>
+    <string name="informar_dados_remedio">Informações do medicamento</string>
+    <string name="action_button_interval">Intervalo</string>
+    <string name="action_button_fix_time">Horário fixo</string>
+
+    <!-- Login Activity-->
+    <string name="login_radio_email_text">Email</string>
+    <string name="login_radio_telefone_text">Celular</string>
+    <string name="remember_me_message">Lembrar de mim</string>
+    <string name="forgot_password_text">Esqueceu sua senha?</string>
+
+
+    <!-- Relógio Colocar horários-->
+    <string name="how_many_times">Quantas vezes ao dia</string>
+    <string name="button_back_clock_interval">Voltar</string>
+    <string name="inf_interval_clock">Digite as informações</string>
+    <string name="box_list_item_image_description">Deletar Caixa</string>
+
+    <!-- Mensagens gerais para ambos os relógios-->
+    <string name="dialog_message">Quer mesmo deletar?</string>
+    <string name="dialog_title">Deletar</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancelar</string>
+    <string name="select_medicine_type_text">Informe o tipo do medicamento:</string>
+    <string name="medicine_type_pill_text">Pílula</string>
+    <string name="medicine_type_liquid_text">Líquido</string>
+    <string name="info_dialog_title_text">Informativo</string>
+    <string name="dialog_text_medicine_name_info">Informe o nome do medicamento</string>
+    <string name="dialog_text_medicine_dosage_info">Informe a quantidade de pílulas a serem tomadas por vez</string>
+    <string name="dialog_text_medicine_quantity_info">Informe a quantidade em miligramas a serem tomadas por vez</string>
+    <string name="dialog_text_medicine_box_quantity_info">Informe a quantidade desse medicamento presente na caixa</string>
+    <string name="dialog_text_medicine_box_position_info">Informe o número referente a posição do medicamento na caixa</string>
+
+    <string name="dialog_change_name_title">Altere o Nome da Caixa</string>
+    <string name="dialog_change_name_hint">Nome da Caixa</string>
+    <!-- Dias da semana-->
+    <string name="sunday">D</string>
+    <string name="monday">S</string>
+    <string name="tuesday">T</string>
+    <string name="wednesday">Q</string>
+    <string name="thursday">Q</string>
+    <string name="friday">S</string>
+    <string name="saturday">S</string>
+    <string name="zero_time_text">00:00</string>
+    <string name="days_of_week_info">Selecione os dias da semana:</string>
+    <string name="dialog_text_start_time_info">Informe o horário que o medicamento deve começar a ser tomado</string>
+    <string name="dialog_text_how_many_times_info">Informe quantas vezes deve-se tomar o medicamento por dia</string>
+    <string name="dialog_text_time_interval_info">Informe o período de tempo entre cada medicação</string>
+
+    <!-- Toque do alarme-->
+    <string name="alarm">Hora de tomar o medicamento</string>
+    <string name="turn_off">Desligar</string>
+    <string name="time_alarm">00:00</string>
+    <string name="notification_title">Atenção</string>
+    <string name="notification_text">Está na hora de se medicar</string>
+    <string name="alarm_description">Verifique o aplicativo para consultar os remédios a serem tomados</string>
+
+    <string name="all_medicines_main_text">Lista de todos os medicamentos</string>
+
+    <!-- Box Alarm Types-->
+    <string name="luminoso_text">Luminoso</string>
+    <string name="sonoro_text">Sonoro</string>
+    <string name="alarm_box_types_title">Tipos de alarme na caixa:</string>
+
+    <string name="qr_warning_text">Foque no QR Code</string>
+</resources>

@@ -1,1 +1,2 @@
-# PillHelper-APP
+# projetoIntegrado
+Pill Helper
