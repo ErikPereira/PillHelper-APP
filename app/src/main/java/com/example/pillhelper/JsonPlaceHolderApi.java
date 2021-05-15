@@ -9,6 +9,7 @@ import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 
 import static com.example.pillhelper.Constants.ID_USUARIO;
@@ -20,7 +21,8 @@ public interface JsonPlaceHolderApi {
 
     @FormUrlEncoded
     @POST(Constants.LOGIN_USER)
-    Call<JsonObject> postLogin(@FieldMap Map<String, String> fields);
+    Call<JsonObject> postLogin(@Header("authorization") String token,
+                               @FieldMap Map<String, String> fields);
 
     @FormUrlEncoded
     @POST(Constants.USER_DATA)

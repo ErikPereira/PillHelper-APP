@@ -2,14 +2,15 @@ package com.example.pillhelper;
 
 public class Constants {
 
-    public static final String BASE_URL = "https://us-central1-pillhelperoficiall.cloudfunctions.net/api/"; //URL BASE
-    public static final String CREATE_USER = "Usuario";//O POST PARA CRIAR O USUARIO
-    public static final String LOGIN_USER = "Usuario/login";//POST PARA EFETUAR O LOGIN
-    public static final String USER_DATA = "Usuario/cadastrado";//POST PARA RECEBER OS DADOS DO USUARIO
-    public static final String CREATE_ALARM = "Usuario/alarme";//POST PARA CRIAR ALARME
-    public static final String MODIFY_ALARM = "Usuario/alarme/atualizar";//POST PARA ALTERAR UM ALARME
-    public static final String DELETE_ALARM = "Usuario/alarme/excluir";//POST PARA ALTERAR UM ALARME
-    public static final String CREATE_UPDATE_BOX = "Usuario/caixa";//POST PARA CRIAR E ALTERAR UMA CAIXA
+    public static final String BASE_URL = "http://192.168.56.1:3000/"; //URL BASE
+    public static final String TOKEN_ACCESS = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiZGV2Iiwic3lzdGVtIjoiQVBJIn0.6lrvVMtHdb6P5f-Au4c36SK1OT8kb0_gg5BuEok_TpU";
+    public static final String CREATE_USER = "insertOneUser";//O POST PARA CRIAR O USUARIO
+    public static final String LOGIN_USER = "checkLoginUser";//POST PARA EFETUAR O LOGIN
+    public static final String USER_DATA = "getOneUser";//POST PARA RECEBER OS DADOS DO USUARIO
+    public static final String CREATE_ALARM = "createAlarmUser";//POST PARA CRIAR ALARME
+    public static final String MODIFY_ALARM = "updateAlarmUser";//POST PARA ALTERAR UM ALARME
+    public static final String DELETE_ALARM = "deleteAlarmUser";//POST PARA ALTERAR UM ALARME
+    public static final String CREATE_UPDATE_BOX = "registerBox";//POST PARA CRIAR E ALTERAR UMA CAIXA
     public static final String DELETE_BOX = "Caixa/excluiCaixa";//POST PARA DELETAR UMA CAIXA
 
     public static final String ALARM_TYPE = "alarm_type";//1 == fixo 2 == intervalo

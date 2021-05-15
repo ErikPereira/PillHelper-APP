@@ -14,6 +14,7 @@ import com.example.pillhelper.databinding.ActivityLoginBinding;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -160,10 +161,10 @@ public class LoginActivity extends AppCompatActivity {
 
         Map<String, String> fields = new HashMap<>();
         fields.put("email", email);
-        fields.put("celular", celular);
-        fields.put("senha", senha);
+        fields.put("cell", celular);
+        fields.put("password", senha);
 
-        Call<JsonObject> call = jsonPlaceHolderApi.postLogin(fields);
+        Call<JsonObject> call = jsonPlaceHolderApi.postLogin(Constants.TOKEN_ACCESS, fields);
 
         call.enqueue(new Callback<JsonObject>() {
             @Override
