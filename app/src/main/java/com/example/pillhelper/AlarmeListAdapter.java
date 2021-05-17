@@ -174,7 +174,7 @@ public class AlarmeListAdapter extends ArrayAdapter<AlarmeItem> {
         String requestStr = formatJSONupdateAlarm(alarmType, medicineType, ativo, velhoNome, nome, dosagem, quantidade, quantidadeBox, oldHour, oldMinute, hora, minuto, dias, vezes_dia, periodo_hora, periodo_minuto, notificationId, luminoso, sonoro, posCaixa);
         JsonObject request = JsonParser.parseString(requestStr).getAsJsonObject();
 
-        Call<JsonObject> call = jsonPlaceHolderApi.postModifyAlarm(request);
+        Call<JsonObject> call = jsonPlaceHolderApi.postModifyAlarm(Constants.TOKEN_ACCESS, request);
 
         call.enqueue(new Callback<JsonObject>() {
             @Override
@@ -354,7 +354,7 @@ public class AlarmeListAdapter extends ArrayAdapter<AlarmeItem> {
         String requestStr = formatJSON(nome, horas, minutos);
         JsonObject request = JsonParser.parseString(requestStr).getAsJsonObject();
 
-        Call<JsonObject> call = jsonPlaceHolderApi.postDeleteAlarm(request);
+        Call<JsonObject> call = jsonPlaceHolderApi.postDeleteAlarm(Constants.TOKEN_ACCESS, request);
 
         call.enqueue(new Callback<JsonObject>() {
             @Override

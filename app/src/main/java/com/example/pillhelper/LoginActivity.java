@@ -178,9 +178,9 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 JsonObject postResponse = response.body();
-
-                if (postResponse.get("response").getAsBoolean()) {
-                    String userId = postResponse.get("msg").getAsString();
+                Boolean error = postResponse.get("error").getAsBoolean();
+                if (error.equals(false)) {
+                    String userId = postResponse.get("response").getAsString();
                     UserIdSingleton.getInstance().setUserId(userId);
 
                     if (binding.rememberMeCheckbox.isChecked()) {
@@ -230,7 +230,7 @@ public class LoginActivity extends AppCompatActivity {
                 .build();
 
         JsonPlaceHolderApi jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
-        Call<JsonObject> call = jsonPlaceHolderApi.postUserData(UserIdSingleton.getInstance().getUserId());
+        Call<JsonObject> call = jsonPlaceHolderApi.postUserData(Constants.TOKEN_ACCESS, UserIdSingleton.getInstance().getUserId());
 
         call.enqueue(new Callback<JsonObject>() {
             @Override
@@ -244,8 +244,8 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 JsonObject jsonObject = response.body();
-                JsonArray alarmsArray = jsonObject.getAsJsonObject("msg").getAsJsonArray("alarmes");
-                JsonArray boxArray = jsonObject.getAsJsonObject("msg").getAsJsonArray("caixas");
+                JsonArray alarmsArray = jsonObject.getAsJsonObject("response").getAsJsonArray("alarmes");
+                JsonArray boxArray = jsonObject.getAsJsonObject("response").getAsJsonArray("caixas");
 
                 getBaseContext().deleteDatabase("alarms_table");
                 getBaseContext().deleteDatabase("boxes_table");

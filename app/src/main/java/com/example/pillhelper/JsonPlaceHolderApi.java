@@ -17,7 +17,8 @@ import static com.example.pillhelper.Constants.ID_USUARIO;
 public interface JsonPlaceHolderApi {
 
     @POST(Constants.CREATE_USER)
-    Call<JsonObject> postCreateUser(@Body JsonObject body);
+    Call<JsonObject> postCreateUser(@Header("authorization") String token,
+                                    @Body JsonObject body);
 
     @FormUrlEncoded
     @POST(Constants.LOGIN_USER)
@@ -26,20 +27,26 @@ public interface JsonPlaceHolderApi {
 
     @FormUrlEncoded
     @POST(Constants.USER_DATA)
-    Call<JsonObject> postUserData(@Field(ID_USUARIO) String id);
+    Call<JsonObject> postUserData(@Header("authorization") String token,
+                                  @Field(ID_USUARIO) String id);
 
     @POST(Constants.CREATE_ALARM)
-    Call<JsonObject> postCreateAlarm(@Body JsonObject body);
+    Call<JsonObject> postCreateAlarm(@Header("authorization") String token,
+                                     @Body JsonObject body);
 
     @POST(Constants.MODIFY_ALARM)
-    Call<JsonObject> postModifyAlarm(@Body JsonObject body);
+    Call<JsonObject> postModifyAlarm(@Header("authorization") String token,
+                                     @Body JsonObject body);
 
     @POST(Constants.DELETE_ALARM)
-    Call<JsonObject> postDeleteAlarm(@Body JsonObject body);
+    Call<JsonObject> postDeleteAlarm(@Header("authorization") String token,
+                                     @Body JsonObject body);
 
     @POST(Constants.CREATE_UPDATE_BOX)
-    Call<JsonObject> postCreateUpdateBox(@Body JsonObject body);
+    Call<JsonObject> postCreateUpdateBox(@Header("authorization") String token,
+                                         @Body JsonObject body);
 
     @POST(Constants.DELETE_BOX)
-    Call<JsonObject> postDeleteBox(@Body JsonObject body);
+    Call<JsonObject> postDeleteBox(@Header("authorization") String token,
+                                   @Body JsonObject body);
 }

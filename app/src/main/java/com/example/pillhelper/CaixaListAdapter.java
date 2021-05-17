@@ -132,7 +132,7 @@ public class CaixaListAdapter extends ArrayAdapter<CaixaItem> {
         String requestStr = formatJSONUpdateBox(idCaixa, novoNome);
         JsonObject request = JsonParser.parseString(requestStr).getAsJsonObject();
 
-        Call<JsonObject> call = jsonPlaceHolderApi.postCreateUpdateBox(request);
+        Call<JsonObject> call = jsonPlaceHolderApi.postCreateUpdateBox(Constants.TOKEN_ACCESS, request);
 
         call.enqueue(new Callback<JsonObject>() {
             @Override
@@ -180,7 +180,7 @@ public class CaixaListAdapter extends ArrayAdapter<CaixaItem> {
         String requestStr = formatJSONDeleteBox(idCaixa);
         JsonObject request = JsonParser.parseString(requestStr).getAsJsonObject();
 
-        Call<JsonObject> call = jsonPlaceHolderApi.postDeleteBox(request);
+        Call<JsonObject> call = jsonPlaceHolderApi.postDeleteBox(Constants.TOKEN_ACCESS, request);
 
         call.enqueue(new Callback<JsonObject>() {
             @Override
