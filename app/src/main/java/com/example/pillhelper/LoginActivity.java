@@ -244,8 +244,8 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 JsonObject jsonObject = response.body();
-                JsonArray alarmsArray = jsonObject.getAsJsonObject("response").getAsJsonArray("alarmes");
-                JsonArray boxArray = jsonObject.getAsJsonObject("response").getAsJsonArray("caixas");
+                JsonArray alarmsArray = jsonObject.getAsJsonObject("response").getAsJsonArray("alarms");
+                JsonArray boxArray = jsonObject.getAsJsonObject("response").getAsJsonArray("box");
 
                 getBaseContext().deleteDatabase("alarms_table");
                 getBaseContext().deleteDatabase("boxes_table");
