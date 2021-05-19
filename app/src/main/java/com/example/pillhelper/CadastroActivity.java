@@ -127,16 +127,12 @@ public class CadastroActivity extends AppCompatActivity {
         final JSONObject root = new JSONObject();
 
         try {
-            JSONArray alarmes = new JSONArray();
-            JSONArray caixas = new JSONArray();
             JSONObject login = new JSONObject();
 
             login.put("email", email);
             login.put("cell", celular);
             login.put("password", senha);
 
-            root.put("alarms", alarmes);
-            root.put("box", caixas);
             root.put("login", login);
 
             return root.toString();
