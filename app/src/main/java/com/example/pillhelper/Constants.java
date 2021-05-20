@@ -38,6 +38,7 @@ public class Constants {
     public static final String BOX_POSITION = "posBox";
 
     public static final String ID_USUARIO = "uuid";
+    public static final String ID_ALARME = "uuidAlarm";
     public static final String ID_CAIXA = "uuidBox";
     public static final String NOME_CAIXA = "nameBox";
     public static final String MUDAR_USUARIO = "mudarUsuario";

@@ -265,7 +265,11 @@ public class HorarioFixActivity extends AppCompatActivity {
                     return;
                 }
 
+                JsonObject postResponse = response.body();
+                String uuidAlarm = postResponse.get("response").getAsString();
+
                 boolean confirmation = mDataBaseAlarmsHelper.addData(
+                        uuidAlarm,
                         1,
                         medicineType,
                         1,
@@ -355,34 +359,34 @@ public class HorarioFixActivity extends AppCompatActivity {
         final JSONObject root = new JSONObject();
 
         try {
-            JSONObject novoAlarme = new JSONObject();
+            JSONObject newAlarm = new JSONObject();
 
-            novoAlarme.put(ALARM_TYPE, String.valueOf(1));
-            novoAlarme.put(MEDICINE_TYPE, String.valueOf(medicineType));
-            novoAlarme.put(ATIVO, String.valueOf(1));
-            novoAlarme.put(NOME_REMEDIO, String.valueOf(nome));
-            novoAlarme.put(DOSAGEM, String.valueOf(dosagem));
-            novoAlarme.put(QUANTIDADE, String.valueOf(quantidade));
-            novoAlarme.put(QUANTIDADE_BOX, String.valueOf(quantidadeBox));
-            novoAlarme.put(HORA, String.valueOf(hora));
-            novoAlarme.put(MINUTO, String.valueOf(minuto));
-            novoAlarme.put(DOMINGO, String.valueOf(dias[0]));
-            novoAlarme.put(SEGUNDA, String.valueOf(dias[1]));
-            novoAlarme.put(TERCA, String.valueOf(dias[2]));
-            novoAlarme.put(QUARTA, String.valueOf(dias[3]));
-            novoAlarme.put(QUINTA, String.valueOf(dias[4]));
-            novoAlarme.put(SEXTA, String.valueOf(dias[5]));
-            novoAlarme.put(SABADO, String.valueOf(dias[6]));
-            novoAlarme.put(VEZES_DIA, String.valueOf(vezes_dia));
-            novoAlarme.put(PERIODO_HORA, String.valueOf(periodo_hora));
-            novoAlarme.put(PERIODO_MIN, String.valueOf(periodo_minuto));
-            novoAlarme.put(NOTIFICATION_ID, String.valueOf(notificationId));
-            novoAlarme.put(LUMINOSO, String.valueOf(luminoso));
-            novoAlarme.put(SONORO, String.valueOf(sonoro));
-            novoAlarme.put(BOX_POSITION, String.valueOf(posCaixa));
+            newAlarm.put(ALARM_TYPE, String.valueOf(1));
+            newAlarm.put(MEDICINE_TYPE, String.valueOf(medicineType));
+            newAlarm.put(ATIVO, String.valueOf(1));
+            newAlarm.put(NOME_REMEDIO, String.valueOf(nome));
+            newAlarm.put(DOSAGEM, String.valueOf(dosagem));
+            newAlarm.put(QUANTIDADE, String.valueOf(quantidade));
+            newAlarm.put(QUANTIDADE_BOX, String.valueOf(quantidadeBox));
+            newAlarm.put(HORA, String.valueOf(hora));
+            newAlarm.put(MINUTO, String.valueOf(minuto));
+            newAlarm.put(DOMINGO, String.valueOf(dias[0]));
+            newAlarm.put(SEGUNDA, String.valueOf(dias[1]));
+            newAlarm.put(TERCA, String.valueOf(dias[2]));
+            newAlarm.put(QUARTA, String.valueOf(dias[3]));
+            newAlarm.put(QUINTA, String.valueOf(dias[4]));
+            newAlarm.put(SEXTA, String.valueOf(dias[5]));
+            newAlarm.put(SABADO, String.valueOf(dias[6]));
+            newAlarm.put(VEZES_DIA, String.valueOf(vezes_dia));
+            newAlarm.put(PERIODO_HORA, String.valueOf(periodo_hora));
+            newAlarm.put(PERIODO_MIN, String.valueOf(periodo_minuto));
+            newAlarm.put(NOTIFICATION_ID, String.valueOf(notificationId));
+            newAlarm.put(LUMINOSO, String.valueOf(luminoso));
+            newAlarm.put(SONORO, String.valueOf(sonoro));
+            newAlarm.put(BOX_POSITION, String.valueOf(posCaixa));
 
             root.put(ID_USUARIO, UserIdSingleton.getInstance().getUserId());
-            root.put("novoAlarme", novoAlarme);
+            root.put("newAlarm", newAlarm);
 
             return root.toString();
         } catch (JSONException e) {

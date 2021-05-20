@@ -25,6 +25,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static com.example.pillhelper.Constants.ID_ALARME;
 import static com.example.pillhelper.Constants.ALARM_TYPE;
 import static com.example.pillhelper.Constants.ATIVO;
 import static com.example.pillhelper.Constants.BASE_URL;
@@ -267,6 +268,7 @@ public class LoginActivity extends AppCompatActivity {
                         dias[6] = jsonAlarm.get(SABADO).getAsInt();
 
                         mDataBaseAlarmsHelper.addData(
+                                jsonAlarm.get(ID_ALARME).getAsString(),
                                 jsonAlarm.get(ALARM_TYPE).getAsInt(),
                                 jsonAlarm.get(MEDICINE_TYPE).getAsInt(),
                                 jsonAlarm.get(ATIVO).getAsInt(),

@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import static com.example.pillhelper.Constants.ID_ALARME;
 import static com.example.pillhelper.Constants.ALARM_TYPE;
 import static com.example.pillhelper.Constants.ATIVO;
 import static com.example.pillhelper.Constants.BOX_POSITION;
@@ -35,7 +36,7 @@ import static com.example.pillhelper.Constants.VEZES_DIA;
 public class DataBaseAlarmsHelper extends SQLiteOpenHelper {
 
     private static final String TABLE_NAME = "alarms_table";
-    private static final String COL0 = "ID";
+    private static final String COL0 = ID_ALARME;
     private static final String COL1 = ALARM_TYPE;//1 == fixo 2 == intervalo
     private static final String COL2 = MEDICINE_TYPE;//1 == pilula 2 == liquid
     private static final String COL3 = ATIVO;// 1 == ativo 0 == inativo
@@ -67,7 +68,7 @@ public class DataBaseAlarmsHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createTable = "CREATE TABLE " + TABLE_NAME + " (" +
-                COL0 + " INTEGER PRIMARY KEY," +
+                COL0 + " TEXT PRIMARY KEY," +
                 COL1 + " INTEGER," +
                 COL2 + " INTEGER," +
                 COL3 + " INTEGER," +
@@ -107,7 +108,7 @@ public class DataBaseAlarmsHelper extends SQLiteOpenHelper {
         return db.rawQuery(query, null);
     }
 
-    public boolean addData(int alarmType, int medicineType,
+    public boolean addData(String uuidAlarm, int alarmType, int medicineType,
                            int ativo, String nome, int dosagem,
                            int quantidade, int quantidadeBox,
                            int hora, int minuto, int[] dias, int vezes_dia,
@@ -115,6 +116,7 @@ public class DataBaseAlarmsHelper extends SQLiteOpenHelper {
                            int luminoso, int sonoro, int pos_caixa) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
+        contentValues.put(COL0, uuidAlarm);
         contentValues.put(COL1, alarmType);
         contentValues.put(COL2, medicineType);
         contentValues.put(COL3, ativo);
@@ -144,7 +146,7 @@ public class DataBaseAlarmsHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
-    public boolean updateData(String id, int alarmType,
+    public boolean updateData(String uuidAlarm, int alarmType,
                               int medicineType, int ativo,
                               String nome, int dosagem, int quantidade,
                               int quantidadeBox, int hora, int minuto, int[] dias,
@@ -152,7 +154,7 @@ public class DataBaseAlarmsHelper extends SQLiteOpenHelper {
                               int notificationId, int luminoso, int sonoro, int pos_caixa) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COL0, id);
+        contentValues.put(COL0, uuidAlarm);
         contentValues.put(COL1, alarmType);
         contentValues.put(COL2, medicineType);
         contentValues.put(COL3, ativo);
@@ -177,12 +179,12 @@ public class DataBaseAlarmsHelper extends SQLiteOpenHelper {
         contentValues.put(COL22, sonoro);
         contentValues.put(COL23, pos_caixa);
 
-        db.update(TABLE_NAME, contentValues, "ID = ?", new String[]{id});
+        db.update(TABLE_NAME, contentValues, "uuidAlarm = ?", new String[]{ID_ALARME});
         return true;
     }
 
-    Integer removeData(String id) {
+    Integer removeData(String uuidAlarm) {
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(TABLE_NAME, "ID = ?", new String[]{id});
+        return db.delete(TABLE_NAME, "uuidAlarm = ?", new String[]{ID_ALARME});
     }
 }
