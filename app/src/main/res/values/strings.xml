@@ -7,10 +7,10 @@
     <string name="text_welcome_main">Seja bem-vindo</string>
 
     <!--Login Shared Pref keys-->
-    <string name="mainValueKey">com.example.projetointegrado.mainValue</string>
-    <string name="passwordKey">com.example.projetointegrado.password</string>
-    <string name="checkboxKey">com.example.projetointegrado.checkbox</string>
-    <string name="loginTypeKey">com.example.projetointegrado.loginType</string>
+    <string name="mainValueKey">com.example.pillhelper.mainValue</string>
+    <string name="passwordKey">com.example.pillhelper.password</string>
+    <string name="checkboxKey">com.example.pillhelper.checkbox</string>
+    <string name="loginTypeKey">com.example.pillhelper.loginType</string>
 
     <!--Cadastro activity-->
     <string name="email_cadastro_text">E-mail</string>
