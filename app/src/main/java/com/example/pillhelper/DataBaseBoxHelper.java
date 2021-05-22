@@ -6,13 +6,17 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import static com.example.pillhelper.Constants.ID_CAIXA;
+import static com.example.pillhelper.Constants.ID_USUARIO;
+import static com.example.pillhelper.Constants.NOME_CAIXA;
+
 import androidx.annotation.Nullable;
 
 public class DataBaseBoxHelper extends SQLiteOpenHelper {
     private static final String TABLE_NAME = "boxes_table";
-    private static final String COL0 = "ID";
-    private static final String COL1 = "ID_CAIXA";
-    private static final String COL2 = "nome";
+    private static final String COL0 = ID_CAIXA;
+    private static final String COL1 = ID_USUARIO;
+    private static final String COL2 = NOME_CAIXA;
 
     DataBaseBoxHelper(@Nullable Context context) {
         super(context, TABLE_NAME, null, 1);
@@ -21,7 +25,7 @@ public class DataBaseBoxHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createTable = "CREATE TABLE " + TABLE_NAME + " (" +
-                COL0 + " INTEGER PRIMARY KEY," +
+                COL0 + " TEXT PRIMARY KEY," +
                 COL1 + " TEXT," +
                 COL2 + " TEXT)";
 
@@ -34,10 +38,10 @@ public class DataBaseBoxHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    boolean addData(String idCaixa, String nome) {
+    boolean addData(String uuidBox, String nome) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COL1, idCaixa);
+        contentValues.put(COL0, uuidBox);
         contentValues.put(COL2, nome);
 
         long result = db.insert(TABLE_NAME, null, contentValues);
@@ -51,19 +55,19 @@ public class DataBaseBoxHelper extends SQLiteOpenHelper {
         return db.rawQuery(query, null);
     }
 
-    public boolean updateData(String id, String idCaixa, String nome) {
+    public boolean updateData(String uuidBox, String uuidUser, String nome) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COL0, id);
-        contentValues.put(COL1, idCaixa);
+        contentValues.put(COL0, uuidBox);
+        contentValues.put(COL1, uuidUser);
         contentValues.put(COL2, nome);
 
-        db.update(TABLE_NAME, contentValues, "ID = ?", new String[]{id});
+        db.update(TABLE_NAME, contentValues, "uuidBox = ?", new String[]{uuidBox});
         return true;
     }
 
-    Integer removeData(String id) {
+    Integer removeData(String uuidBox) {
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(TABLE_NAME, "ID = ?", new String[]{id});
+        return db.delete(TABLE_NAME, "uuidBox = ?", new String[]{uuidBox});
     }
 }

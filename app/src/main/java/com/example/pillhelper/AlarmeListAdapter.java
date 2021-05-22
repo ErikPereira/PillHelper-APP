@@ -163,7 +163,7 @@ public class AlarmeListAdapter extends ArrayAdapter<AlarmeItem> {
             builder.setMessage(R.string.dialog_message)
                     .setTitle(R.string.dialog_title);
 
-            builder.setPositiveButton(R.string.ok, (dialog, id) -> createPostDeleteAlarm(position, item.getNome(), item.getHora(), item.getMinuto()));
+            builder.setPositiveButton(R.string.ok, (dialog, id) -> createPostDeleteAlarm(position, item.getUuidAlarm()));
 
             builder.setNegativeButton(R.string.cancel, (dialog, id) -> dialog.dismiss());
 
@@ -354,8 +354,8 @@ public class AlarmeListAdapter extends ArrayAdapter<AlarmeItem> {
         alarmManager.setExactAndAllowWhileIdle(RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
     }
 
-    private void createPostDeleteAlarm(int position, String nome, int horas, int minutos) {
-        String requestStr = formatJSON(nome, horas, minutos);
+    private void createPostDeleteAlarm(int position, String uuidAlarm) {
+        String requestStr = formatJSON(uuidAlarm);
         JsonObject request = JsonParser.parseString(requestStr).getAsJsonObject();
 
         Call<JsonObject> call = jsonPlaceHolderApi.postDeleteAlarm(Constants.TOKEN_ACCESS, request);
@@ -370,7 +370,7 @@ public class AlarmeListAdapter extends ArrayAdapter<AlarmeItem> {
                 }
                 Cursor data = mDataBaseAlarmsHelper.getData();
                 data.move(position + 1);
-                int isDeleted = mDataBaseAlarmsHelper.removeData(String.valueOf(data.getInt(0)));
+                int isDeleted = mDataBaseAlarmsHelper.removeData(uuidAlarm);
 
                 if (isDeleted > 0) {
                     cancelAlarmIntent();
@@ -388,18 +388,12 @@ public class AlarmeListAdapter extends ArrayAdapter<AlarmeItem> {
         });
     }
 
-    private String formatJSON(String velhoNome, int velhaHora, int velhoMinuto) {
+    private String formatJSON(String uuidAlarm) {
         final JSONObject root = new JSONObject();
 
         try {
-            JSONObject velhoAlarme = new JSONObject();
-            velhoAlarme.put(NOME_REMEDIO, velhoNome);
-            velhoAlarme.put(HORA, String.valueOf(velhaHora));
-            velhoAlarme.put(MINUTO, String.valueOf(velhoMinuto));
-
-            root.put(ID_USUARIO, UserIdSingleton.getInstance().getUserId());
-            root.put("velhoAlarme", velhoAlarme);
-
+            root.put("uuidUser", UserIdSingleton.getInstance().getUserId());
+            root.put("uuidAlarm", uuidAlarm);
             return root.toString();
         } catch (JSONException e) {
             e.printStackTrace();

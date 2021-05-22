@@ -32,6 +32,7 @@ public class FragmentAlarms extends Fragment {
         ArrayList<AlarmeItem> alarmes = new ArrayList<>();
 
         while (data.moveToNext()) {
+            String uuidAlarm = data.getString(0);
             int status = data.getInt(3);
             String nome = data.getString(4);
             int horas = data.getInt(8);
@@ -39,7 +40,7 @@ public class FragmentAlarms extends Fragment {
             int notificationId = data.getInt(20);
 
             AlarmeItem alarme;
-            alarme = new AlarmeItem(status, nome, horas, minutos, notificationId);
+            alarme = new AlarmeItem(uuidAlarm, status, nome, horas, minutos, notificationId);
             alarmes.add(alarme);
         }
 
