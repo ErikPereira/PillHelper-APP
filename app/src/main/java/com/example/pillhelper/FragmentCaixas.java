@@ -31,11 +31,11 @@ public class FragmentCaixas extends Fragment {
         ArrayList<CaixaItem> caixas = new ArrayList<>();
 
         while (data.moveToNext()) {
-            String idCaixa = data.getString(1);
-            String nome = data.getString(2);
+            String uuidBox = data.getString(0);
+            String nome = data.getString(1);
 
-            CaixaItem caixa = new CaixaItem(idCaixa, nome);
-            caixas.add(caixa);
+            CaixaItem box = new CaixaItem(uuidBox, nome);
+            caixas.add(box);
         }
 
         CaixaListAdapter adapter = new CaixaListAdapter(getContext(), R.layout.caixas_list_item, caixas);

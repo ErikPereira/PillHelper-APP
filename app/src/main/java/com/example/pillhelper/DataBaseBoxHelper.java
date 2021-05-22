@@ -15,8 +15,7 @@ import androidx.annotation.Nullable;
 public class DataBaseBoxHelper extends SQLiteOpenHelper {
     private static final String TABLE_NAME = "boxes_table";
     private static final String COL0 = ID_CAIXA;
-    private static final String COL1 = ID_USUARIO;
-    private static final String COL2 = NOME_CAIXA;
+    private static final String COL1 = NOME_CAIXA;
 
     DataBaseBoxHelper(@Nullable Context context) {
         super(context, TABLE_NAME, null, 1);
@@ -26,8 +25,7 @@ public class DataBaseBoxHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String createTable = "CREATE TABLE " + TABLE_NAME + " (" +
                 COL0 + " TEXT PRIMARY KEY," +
-                COL1 + " TEXT," +
-                COL2 + " TEXT)";
+                COL1 + " TEXT)";
 
         db.execSQL(createTable);
     }
@@ -42,7 +40,7 @@ public class DataBaseBoxHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL0, uuidBox);
-        contentValues.put(COL2, nome);
+        contentValues.put(COL1, nome);
 
         long result = db.insert(TABLE_NAME, null, contentValues);
 
@@ -55,12 +53,11 @@ public class DataBaseBoxHelper extends SQLiteOpenHelper {
         return db.rawQuery(query, null);
     }
 
-    public boolean updateData(String uuidBox, String uuidUser, String nome) {
+    public boolean updateData(String uuidBox, String nome) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL0, uuidBox);
-        contentValues.put(COL1, uuidUser);
-        contentValues.put(COL2, nome);
+        contentValues.put(COL1, nome);
 
         db.update(TABLE_NAME, contentValues, "uuidBox = ?", new String[]{uuidBox});
         return true;

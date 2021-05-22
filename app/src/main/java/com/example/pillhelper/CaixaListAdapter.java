@@ -89,10 +89,10 @@ public class CaixaListAdapter extends ArrayAdapter<CaixaItem> {
                         data = mDataBaseBoxHelper.getData();
                         data.move(position + 1);
 
-                        String novoNome = editTextName.getText().toString();
+                        String newName = editTextName.getText().toString();
 
-                        if (!novoNome.isEmpty()) {
-                            createPostUpdateBox(finalConvertView, position, data.getString(1),novoNome);
+                        if (!newName.isEmpty()) {
+                            createPostUpdateBox(finalConvertView, position, data.getString(0), newName);
                         } else {
                             Toast.makeText(getContext(), "Nome inválido", Toast.LENGTH_LONG).show();
                         }
@@ -110,7 +110,7 @@ public class CaixaListAdapter extends ArrayAdapter<CaixaItem> {
 
             builder.setMessage(R.string.dialog_message)
                     .setTitle(R.string.dialog_title)
-                    .setPositiveButton(R.string.ok, (dialog, id) -> createPostDeleteBox(position, getItem(position).getIdCaixa()))
+                    .setPositiveButton(R.string.ok, (dialog, id) -> createPostDeleteBox(position, getItem(position).getUuidBox()))
                     .setNegativeButton(R.string.cancel, (dialog, id) -> dialog.dismiss());
 
             AlertDialog dialog = builder.create();
@@ -125,14 +125,14 @@ public class CaixaListAdapter extends ArrayAdapter<CaixaItem> {
         data.move(position + 1);
 
         TextView nameView = view.findViewById(R.id.box_name);
-        nameView.setText(data.getString(2));
+        nameView.setText(data.getString(1));
     }
 
-    private void createPostUpdateBox(View convertView, int position, String idCaixa, String novoNome) {
-        String requestStr = formatJSONUpdateBox(idCaixa, novoNome);
+    private void createPostUpdateBox(View convertView, int position, String uuidBox, String newName) {
+        String requestStr = formatJSONUpdateBox(uuidBox, newName);
         JsonObject request = JsonParser.parseString(requestStr).getAsJsonObject();
 
-        Call<JsonObject> call = jsonPlaceHolderApi.postCreateUpdateBox(Constants.TOKEN_ACCESS, request);
+        Call<JsonObject> call = jsonPlaceHolderApi.postUpdateBox(Constants.TOKEN_ACCESS, request);
 
         call.enqueue(new Callback<JsonObject>() {
             @Override
@@ -143,9 +143,8 @@ public class CaixaListAdapter extends ArrayAdapter<CaixaItem> {
                 }
 
                 mDataBaseBoxHelper.updateData(
-                        String.valueOf(position + 1),
-                        idCaixa,
-                        novoNome);
+                        uuidBox,
+                        newName);
 
                 notifyDataSetChanged();
 
@@ -159,14 +158,13 @@ public class CaixaListAdapter extends ArrayAdapter<CaixaItem> {
         });
     }
 
-    private String formatJSONUpdateBox(String idCaixa, String nome) {
+    private String formatJSONUpdateBox(String uuidBox, String nameBox) {
         final JSONObject root = new JSONObject();
 
         try {
-            root.put(ID_USUARIO, UserIdSingleton.getInstance().getUserId());
-            root.put(ID_CAIXA, String.valueOf(idCaixa));
-            root.put(NOME_CAIXA, String.valueOf(nome));
-            root.put(MUDAR_USUARIO, String.valueOf(true));
+            root.put("uuidUser", UserIdSingleton.getInstance().getUserId());
+            root.put(ID_CAIXA, String.valueOf(uuidBox));
+            root.put("newNameBox", String.valueOf(nameBox));
 
             return root.toString();
         } catch (JSONException e) {
@@ -176,8 +174,8 @@ public class CaixaListAdapter extends ArrayAdapter<CaixaItem> {
         return null;
     }
 
-    private void createPostDeleteBox(int position, String idCaixa){
-        String requestStr = formatJSONDeleteBox(idCaixa);
+    private void createPostDeleteBox(int position, String uuidBox){
+        String requestStr = formatJSONDeleteBox(uuidBox);
         JsonObject request = JsonParser.parseString(requestStr).getAsJsonObject();
 
         Call<JsonObject> call = jsonPlaceHolderApi.postDeleteBox(Constants.TOKEN_ACCESS, request);
@@ -194,7 +192,7 @@ public class CaixaListAdapter extends ArrayAdapter<CaixaItem> {
                 Cursor data = mDataBaseBoxHelper.getData();
                 data.move(position + 1);
 
-                int isDeleted = mDataBaseBoxHelper.removeData(String.valueOf(data.getInt(0)));
+                int isDeleted = mDataBaseBoxHelper.removeData(uuidBox);
 
                 if (isDeleted > 0) {
                     CaixaListAdapter.this.remove(getItem(position));
@@ -211,12 +209,12 @@ public class CaixaListAdapter extends ArrayAdapter<CaixaItem> {
         });
     }
 
-    private String formatJSONDeleteBox(String idCaixa) {
+    private String formatJSONDeleteBox(String uuidBox) {
         final JSONObject root = new JSONObject();
 
         try {
-            root.put(ID_USUARIO, UserIdSingleton.getInstance().getUserId());
-            root.put(ID_CAIXA, idCaixa);
+            root.put("uuidUser", UserIdSingleton.getInstance().getUserId());
+            root.put(ID_CAIXA, uuidBox);
 
             return root.toString();
         } catch (JSONException e) {

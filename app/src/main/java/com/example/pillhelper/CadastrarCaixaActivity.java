@@ -120,7 +120,7 @@ public class CadastrarCaixaActivity extends AppCompatActivity {
                             binding.progressBar.setVisibility(View.VISIBLE);
 
                             String readCode = qrCodes.valueAt(0).displayValue;
-                            addDataDB(readCode, readCode);
+                            addDataDB(readCode);
                         }
                     });
                 }
@@ -128,11 +128,11 @@ public class CadastrarCaixaActivity extends AppCompatActivity {
         });
     }
 
-    private void addDataDB(String idCaixa, String nome) {
-        createPostCreateBox(idCaixa, nome);
+    private void addDataDB(String uuidBox) {
+        createPostCreateBox(uuidBox);
     }
 
-    private void createPostCreateBox(String idCaixa, String nome) {
+    private void createPostCreateBox(String uuidBox) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -140,10 +140,10 @@ public class CadastrarCaixaActivity extends AppCompatActivity {
 
         JsonPlaceHolderApi jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
 
-        String requestStr = formatJSONCreateAlarm(idCaixa, nome);
+        String requestStr = formatJSONCreateAlarm(uuidBox);
         JsonObject request = JsonParser.parseString(requestStr).getAsJsonObject();
 
-        Call<JsonObject> call = jsonPlaceHolderApi.postCreateUpdateBox(Constants.TOKEN_ACCESS, request);
+        Call<JsonObject> call = jsonPlaceHolderApi.postCreateBox(Constants.TOKEN_ACCESS, request);
 
         call.enqueue(new Callback<JsonObject>() {
             @Override
@@ -156,7 +156,7 @@ public class CadastrarCaixaActivity extends AppCompatActivity {
                     finish();
                     return;
                 } else {
-                    boolean confirmation = mDataBaseBoxHelper.addData(idCaixa, nome);
+                    boolean confirmation = mDataBaseBoxHelper.addData(uuidBox, "");
 
                     if (confirmation) {
                         Intent intent = new Intent(getBaseContext(), FragmentsActivity.class);
@@ -178,14 +178,12 @@ public class CadastrarCaixaActivity extends AppCompatActivity {
         });
     }
 
-    private String formatJSONCreateAlarm(String idCaixa, String nome) {
+    private String formatJSONCreateAlarm(String uuidBox) {
         final JSONObject root = new JSONObject();
 
         try {
-            root.put(ID_USUARIO, UserIdSingleton.getInstance().getUserId());
-            root.put(ID_CAIXA, String.valueOf(idCaixa));
-            root.put(NOME_CAIXA, String.valueOf(nome));
-            root.put(MUDAR_USUARIO, String.valueOf(false));
+            root.put("uuidUser", UserIdSingleton.getInstance().getUserId());
+            root.put(ID_CAIXA, String.valueOf(uuidBox));
 
             return root.toString();
         } catch (JSONException e) {

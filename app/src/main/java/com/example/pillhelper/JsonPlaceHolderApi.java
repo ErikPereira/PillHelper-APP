@@ -42,8 +42,12 @@ public interface JsonPlaceHolderApi {
     Call<JsonObject> postDeleteAlarm(@Header("authorization") String token,
                                      @Body JsonObject body);
 
-    @POST(Constants.CREATE_UPDATE_BOX)
-    Call<JsonObject> postCreateUpdateBox(@Header("authorization") String token,
+    @POST(Constants.CREATE_BOX)
+    Call<JsonObject> postCreateBox(@Header("authorization") String token,
+                                         @Body JsonObject body);
+
+    @POST(Constants.UPDATE_BOX)
+    Call<JsonObject> postUpdateBox(@Header("authorization") String token,
                                          @Body JsonObject body);
 
     @POST(Constants.DELETE_BOX)

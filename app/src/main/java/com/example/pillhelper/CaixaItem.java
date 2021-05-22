@@ -1,11 +1,11 @@
 package com.example.pillhelper;
 
 public class CaixaItem {
-    private String idCaixa;
+    private String uuidBox;
     private String nome;
 
-    public CaixaItem(String idCaixa, String nome) {
-        this.idCaixa = idCaixa;
+    public CaixaItem(String uuidBox, String nome) {
+        this.uuidBox = uuidBox;
         this.nome = nome;
     }
 
@@ -13,7 +13,7 @@ public class CaixaItem {
         return nome;
     }
 
-    public String getIdCaixa() {
-        return idCaixa;
+    public String getUuidBox() {
+        return uuidBox;
     }
 }
