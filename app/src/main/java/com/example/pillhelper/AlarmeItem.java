@@ -27,12 +27,24 @@ public class AlarmeItem {
         return hora;
     }
 
+    public void setHora(int hora) {
+        this.hora = hora;
+    }
+
     public int getMinuto() {
         return minuto;
     }
 
+    public void setMinuto(int minuto) {
+        this.minuto = minuto;
+    }
+
     public String getNome() {
         return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public int getNotificationId() {

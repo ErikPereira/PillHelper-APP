@@ -179,12 +179,12 @@ public class DataBaseAlarmsHelper extends SQLiteOpenHelper {
         contentValues.put(COL22, sonoro);
         contentValues.put(COL23, pos_caixa);
 
-        db.update(TABLE_NAME, contentValues, "uuidAlarm = ?", new String[]{ID_ALARME});
+        db.update(TABLE_NAME, contentValues, "uuidAlarm = ?", new String[]{uuidAlarm});
         return true;
     }
 
     Integer removeData(String uuidAlarm) {
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(TABLE_NAME, "uuidAlarm = ?", new String[]{ID_ALARME});
+        return db.delete(TABLE_NAME, "uuidAlarm = ?", new String[]{uuidAlarm});
     }
 }

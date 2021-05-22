@@ -42,6 +42,7 @@ import static com.example.pillhelper.Constants.BOX_POSITION;
 import static com.example.pillhelper.Constants.DOMINGO;
 import static com.example.pillhelper.Constants.DOSAGEM;
 import static com.example.pillhelper.Constants.HORA;
+import static com.example.pillhelper.Constants.ID_ALARME;
 import static com.example.pillhelper.Constants.ID_USUARIO;
 import static com.example.pillhelper.Constants.LUMINOSO;
 import static com.example.pillhelper.Constants.MEDICINE_TYPE;
@@ -132,10 +133,13 @@ public class AlarmeListAdapter extends ArrayAdapter<AlarmeItem> {
             dias[5] = data.getInt(15);
             dias[6] = data.getInt(16);
 
+            int ativo = isActive == 1 ? 0 : 1;
+
             createPostUpdateAlarm(finalConvertView, position,
+                    data.getString(0),
                     data.getInt(1),
                     data.getInt(2),
-                    data.getInt(3) == 1 ? 0 : 1,
+                    ativo,
                     data.getString(4),
                     data.getString(4),
                     data.getInt(5),
@@ -169,9 +173,9 @@ public class AlarmeListAdapter extends ArrayAdapter<AlarmeItem> {
         return convertView;
     }
 
-    private void createPostUpdateAlarm(View convertView, int position, int alarmType, int medicineType, int ativo, String velhoNome, String nome, int dosagem, int quantidade, int quantidadeBox, int oldHour, int oldMinute, int hora, int minuto, int[] dias, int vezes_dia, int periodo_hora, int periodo_minuto, int notificationId, int luminoso, int sonoro, int posCaixa) {
+    private void createPostUpdateAlarm(View convertView, int position, String uuidAlarm, int alarmType, int medicineType, int ativo, String velhoNome, String nome, int dosagem, int quantidade, int quantidadeBox, int oldHour, int oldMinute, int hora, int minuto, int[] dias, int vezes_dia, int periodo_hora, int periodo_minuto, int notificationId, int luminoso, int sonoro, int posCaixa) {
 
-        String requestStr = formatJSONupdateAlarm(alarmType, medicineType, ativo, velhoNome, nome, dosagem, quantidade, quantidadeBox, oldHour, oldMinute, hora, minuto, dias, vezes_dia, periodo_hora, periodo_minuto, notificationId, luminoso, sonoro, posCaixa);
+        String requestStr = formatJSONupdateAlarm(uuidAlarm, alarmType, medicineType, ativo, velhoNome, nome, dosagem, quantidade, quantidadeBox, oldHour, oldMinute, hora, minuto, dias, vezes_dia, periodo_hora, periodo_minuto, notificationId, luminoso, sonoro, posCaixa);
         JsonObject request = JsonParser.parseString(requestStr).getAsJsonObject();
 
         Call<JsonObject> call = jsonPlaceHolderApi.postModifyAlarm(Constants.TOKEN_ACCESS, request);
@@ -403,43 +407,38 @@ public class AlarmeListAdapter extends ArrayAdapter<AlarmeItem> {
         return null;
     }
 
-    private String formatJSONupdateAlarm(int alarmType, int medicineType, int ativo, String velhoNome, String nome, int dosagem, int quantidade, int quantidadeBox, int velhaHora, int velhoMinuto, int hora, int minuto, int[] dias, int vezes_dia, int periodo_hora, int periodo_minuto, int notificationId, int luminoso, int sonoro, int posCaixa) {
+    private String formatJSONupdateAlarm(String uuidAlarm, int alarmType, int medicineType, int ativo, String velhoNome, String nome, int dosagem, int quantidade, int quantidadeBox, int velhaHora, int velhoMinuto, int hora, int minuto, int[] dias, int vezes_dia, int periodo_hora, int periodo_minuto, int notificationId, int luminoso, int sonoro, int posCaixa) {
         final JSONObject root = new JSONObject();
 
         try {
-            JSONObject velhoAlarme = new JSONObject();
-            velhoAlarme.put(NOME_REMEDIO, velhoNome);
-            velhoAlarme.put(HORA, String.valueOf(velhaHora));
-            velhoAlarme.put(MINUTO, String.valueOf(velhoMinuto));
-
-            JSONObject novoAlarme = new JSONObject();
-            novoAlarme.put(ALARM_TYPE, String.valueOf(alarmType));
-            novoAlarme.put(MEDICINE_TYPE, String.valueOf(medicineType));
-            novoAlarme.put(ATIVO, String.valueOf(ativo));
-            novoAlarme.put(NOME_REMEDIO, String.valueOf(nome));
-            novoAlarme.put(DOSAGEM, String.valueOf(dosagem));
-            novoAlarme.put(QUANTIDADE, String.valueOf(quantidade));
-            novoAlarme.put(QUANTIDADE_BOX, String.valueOf(quantidadeBox));
-            novoAlarme.put(HORA, String.valueOf(hora));
-            novoAlarme.put(MINUTO, String.valueOf(minuto));
-            novoAlarme.put(DOMINGO, String.valueOf(dias[0]));
-            novoAlarme.put(SEGUNDA, String.valueOf(dias[1]));
-            novoAlarme.put(TERCA, String.valueOf(dias[2]));
-            novoAlarme.put(QUARTA, String.valueOf(dias[3]));
-            novoAlarme.put(QUINTA, String.valueOf(dias[4]));
-            novoAlarme.put(SEXTA, String.valueOf(dias[5]));
-            novoAlarme.put(SABADO, String.valueOf(dias[6]));
-            novoAlarme.put(VEZES_DIA, String.valueOf(vezes_dia));
-            novoAlarme.put(PERIODO_HORA, String.valueOf(periodo_hora));
-            novoAlarme.put(PERIODO_MIN, String.valueOf(periodo_minuto));
-            novoAlarme.put(NOTIFICATION_ID, String.valueOf(notificationId));
-            novoAlarme.put(LUMINOSO, String.valueOf(luminoso));
-            novoAlarme.put(SONORO, String.valueOf(sonoro));
-            novoAlarme.put(BOX_POSITION, String.valueOf(posCaixa));
+            JSONObject updateAlarm = new JSONObject();
+            updateAlarm.put(ID_ALARME, String.valueOf(uuidAlarm));
+            updateAlarm.put(ALARM_TYPE, String.valueOf(alarmType));
+            updateAlarm.put(MEDICINE_TYPE, String.valueOf(medicineType));
+            updateAlarm.put(ATIVO, String.valueOf(ativo));
+            updateAlarm.put(NOME_REMEDIO, String.valueOf(nome));
+            updateAlarm.put(DOSAGEM, String.valueOf(dosagem));
+            updateAlarm.put(QUANTIDADE, String.valueOf(quantidade));
+            updateAlarm.put(QUANTIDADE_BOX, String.valueOf(quantidadeBox));
+            updateAlarm.put(HORA, String.valueOf(hora));
+            updateAlarm.put(MINUTO, String.valueOf(minuto));
+            updateAlarm.put(DOMINGO, String.valueOf(dias[0]));
+            updateAlarm.put(SEGUNDA, String.valueOf(dias[1]));
+            updateAlarm.put(TERCA, String.valueOf(dias[2]));
+            updateAlarm.put(QUARTA, String.valueOf(dias[3]));
+            updateAlarm.put(QUINTA, String.valueOf(dias[4]));
+            updateAlarm.put(SEXTA, String.valueOf(dias[5]));
+            updateAlarm.put(SABADO, String.valueOf(dias[6]));
+            updateAlarm.put(VEZES_DIA, String.valueOf(vezes_dia));
+            updateAlarm.put(PERIODO_HORA, String.valueOf(periodo_hora));
+            updateAlarm.put(PERIODO_MIN, String.valueOf(periodo_minuto));
+            updateAlarm.put(NOTIFICATION_ID, String.valueOf(notificationId));
+            updateAlarm.put(LUMINOSO, String.valueOf(luminoso));
+            updateAlarm.put(SONORO, String.valueOf(sonoro));
+            updateAlarm.put(BOX_POSITION, String.valueOf(posCaixa));
 
             root.put(ID_USUARIO, UserIdSingleton.getInstance().getUserId());
-            root.put("velhoAlarme", velhoAlarme);
-            root.put("novoAlarme", novoAlarme);
+            root.put("updateAlarm", updateAlarm);
 
             return root.toString();
         } catch (JSONException e) {
