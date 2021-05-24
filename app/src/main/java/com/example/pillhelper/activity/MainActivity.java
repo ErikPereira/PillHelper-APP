@@ -1,4 +1,4 @@
-package com.example.pillhelper;
+package com.example.pillhelper.activity;
 
 import android.content.Intent;
 import android.os.Bundle;

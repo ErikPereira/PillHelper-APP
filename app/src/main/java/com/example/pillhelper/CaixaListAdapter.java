@@ -18,6 +18,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.example.pillhelper.dataBase.DataBaseBoxHelper;
+import com.example.pillhelper.item.CaixaItem;
+import com.example.pillhelper.utils.Constants;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -32,11 +35,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static com.example.pillhelper.Constants.BASE_URL;
-import static com.example.pillhelper.Constants.ID_CAIXA;
-import static com.example.pillhelper.Constants.ID_USUARIO;
-import static com.example.pillhelper.Constants.MUDAR_USUARIO;
-import static com.example.pillhelper.Constants.NOME_CAIXA;
+import static com.example.pillhelper.utils.Constants.BASE_URL;
+import static com.example.pillhelper.utils.Constants.ID_CAIXA;
 
 public class CaixaListAdapter extends ArrayAdapter<CaixaItem> {
 

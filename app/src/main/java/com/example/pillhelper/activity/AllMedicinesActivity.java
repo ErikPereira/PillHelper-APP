@@ -1,10 +1,12 @@
-package com.example.pillhelper;
+package com.example.pillhelper.activity;
 
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.pillhelper.AlarmeListedAdapter;
+import com.example.pillhelper.R;
 import com.example.pillhelper.databinding.ActivityAllMedicinesBinding;
 
 import java.util.ArrayList;

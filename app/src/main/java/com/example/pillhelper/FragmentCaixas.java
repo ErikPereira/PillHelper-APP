@@ -10,7 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.pillhelper.dataBase.DataBaseBoxHelper;
 import com.example.pillhelper.databinding.FragmentCaixasBinding;
+import com.example.pillhelper.item.CaixaItem;
 
 import java.util.ArrayList;
 

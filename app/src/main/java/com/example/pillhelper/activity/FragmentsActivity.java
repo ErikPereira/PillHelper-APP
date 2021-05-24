@@ -1,4 +1,4 @@
-package com.example.pillhelper;
+package com.example.pillhelper.activity;
 
 import android.Manifest;
 import android.content.Intent;
@@ -14,9 +14,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.pillhelper.FragmentAlarms;
+import com.example.pillhelper.FragmentCaixas;
+import com.example.pillhelper.R;
 import com.example.pillhelper.databinding.ActivityFragmentsBinding;
 
-import static com.example.pillhelper.Constants.OPEN_BOX_FRAG;
+import static com.example.pillhelper.utils.Constants.OPEN_BOX_FRAG;
 
 public class FragmentsActivity extends AppCompatActivity {
 

@@ -11,7 +11,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.pillhelper.activity.AllMedicinesActivity;
+import com.example.pillhelper.activity.CadastrarAlarmeActivity;
+import com.example.pillhelper.dataBase.DataBaseAlarmsHelper;
 import com.example.pillhelper.databinding.FragmentAlarmesBinding;
+import com.example.pillhelper.item.AlarmeItem;
 
 import java.util.ArrayList;
 

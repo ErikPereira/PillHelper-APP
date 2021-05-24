@@ -1,4 +1,4 @@
-package com.example.pillhelper;
+package com.example.pillhelper.item;
 
 public class CaixaItem {
     private String uuidBox;

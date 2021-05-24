@@ -8,6 +8,7 @@ import android.provider.Settings;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.example.pillhelper.activity.MainActivity;
 import com.example.pillhelper.databinding.ActivityAlarmeAtivoBinding;
 
 import java.util.Calendar;

@@ -1,4 +1,4 @@
-package com.example.pillhelper;
+package com.example.pillhelper.dataBase;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,30 +8,30 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
-import static com.example.pillhelper.Constants.ID_ALARME;
-import static com.example.pillhelper.Constants.ALARM_TYPE;
-import static com.example.pillhelper.Constants.ATIVO;
-import static com.example.pillhelper.Constants.BOX_POSITION;
-import static com.example.pillhelper.Constants.DOMINGO;
-import static com.example.pillhelper.Constants.DOSAGEM;
-import static com.example.pillhelper.Constants.HORA;
-import static com.example.pillhelper.Constants.LUMINOSO;
-import static com.example.pillhelper.Constants.MEDICINE_TYPE;
-import static com.example.pillhelper.Constants.MINUTO;
-import static com.example.pillhelper.Constants.NOME_REMEDIO;
-import static com.example.pillhelper.Constants.NOTIFICATION_ID;
-import static com.example.pillhelper.Constants.PERIODO_HORA;
-import static com.example.pillhelper.Constants.PERIODO_MIN;
-import static com.example.pillhelper.Constants.QUANTIDADE;
-import static com.example.pillhelper.Constants.QUANTIDADE_BOX;
-import static com.example.pillhelper.Constants.QUARTA;
-import static com.example.pillhelper.Constants.QUINTA;
-import static com.example.pillhelper.Constants.SABADO;
-import static com.example.pillhelper.Constants.SEGUNDA;
-import static com.example.pillhelper.Constants.SEXTA;
-import static com.example.pillhelper.Constants.SONORO;
-import static com.example.pillhelper.Constants.TERCA;
-import static com.example.pillhelper.Constants.VEZES_DIA;
+import static com.example.pillhelper.utils.Constants.ID_ALARME;
+import static com.example.pillhelper.utils.Constants.ALARM_TYPE;
+import static com.example.pillhelper.utils.Constants.ATIVO;
+import static com.example.pillhelper.utils.Constants.BOX_POSITION;
+import static com.example.pillhelper.utils.Constants.DOMINGO;
+import static com.example.pillhelper.utils.Constants.DOSAGEM;
+import static com.example.pillhelper.utils.Constants.HORA;
+import static com.example.pillhelper.utils.Constants.LUMINOSO;
+import static com.example.pillhelper.utils.Constants.MEDICINE_TYPE;
+import static com.example.pillhelper.utils.Constants.MINUTO;
+import static com.example.pillhelper.utils.Constants.NOME_REMEDIO;
+import static com.example.pillhelper.utils.Constants.NOTIFICATION_ID;
+import static com.example.pillhelper.utils.Constants.PERIODO_HORA;
+import static com.example.pillhelper.utils.Constants.PERIODO_MIN;
+import static com.example.pillhelper.utils.Constants.QUANTIDADE;
+import static com.example.pillhelper.utils.Constants.QUANTIDADE_BOX;
+import static com.example.pillhelper.utils.Constants.QUARTA;
+import static com.example.pillhelper.utils.Constants.QUINTA;
+import static com.example.pillhelper.utils.Constants.SABADO;
+import static com.example.pillhelper.utils.Constants.SEGUNDA;
+import static com.example.pillhelper.utils.Constants.SEXTA;
+import static com.example.pillhelper.utils.Constants.SONORO;
+import static com.example.pillhelper.utils.Constants.TERCA;
+import static com.example.pillhelper.utils.Constants.VEZES_DIA;
 
 public class DataBaseAlarmsHelper extends SQLiteOpenHelper {
 
@@ -183,7 +183,7 @@ public class DataBaseAlarmsHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    Integer removeData(String uuidAlarm) {
+    public Integer removeData(String uuidAlarm) {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(TABLE_NAME, "uuidAlarm = ?", new String[]{uuidAlarm});
     }

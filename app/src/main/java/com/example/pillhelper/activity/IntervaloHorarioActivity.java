@@ -1,4 +1,4 @@
-package com.example.pillhelper;
+package com.example.pillhelper.activity;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -8,11 +8,20 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.pillhelper.databinding.ActivityHorarioFixBinding;
+import com.example.pillhelper.AlarmeReceiver;
+import com.example.pillhelper.utils.Constants;
+import com.example.pillhelper.dataBase.DataBaseAlarmsHelper;
+import com.example.pillhelper.JsonPlaceHolderApi;
+import com.example.pillhelper.utils.MaskEditUtil;
+import com.example.pillhelper.R;
+import com.example.pillhelper.UserIdSingleton;
+import com.example.pillhelper.databinding.ActivityIntervaloHorarioBinding;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -28,38 +37,39 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.app.AlarmManager.RTC_WAKEUP;
-import static com.example.pillhelper.Constants.ALARM_TYPE;
-import static com.example.pillhelper.Constants.ATIVO;
-import static com.example.pillhelper.Constants.BASE_URL;
-import static com.example.pillhelper.Constants.BOX_POSITION;
-import static com.example.pillhelper.Constants.DOMINGO;
-import static com.example.pillhelper.Constants.DOSAGEM;
-import static com.example.pillhelper.Constants.HORA;
-import static com.example.pillhelper.Constants.ID_ALARME;
-import static com.example.pillhelper.Constants.ID_USUARIO;
-import static com.example.pillhelper.Constants.LUMINOSO;
-import static com.example.pillhelper.Constants.MEDICINE_TYPE;
-import static com.example.pillhelper.Constants.MINUTO;
-import static com.example.pillhelper.Constants.NOME_REMEDIO;
-import static com.example.pillhelper.Constants.NOTIFICATION_ID;
-import static com.example.pillhelper.Constants.OPEN_BOX_FRAG;
-import static com.example.pillhelper.Constants.PERIODO_HORA;
-import static com.example.pillhelper.Constants.PERIODO_MIN;
-import static com.example.pillhelper.Constants.QUANTIDADE;
-import static com.example.pillhelper.Constants.QUANTIDADE_BOX;
-import static com.example.pillhelper.Constants.QUARTA;
-import static com.example.pillhelper.Constants.QUINTA;
-import static com.example.pillhelper.Constants.SABADO;
-import static com.example.pillhelper.Constants.SEGUNDA;
-import static com.example.pillhelper.Constants.SEXTA;
-import static com.example.pillhelper.Constants.SONORO;
-import static com.example.pillhelper.Constants.TERCA;
-import static com.example.pillhelper.Constants.VEZES_DIA;
+import static com.example.pillhelper.utils.Constants.ALARM_TYPE;
+import static com.example.pillhelper.utils.Constants.ATIVO;
+import static com.example.pillhelper.utils.Constants.BASE_URL;
+import static com.example.pillhelper.utils.Constants.BOX_POSITION;
+import static com.example.pillhelper.utils.Constants.DOMINGO;
+import static com.example.pillhelper.utils.Constants.DOSAGEM;
+import static com.example.pillhelper.utils.Constants.HORA;
+import static com.example.pillhelper.utils.Constants.ID_ALARME;
+import static com.example.pillhelper.utils.Constants.ID_USUARIO;
+import static com.example.pillhelper.utils.Constants.LUMINOSO;
+import static com.example.pillhelper.utils.Constants.MEDICINE_TYPE;
+import static com.example.pillhelper.utils.Constants.MINUTO;
+import static com.example.pillhelper.utils.Constants.NOME_REMEDIO;
+import static com.example.pillhelper.utils.Constants.NOTIFICATION_ID;
+import static com.example.pillhelper.utils.Constants.OPEN_BOX_FRAG;
+import static com.example.pillhelper.utils.Constants.PERIODO_HORA;
+import static com.example.pillhelper.utils.Constants.PERIODO_MIN;
+import static com.example.pillhelper.utils.Constants.QUANTIDADE;
+import static com.example.pillhelper.utils.Constants.QUANTIDADE_BOX;
+import static com.example.pillhelper.utils.Constants.QUARTA;
+import static com.example.pillhelper.utils.Constants.QUINTA;
+import static com.example.pillhelper.utils.Constants.SABADO;
+import static com.example.pillhelper.utils.Constants.SEGUNDA;
+import static com.example.pillhelper.utils.Constants.SEXTA;
+import static com.example.pillhelper.utils.Constants.SONORO;
+import static com.example.pillhelper.utils.Constants.TERCA;
+import static com.example.pillhelper.utils.Constants.VEZES_DIA;
 
-public class HorarioFixActivity extends AppCompatActivity {
+public class IntervaloHorarioActivity extends AppCompatActivity {
 
-    private static final String TAG = "HorarioFixActivity";
-    private ActivityHorarioFixBinding binding;
+    private static final String TAG = "IntervaloHorarioActivity";
+
+    private ActivityIntervaloHorarioBinding binding;
     private DataBaseAlarmsHelper mDataBaseAlarmsHelper;
     private boolean isEdit;
     private int alarmEditPosition;
@@ -68,33 +78,47 @@ public class HorarioFixActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityHorarioFixBinding.inflate(getLayoutInflater());
+        binding = ActivityIntervaloHorarioBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        getSupportActionBar().setTitle(R.string.action_button_fix_time);
+        getSupportActionBar().setTitle(R.string.action_button_interval);
 
         isEdit = getIntent().getBooleanExtra("IS_EDIT", false);
         mDataBaseAlarmsHelper = new DataBaseAlarmsHelper(this);
         data = mDataBaseAlarmsHelper.getData();
 
+        binding.startTimeIntervalText.addTextChangedListener(MaskEditUtil.mask(binding.startTimeIntervalText, MaskEditUtil.FORMAT_HOUR));
+        binding.timeIntervalText.addTextChangedListener(MaskEditUtil.mask(binding.timeIntervalText, MaskEditUtil.FORMAT_HOUR));
+
         if (isEdit) {
             alarmEditPosition = getIntent().getIntExtra("POSITION", -1);
             data.move(alarmEditPosition + 1);
 
-            binding.sundayDay.setChecked(data.getInt(10) == 1);
-            binding.mondayDay.setChecked(data.getInt(11) == 1);
-            binding.tuesdayDay.setChecked(data.getInt(12) == 1);
-            binding.wednesdayDay.setChecked(data.getInt(13) == 1);
-            binding.thursdayDay.setChecked(data.getInt(14) == 1);
-            binding.fridayDay.setChecked(data.getInt(15) == 1);
-            binding.saturdayDay.setChecked(data.getInt(16) == 1);
-            binding.idClockSchedule.setHour(data.getInt(8));
-            binding.idClockSchedule.setMinute(data.getInt(9));
+            String hora_inicio = String.valueOf(data.getInt(8));
+            String min_inicio = String.valueOf(data.getInt(9));
+
+            if (hora_inicio.length() == 1) hora_inicio = "0" + hora_inicio;
+            if (min_inicio.length() == 1) min_inicio = "0" + min_inicio;
+
+            binding.startTimeIntervalText.setText(String.format("%s%s", hora_inicio, min_inicio));
+
+            String hora_periodo = String.valueOf(data.getInt(18));
+            String min_periodo = String.valueOf(data.getInt(19));
+
+            if (hora_periodo.length() == 1) hora_periodo = "0" + hora_periodo;
+            if (min_periodo.length() == 1) min_periodo = "0" + min_periodo;
+            binding.timeIntervalText.setText(String.format("%s%s", hora_periodo, min_periodo));
+
+            String vezes_dia = String.valueOf(data.getInt(17));
+            binding.howManyTimesIntervalText.setText(vezes_dia);
         }
 
-        binding.backButtonRegisterMedicine.setOnClickListener(v -> finish());
+        binding.startTimeIntervalTextImage.setOnClickListener(v -> imageInfoClick(binding.startTimeIntervalTextImage));
+        binding.howManyTimesIntervalTextImage.setOnClickListener(v -> imageInfoClick(binding.howManyTimesIntervalTextImage));
+        binding.timeIntervalTextImage.setOnClickListener(v -> imageInfoClick(binding.timeIntervalTextImage));
 
-        binding.nextButtonRegisterMedicine.setOnClickListener(v -> {
+        binding.backButtonIntervalClock.setOnClickListener(v -> finish());
+        binding.nextButtonIntervalClock.setOnClickListener(v -> {
             binding.progressBar.setVisibility(View.VISIBLE);
 
             int medTipo = getIntent().getIntExtra("MEDICINE_TYPE", 0);
@@ -116,64 +140,69 @@ public class HorarioFixActivity extends AppCompatActivity {
     }
 
     private void addDataDB(int tipoRemedio, String nome, int dosagem, int quantidade, int quantidadeCaixa, int notificationId, int luminoso, int sonoro, int posCaixa) {
-        int horas = binding.idClockSchedule.getHour();
-        int minutos = binding.idClockSchedule.getMinute();
 
-        int[] dias = new int[7];
-        dias[0] = binding.sundayDay.isChecked() ? 1 : 0;
-        dias[1] = binding.mondayDay.isChecked() ? 1 : 0;
-        dias[2] = binding.tuesdayDay.isChecked() ? 1 : 0;
-        dias[3] = binding.wednesdayDay.isChecked() ? 1 : 0;
-        dias[4] = binding.thursdayDay.isChecked() ? 1 : 0;
-        dias[5] = binding.fridayDay.isChecked() ? 1 : 0;
-        dias[6] = binding.saturdayDay.isChecked() ? 1 : 0;
+        if (MaskEditUtil.unmask(binding.startTimeIntervalText.getText().toString()).length() == 4 && MaskEditUtil.unmask(binding.timeIntervalText.getText().toString()).length() == 4) {
+            int hora_inicio = Integer.parseInt(binding.startTimeIntervalText.getText().toString().substring(0, 2));
+            int min_inicio = Integer.parseInt(binding.startTimeIntervalText.getText().toString().substring(3, 5));
 
-        if (isEdit) {
-            int ativo = data.getInt(3);
-            int velhaHora = data.getInt(8);
-            int velhoMinuto = data.getInt(9);
-            String velhoNome = data.getString(4);
-            String uuidAlarm = data.getString(0);
+            int hora_periodo = Integer.parseInt(binding.timeIntervalText.getText().toString().substring(0, 2));
+            int min_periodo = Integer.parseInt(binding.timeIntervalText.getText().toString().substring(3, 5));
 
-            createPostUpdateAlarm(
-                    uuidAlarm,
-                    tipoRemedio,
-                    ativo,
-                    velhoNome,
-                    nome,
-                    dosagem,
-                    quantidade,
-                    quantidadeCaixa,
-                    velhaHora,
-                    velhoMinuto,
-                    horas,
-                    minutos,
-                    dias,
-                    0,
-                    0,
-                    0,
-                    notificationId,
-                    luminoso,
-                    sonoro,
-                    posCaixa);
-        } else {
-            createPostCreateAlarm(
-                    tipoRemedio,
-                    nome,
-                    dosagem,
-                    quantidade,
-                    quantidadeCaixa,
-                    horas,
-                    minutos,
-                    dias,
-                    0,
-                    0,
-                    0,
-                    notificationId,
-                    luminoso,
-                    sonoro,
-                    posCaixa);
-        }
+            String vezes_dia_str = binding.howManyTimesIntervalText.getText().toString();
+
+            if (hora_inicio < 24 && min_inicio < 60 && hora_periodo < 24 && min_periodo < 60) {
+
+                if (vezes_dia_str.length() < 10) {
+                    int vezes_dia = Integer.parseInt(vezes_dia_str);
+
+                    if (isEdit) {
+                        int ativo = data.getInt(3);
+                        int velhaHora = data.getInt(8);
+                        int velhoMinuto = data.getInt(9);
+                        String velhoNome = data.getString(4);
+                        String uuidAlarm = data.getString(0);
+                        createPostUpdateAlarm(
+                                uuidAlarm,
+                                tipoRemedio,
+                                ativo,
+                                velhoNome,
+                                nome,
+                                dosagem,
+                                quantidade,
+                                quantidadeCaixa,
+                                velhaHora,
+                                velhoMinuto,
+                                hora_inicio,
+                                min_inicio,
+                                new int[7],
+                                vezes_dia,
+                                hora_periodo,
+                                min_periodo,
+                                notificationId,
+                                luminoso,
+                                sonoro,
+                                posCaixa);
+                    } else {
+                        createPostCreateAlarm(
+                                tipoRemedio,
+                                nome,
+                                dosagem,
+                                quantidade,
+                                quantidadeCaixa,
+                                hora_inicio,
+                                min_inicio,
+                                new int[7],
+                                vezes_dia,
+                                hora_periodo,
+                                min_periodo,
+                                notificationId,
+                                luminoso,
+                                sonoro,
+                                posCaixa);
+                    }
+                } else Toast.makeText(this, "Número muito grande", Toast.LENGTH_SHORT).show();
+            } else Toast.makeText(this, "Insira os dados corretamente", Toast.LENGTH_SHORT).show();
+        } else Toast.makeText(this, "Insira os dados corretamente", Toast.LENGTH_SHORT).show();
     }
 
     private void createPostUpdateAlarm(String uuidAlarm, int medicineType, int ativo, String velhoNome, String nome, int dosagem, int quantidade, int quantidadeBox, int oldHour, int oldMinute, int hora, int minuto, int[] dias, int vezes_dia, int periodo_hora, int periodo_minuto, int notificationId, int luminoso, int sonoro, int posCaixa) {
@@ -202,7 +231,7 @@ public class HorarioFixActivity extends AppCompatActivity {
 
                 boolean confirmation = mDataBaseAlarmsHelper.updateData(
                         uuidAlarm,
-                        1,
+                        2,
                         medicineType,
                         ativo,
                         nome,
@@ -211,10 +240,10 @@ public class HorarioFixActivity extends AppCompatActivity {
                         quantidadeBox,
                         hora,
                         minuto,
-                        dias,
-                        0,
-                        0,
-                        0,
+                        new int[7],
+                        vezes_dia,
+                        periodo_hora,
+                        periodo_minuto,
                         notificationId,
                         luminoso,
                         sonoro,
@@ -223,7 +252,7 @@ public class HorarioFixActivity extends AppCompatActivity {
                 if (confirmation) {
                     if (ativo == 1) {
                         cancelAlarmIntent(notificationId);
-                        createAlarmIntent(hora, minuto, dias, notificationId);
+                        createAlarmIntent(hora, minuto, notificationId, vezes_dia, periodo_hora, periodo_minuto);
                     }
 
                     Intent intent = new Intent(getBaseContext(), FragmentsActivity.class);
@@ -267,33 +296,31 @@ public class HorarioFixActivity extends AppCompatActivity {
                     Log.e(TAG, "onResponse: " + response);
                     return;
                 }
-
                 JsonObject postResponse = response.body();
                 String uuidAlarm = postResponse.get("response").getAsString();
 
                 boolean confirmation = mDataBaseAlarmsHelper.addData(
                         uuidAlarm,
-                        1,
+                        2,
                         medicineType,
                         1,
                         nome,
                         dosagem,
                         quantidade,
-                        quantidadeBox,
+                        quantidade,
                         hora,
                         minuto,
-                        dias,
-                        0,
-                        0,
-                        0,
+                        new int[7],
+                        vezes_dia,
+                        periodo_hora,
+                        periodo_minuto,
                         notificationId,
                         luminoso,
                         sonoro,
                         posCaixa);
 
-
                 if (confirmation) {
-                    createAlarmIntent(hora, minuto, dias, notificationId);
+                    createAlarmIntent(hora, minuto, notificationId, vezes_dia, periodo_hora, periodo_minuto);
                     Intent intent = new Intent(getBaseContext(), FragmentsActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra(OPEN_BOX_FRAG, false);
@@ -312,7 +339,7 @@ public class HorarioFixActivity extends AppCompatActivity {
         });
     }
 
-    private String formatJSONupdateAlarm(String uuidAlarm,int medicineType, int ativo, String velhoNome, String nome, int dosagem, int quantidade, int quantidadeBox, int velhaHora, int velhoMinuto, int hora, int minuto, int[] dias, int vezes_dia, int periodo_hora, int periodo_minuto, int notificationId, int luminoso, int sonoro, int posCaixa) {
+    private String formatJSONupdateAlarm(String uuidAlarm, int medicineType, int ativo, String velhoNome, String nome, int dosagem, int quantidade, int quantidadeBox, int velhaHora, int velhoMinuto, int hora, int minuto, int[] dias, int vezes_dia, int periodo_hora, int periodo_minuto, int notificationId, int luminoso, int sonoro, int posCaixa) {
         final JSONObject root = new JSONObject();
 
         try {
@@ -359,7 +386,7 @@ public class HorarioFixActivity extends AppCompatActivity {
         try {
             JSONObject newAlarm = new JSONObject();
 
-            newAlarm.put(ALARM_TYPE, String.valueOf(1));
+            newAlarm.put(ALARM_TYPE, String.valueOf(2));
             newAlarm.put(MEDICINE_TYPE, String.valueOf(medicineType));
             newAlarm.put(ATIVO, String.valueOf(1));
             newAlarm.put(NOME_REMEDIO, String.valueOf(nome));
@@ -393,7 +420,24 @@ public class HorarioFixActivity extends AppCompatActivity {
         return null;
     }
 
-    private void createAlarmIntent(int horas, int minutos, int[] dias, int notificationId) {
+    public void imageInfoClick(ImageView imageView) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.info_dialog_title_text);
+
+        if (binding.startTimeIntervalTextImage.equals(imageView)) {
+            builder.setMessage(R.string.dialog_text_start_time_info);
+        } else if (binding.howManyTimesIntervalTextImage.equals(imageView)) {
+            builder.setMessage(R.string.dialog_text_how_many_times_info);
+        } else if (binding.timeIntervalTextImage.equals(imageView)) {
+            builder.setMessage(R.string.dialog_text_time_interval_info);
+        }
+
+        builder.setPositiveButton(R.string.ok, (dialog, id) -> dialog.dismiss());
+
+        builder.create().show();
+    }
+
+    private void createAlarmIntent(int hora_inicio, int min_inicio, int notificationId, int vezes_dia, int periodo_hora, int periodo_minuto) {
 
         Calendar calendar = Calendar.getInstance();
 
@@ -408,7 +452,7 @@ public class HorarioFixActivity extends AppCompatActivity {
         nextNotifTime.set(Calendar.DATE, 1);
         nextNotifTime.add(Calendar.DATE, -1);
 
-        if (horas < horaAtual) {
+        if (hora_inicio < horaAtual) {
             if (diaAtual == nextNotifTime.get(Calendar.DAY_OF_MONTH)) {
                 if (mesAtual == 11) {
                     anoAtual = anoAtual + 1;
@@ -420,8 +464,8 @@ public class HorarioFixActivity extends AppCompatActivity {
             } else {
                 diaAtual = diaAtual + 1;
             }
-        } else if (horas == horaAtual) {
-            if (minutos <= minutoAtual) {
+        } else if (hora_inicio == horaAtual) {
+            if (min_inicio <= minutoAtual) {
                 if (diaAtual == nextNotifTime.get(Calendar.DAY_OF_MONTH)) {
                     if (mesAtual == 11) {
                         anoAtual = anoAtual + 1;
@@ -436,15 +480,19 @@ public class HorarioFixActivity extends AppCompatActivity {
             }
         }
 
-        calendar.set(anoAtual, mesAtual, diaAtual, horas, minutos, 0);
+        calendar.set(anoAtual, mesAtual, diaAtual, hora_inicio, min_inicio, 0);
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, AlarmeReceiver.class);
         intent.putExtra("NOTIFICATION_ID", notificationId);
-        intent.putExtra("ALARM_TYPE", 1);
-        intent.putExtra("ALARM_HOUR", horas);
-        intent.putExtra("ALARM_MINUTES", minutos);
-        intent.putExtra("ALARM_DAYS", dias);
+        intent.putExtra("ALARM_TYPE", 2);
+        intent.putExtra("ALARM_HOUR", hora_inicio);
+        intent.putExtra("ALARM_MINUTES", min_inicio);
+        intent.putExtra("ALARM_TIMES_DAY", vezes_dia);
+        intent.putExtra("ALARM_TIMES_DAY_MISSING", vezes_dia);
+        intent.putExtra("ALARM_PERIOD_HOUR", periodo_hora);
+        intent.putExtra("ALARM_PERIOD_MINUTE", periodo_minuto);
+        intent.putExtra("ALARM_INTERVAL_FIRST_CALL", true);
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), notificationId, intent, 0);
         alarmManager.setExactAndAllowWhileIdle(RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);

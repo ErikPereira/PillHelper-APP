@@ -1,9 +1,11 @@
-package com.example.pillhelper;
+package com.example.pillhelper.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import com.example.pillhelper.R;
 
 import java.util.Calendar;
 

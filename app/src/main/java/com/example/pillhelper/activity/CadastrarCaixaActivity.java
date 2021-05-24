@@ -1,4 +1,4 @@
-package com.example.pillhelper;
+package com.example.pillhelper.activity;
 
 import android.Manifest;
 import android.content.Context;
@@ -17,6 +17,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.example.pillhelper.utils.Constants;
+import com.example.pillhelper.dataBase.DataBaseBoxHelper;
+import com.example.pillhelper.JsonPlaceHolderApi;
+import com.example.pillhelper.UserIdSingleton;
 import com.example.pillhelper.databinding.ActivityCadastrarCaixaBinding;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
@@ -36,12 +40,9 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static com.example.pillhelper.Constants.BASE_URL;
-import static com.example.pillhelper.Constants.ID_CAIXA;
-import static com.example.pillhelper.Constants.ID_USUARIO;
-import static com.example.pillhelper.Constants.MUDAR_USUARIO;
-import static com.example.pillhelper.Constants.NOME_CAIXA;
-import static com.example.pillhelper.Constants.OPEN_BOX_FRAG;
+import static com.example.pillhelper.utils.Constants.BASE_URL;
+import static com.example.pillhelper.utils.Constants.ID_CAIXA;
+import static com.example.pillhelper.utils.Constants.OPEN_BOX_FRAG;
 
 public class CadastrarCaixaActivity extends AppCompatActivity {
 

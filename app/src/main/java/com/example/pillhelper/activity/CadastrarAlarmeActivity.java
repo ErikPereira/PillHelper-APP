@@ -1,4 +1,4 @@
-package com.example.pillhelper;
+package com.example.pillhelper.activity;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -10,6 +10,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.pillhelper.dataBase.DataBaseAlarmsHelper;
+import com.example.pillhelper.R;
 import com.example.pillhelper.databinding.ActivityCadastrarAlarmeBinding;
 
 import java.util.Random;

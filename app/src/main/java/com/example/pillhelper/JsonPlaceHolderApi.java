@@ -1,5 +1,6 @@
 package com.example.pillhelper;
 
+import com.example.pillhelper.utils.Constants;
 import com.google.gson.JsonObject;
 
 import java.util.Map;
@@ -12,7 +13,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 
-import static com.example.pillhelper.Constants.ID_USUARIO;
+import static com.example.pillhelper.utils.Constants.ID_USUARIO;
 
 public interface JsonPlaceHolderApi {
 

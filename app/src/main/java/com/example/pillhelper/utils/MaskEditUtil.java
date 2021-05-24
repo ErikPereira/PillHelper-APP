@@ -1,4 +1,4 @@
-package com.example.pillhelper;
+package com.example.pillhelper.utils;
 
 import android.text.Editable;
 import android.text.TextWatcher;

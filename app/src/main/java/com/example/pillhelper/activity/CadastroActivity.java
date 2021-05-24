@@ -1,4 +1,4 @@
-package com.example.pillhelper;
+package com.example.pillhelper.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,11 +8,14 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.pillhelper.utils.Constants;
+import com.example.pillhelper.dataBase.DataBaseUserHelper;
+import com.example.pillhelper.JsonPlaceHolderApi;
+import com.example.pillhelper.utils.MaskEditUtil;
 import com.example.pillhelper.databinding.ActivityCadastroBinding;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -22,7 +25,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static com.example.pillhelper.Constants.BASE_URL;
+import static com.example.pillhelper.utils.Constants.BASE_URL;
 
 public class CadastroActivity extends AppCompatActivity {
 
