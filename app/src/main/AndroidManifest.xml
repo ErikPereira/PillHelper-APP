@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.example.pillhelper.ActivityAlarmeAtivo" />
+        <activity android:name="com.example.pillhelper.activity.AlarmeAtivoActivity" />
         <activity android:name="com.example.pillhelper.activity.IntervaloHorarioActivity" />
         <activity android:name="com.example.pillhelper.activity.HorarioFixActivity" />
         <activity android:name="com.example.pillhelper.activity.CadastrarAlarmeActivity" />
@@ -41,7 +41,7 @@
             android:parentActivityName="com.example.pillhelper.activity.FragmentsActivity" />
 
         <receiver
-            android:name="com.example.pillhelper.AlarmeReceiver"
+            android:name="com.example.pillhelper.receiver.AlarmeReceiver"
             android:enabled="true"
             android:exported="true"
             android:permission="TODO" />

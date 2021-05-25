@@ -1,4 +1,4 @@
-package com.example.pillhelper;
+package com.example.pillhelper.services;
 
 import com.example.pillhelper.utils.Constants;
 import com.google.gson.JsonObject;

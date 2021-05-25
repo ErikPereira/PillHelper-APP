@@ -1,4 +1,4 @@
-package com.example.pillhelper;
+package com.example.pillhelper.activity;
 
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -13,7 +13,7 @@ import com.example.pillhelper.databinding.ActivityAlarmeAtivoBinding;
 
 import java.util.Calendar;
 
-public class ActivityAlarmeAtivo extends AppCompatActivity {
+public class AlarmeAtivoActivity extends AppCompatActivity {
 
     ActivityAlarmeAtivoBinding binding;
     MediaPlayer mediaPlayer;

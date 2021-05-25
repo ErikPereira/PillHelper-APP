@@ -12,12 +12,12 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.pillhelper.AlarmeReceiver;
+import com.example.pillhelper.receiver.AlarmeReceiver;
 import com.example.pillhelper.utils.Constants;
 import com.example.pillhelper.dataBase.DataBaseAlarmsHelper;
-import com.example.pillhelper.JsonPlaceHolderApi;
+import com.example.pillhelper.services.JsonPlaceHolderApi;
 import com.example.pillhelper.R;
-import com.example.pillhelper.UserIdSingleton;
+import com.example.pillhelper.utils.UserIdSingleton;
 import com.example.pillhelper.databinding.ActivityHorarioFixBinding;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;

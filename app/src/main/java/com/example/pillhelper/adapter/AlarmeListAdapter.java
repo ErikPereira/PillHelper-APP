@@ -1,4 +1,4 @@
-package com.example.pillhelper;
+package com.example.pillhelper.adapter;
 
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
@@ -19,8 +19,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
+import com.example.pillhelper.receiver.AlarmeReceiver;
+import com.example.pillhelper.R;
+import com.example.pillhelper.utils.UserIdSingleton;
 import com.example.pillhelper.dataBase.DataBaseAlarmsHelper;
 import com.example.pillhelper.item.AlarmeItem;
+import com.example.pillhelper.services.JsonPlaceHolderApi;
 import com.example.pillhelper.utils.Constants;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -78,7 +82,7 @@ public class AlarmeListAdapter extends ArrayAdapter<AlarmeItem> {
     private int notificationId;
     private JsonPlaceHolderApi jsonPlaceHolderApi;
 
-    AlarmeListAdapter(Context context, int resource, ArrayList<AlarmeItem> objects) {
+    public AlarmeListAdapter(Context context, int resource, ArrayList<AlarmeItem> objects) {
         super(context, resource, objects);
         mContext = context;
         mResource = resource;

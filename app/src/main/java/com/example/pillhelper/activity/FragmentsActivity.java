@@ -14,8 +14,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.pillhelper.FragmentAlarms;
-import com.example.pillhelper.FragmentCaixas;
+import com.example.pillhelper.fragment.FragmentAlarms;
+import com.example.pillhelper.fragment.FragmentCaixas;
 import com.example.pillhelper.R;
 import com.example.pillhelper.databinding.ActivityFragmentsBinding;
 

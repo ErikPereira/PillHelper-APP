@@ -19,8 +19,8 @@ import androidx.core.app.ActivityCompat;
 
 import com.example.pillhelper.utils.Constants;
 import com.example.pillhelper.dataBase.DataBaseBoxHelper;
-import com.example.pillhelper.JsonPlaceHolderApi;
-import com.example.pillhelper.UserIdSingleton;
+import com.example.pillhelper.services.JsonPlaceHolderApi;
+import com.example.pillhelper.utils.UserIdSingleton;
 import com.example.pillhelper.databinding.ActivityCadastrarCaixaBinding;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;

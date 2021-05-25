@@ -1,4 +1,4 @@
-package com.example.pillhelper;
+package com.example.pillhelper.fragment;
 
 import android.database.Cursor;
 import android.os.Bundle;
@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.pillhelper.adapter.CaixaListAdapter;
+import com.example.pillhelper.R;
 import com.example.pillhelper.dataBase.DataBaseBoxHelper;
 import com.example.pillhelper.databinding.FragmentCaixasBinding;
 import com.example.pillhelper.item.CaixaItem;

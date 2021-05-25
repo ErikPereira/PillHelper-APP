@@ -1,4 +1,4 @@
-package com.example.pillhelper;
+package com.example.pillhelper.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -18,8 +18,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.example.pillhelper.R;
+import com.example.pillhelper.utils.UserIdSingleton;
 import com.example.pillhelper.dataBase.DataBaseBoxHelper;
 import com.example.pillhelper.item.CaixaItem;
+import com.example.pillhelper.services.JsonPlaceHolderApi;
 import com.example.pillhelper.utils.Constants;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -49,7 +52,7 @@ public class CaixaListAdapter extends ArrayAdapter<CaixaItem> {
     private EditText editTextName;
     private Cursor data;
 
-    CaixaListAdapter(Context context, int resource, ArrayList<CaixaItem> objects) {
+    public CaixaListAdapter(Context context, int resource, ArrayList<CaixaItem> objects) {
         super(context, resource, objects);
         mContext = context;
         mResource = resource;

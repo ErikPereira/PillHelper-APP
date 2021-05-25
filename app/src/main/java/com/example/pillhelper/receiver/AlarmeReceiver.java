@@ -1,4 +1,4 @@
-package com.example.pillhelper;
+package com.example.pillhelper.receiver;
 
 import android.app.AlarmManager;
 import android.app.Notification;
@@ -10,6 +10,9 @@ import android.content.Intent;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.example.pillhelper.R;
+import com.example.pillhelper.activity.AlarmeAtivoActivity;
+
 import java.util.Calendar;
 
 import static android.app.AlarmManager.RTC_WAKEUP;
@@ -20,7 +23,7 @@ public class AlarmeReceiver extends BroadcastReceiver {
     public void onReceive(final Context context, Intent intent) {
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
 
-        Intent fullScreenIntent = new Intent(context, ActivityAlarmeAtivo.class);
+        Intent fullScreenIntent = new Intent(context, AlarmeAtivoActivity.class);
         int notificationId = intent.getIntExtra("NOTIFICATION_ID", 0);
         fullScreenIntent.putExtra("NOTIFICATION_ID", notificationId);
 

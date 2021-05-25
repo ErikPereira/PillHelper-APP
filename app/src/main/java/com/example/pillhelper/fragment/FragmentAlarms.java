@@ -1,4 +1,4 @@
-package com.example.pillhelper;
+package com.example.pillhelper.fragment;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.pillhelper.adapter.AlarmeListAdapter;
+import com.example.pillhelper.R;
 import com.example.pillhelper.activity.AllMedicinesActivity;
 import com.example.pillhelper.activity.CadastrarAlarmeActivity;
 import com.example.pillhelper.dataBase.DataBaseAlarmsHelper;

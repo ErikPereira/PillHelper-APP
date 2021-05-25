@@ -1,4 +1,4 @@
-package com.example.pillhelper;
+package com.example.pillhelper.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.example.pillhelper.R;
 
 import java.util.ArrayList;
 
