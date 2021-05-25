@@ -21,7 +21,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.example.pillhelper.R;
 import com.example.pillhelper.utils.UserIdSingleton;
 import com.example.pillhelper.dataBase.DataBaseBoxHelper;
-import com.example.pillhelper.item.CaixaItem;
+import com.example.pillhelper.item.BoxItem;
 import com.example.pillhelper.services.JsonPlaceHolderApi;
 import com.example.pillhelper.utils.Constants;
 import com.google.gson.JsonObject;
@@ -41,9 +41,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import static com.example.pillhelper.utils.Constants.BASE_URL;
 import static com.example.pillhelper.utils.Constants.ID_CAIXA;
 
-public class CaixaListAdapter extends ArrayAdapter<CaixaItem> {
+public class BoxListAdapter extends ArrayAdapter<BoxItem> {
 
-    private static final String TAG = "CaixaListAdapter";
+    private static final String TAG = "BoxListAdapter";
 
     private Context mContext;
     private int mResource;
@@ -52,7 +52,7 @@ public class CaixaListAdapter extends ArrayAdapter<CaixaItem> {
     private EditText editTextName;
     private Cursor data;
 
-    public CaixaListAdapter(Context context, int resource, ArrayList<CaixaItem> objects) {
+    public BoxListAdapter(Context context, int resource, ArrayList<BoxItem> objects) {
         super(context, resource, objects);
         mContext = context;
         mResource = resource;
@@ -198,8 +198,8 @@ public class CaixaListAdapter extends ArrayAdapter<CaixaItem> {
                 int isDeleted = mDataBaseBoxHelper.removeData(uuidBox);
 
                 if (isDeleted > 0) {
-                    CaixaListAdapter.this.remove(getItem(position));
-                    CaixaListAdapter.this.notifyDataSetChanged();
+                    BoxListAdapter.this.remove(getItem(position));
+                    BoxListAdapter.this.notifyDataSetChanged();
                 } else Toast.makeText(getContext(), "Algo deu errado", Toast.LENGTH_LONG).show();
 
                 Log.e(TAG, "onResponse: " + response);

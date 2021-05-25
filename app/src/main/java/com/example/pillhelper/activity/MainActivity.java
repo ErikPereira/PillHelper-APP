@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         binding.signInButton.setOnClickListener((View v) -> {
-            Intent intent = new Intent(this, CadastroActivity.class);
+            Intent intent = new Intent(this, RegisterActivity.class);
             startActivity(intent);
         });
 

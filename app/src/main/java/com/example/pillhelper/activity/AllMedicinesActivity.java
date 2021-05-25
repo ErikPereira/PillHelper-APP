@@ -5,7 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.pillhelper.adapter.AlarmeListedAdapter;
+import com.example.pillhelper.adapter.AlarmListedAdapter;
 import com.example.pillhelper.R;
 import com.example.pillhelper.databinding.ActivityAllMedicinesBinding;
 
@@ -25,7 +25,7 @@ public class AllMedicinesActivity extends AppCompatActivity {
 
         ArrayList<String> allMedicinesNames = getIntent().getStringArrayListExtra("MEDICINE_NAME_LIST");
 
-        AlarmeListedAdapter arrayAdapter = new AlarmeListedAdapter(this, R.layout.list_item, allMedicinesNames);
+        AlarmListedAdapter arrayAdapter = new AlarmListedAdapter(this, R.layout.list_item, allMedicinesNames);
         binding.allMedListView.setAdapter(arrayAdapter);
     }
 }

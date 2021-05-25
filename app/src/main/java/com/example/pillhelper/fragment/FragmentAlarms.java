@@ -11,31 +11,31 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.pillhelper.adapter.AlarmeListAdapter;
+import com.example.pillhelper.adapter.AlarmListAdapter;
 import com.example.pillhelper.R;
 import com.example.pillhelper.activity.AllMedicinesActivity;
-import com.example.pillhelper.activity.CadastrarAlarmeActivity;
+import com.example.pillhelper.activity.RegisterAlarmActivity;
 import com.example.pillhelper.dataBase.DataBaseAlarmsHelper;
-import com.example.pillhelper.databinding.FragmentAlarmesBinding;
-import com.example.pillhelper.item.AlarmeItem;
+import com.example.pillhelper.databinding.FragmentAlarmsBinding;
+import com.example.pillhelper.item.AlarmItem;
 
 import java.util.ArrayList;
 
 public class FragmentAlarms extends Fragment {
 
     private static final String TAG = "FragmentAlarms";
-    private FragmentAlarmesBinding binding;
+    private FragmentAlarmsBinding binding;
     private DataBaseAlarmsHelper mDataBaseAlarmsHelper;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        binding = FragmentAlarmesBinding.inflate(getLayoutInflater());
+        binding = FragmentAlarmsBinding.inflate(getLayoutInflater());
         mDataBaseAlarmsHelper = new DataBaseAlarmsHelper(getActivity());
 
         Cursor data = mDataBaseAlarmsHelper.getData();
-        ArrayList<AlarmeItem> alarmes = new ArrayList<>();
+        ArrayList<AlarmItem> alarmes = new ArrayList<>();
 
         while (data.moveToNext()) {
             String uuidAlarm = data.getString(0);
@@ -45,16 +45,16 @@ public class FragmentAlarms extends Fragment {
             int minutos = data.getInt(9);
             int notificationId = data.getInt(20);
 
-            AlarmeItem alarme;
-            alarme = new AlarmeItem(uuidAlarm, status, nome, horas, minutos, notificationId);
+            AlarmItem alarme;
+            alarme = new AlarmItem(uuidAlarm, status, nome, horas, minutos, notificationId);
             alarmes.add(alarme);
         }
 
-        AlarmeListAdapter adapter = new AlarmeListAdapter(getContext(), R.layout.alarmes_list_item, alarmes);
+        AlarmListAdapter adapter = new AlarmListAdapter(getContext(), R.layout.alarms_list_item, alarmes);
         binding.alarmesListView.setAdapter(adapter);
 
         binding.alarmesListView.setOnItemClickListener((parent, view, position, id) -> {
-            Intent intent = new Intent(getContext(), CadastrarAlarmeActivity.class);
+            Intent intent = new Intent(getContext(), RegisterAlarmActivity.class);
             intent.putExtra("IS_EDIT", true);
             intent.putExtra("POSITION", position);
             startActivity(intent);
@@ -64,7 +64,7 @@ public class FragmentAlarms extends Fragment {
             Intent intent = new Intent(getContext(), AllMedicinesActivity.class);
             ArrayList<String> listaNomeMedicamentos = new ArrayList<>();
 
-            for (AlarmeItem alarme : alarmes) {
+            for (AlarmItem alarme : alarmes) {
                 listaNomeMedicamentos.add(alarme.getNome());
             }
 

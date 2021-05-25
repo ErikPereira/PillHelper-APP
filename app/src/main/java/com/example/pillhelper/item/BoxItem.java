@@ -1,10 +1,10 @@
 package com.example.pillhelper.item;
 
-public class CaixaItem {
+public class BoxItem {
     private String uuidBox;
     private String nome;
 
-    public CaixaItem(String uuidBox, String nome) {
+    public BoxItem(String uuidBox, String nome) {
         this.uuidBox = uuidBox;
         this.nome = nome;
     }

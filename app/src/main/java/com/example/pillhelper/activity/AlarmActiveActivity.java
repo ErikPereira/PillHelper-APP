@@ -9,19 +9,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.example.pillhelper.activity.MainActivity;
-import com.example.pillhelper.databinding.ActivityAlarmeAtivoBinding;
+import com.example.pillhelper.databinding.ActivityAlarmActiveBinding;
 
 import java.util.Calendar;
 
-public class AlarmeAtivoActivity extends AppCompatActivity {
+public class AlarmActiveActivity extends AppCompatActivity {
 
-    ActivityAlarmeAtivoBinding binding;
+    ActivityAlarmActiveBinding binding;
     MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityAlarmeAtivoBinding.inflate(getLayoutInflater());
+        binding = ActivityAlarmActiveBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         getSupportActionBar().setTitle("Alarme");

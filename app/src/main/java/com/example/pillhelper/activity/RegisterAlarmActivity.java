@@ -12,13 +12,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.pillhelper.dataBase.DataBaseAlarmsHelper;
 import com.example.pillhelper.R;
-import com.example.pillhelper.databinding.ActivityCadastrarAlarmeBinding;
+import com.example.pillhelper.databinding.ActivityRegisterAlarmBinding;
 
 import java.util.Random;
 
-public class CadastrarAlarmeActivity extends AppCompatActivity {
+public class RegisterAlarmActivity extends AppCompatActivity {
 
-    private ActivityCadastrarAlarmeBinding binding;
+    private ActivityRegisterAlarmBinding binding;
     private DataBaseAlarmsHelper mDataBaseAlarmsHelper;
     private boolean isEdit;
     private int alarmEditPosition;
@@ -28,7 +28,7 @@ public class CadastrarAlarmeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityCadastrarAlarmeBinding.inflate(getLayoutInflater());
+        binding = ActivityRegisterAlarmBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -81,7 +81,7 @@ public class CadastrarAlarmeActivity extends AppCompatActivity {
         binding.backButtonRegisterMedicine.setOnClickListener(v -> finish());
 
         binding.nextButtonRegisterMedicine.setOnClickListener(v -> {
-            Class activity = binding.radioButtonRegisterMedicineFixtime.isChecked() ? HorarioFixActivity.class : binding.radioButtonRegisterMedicineInterval.isChecked() ? IntervaloHorarioActivity.class : null;
+            Class activity = binding.radioButtonRegisterMedicineFixtime.isChecked() ? FixedAlarmActivity.class : binding.radioButtonRegisterMedicineInterval.isChecked() ? IntervalAlarmActivity.class : null;
 
             if (activity != null) {
                 callActivity(activity);

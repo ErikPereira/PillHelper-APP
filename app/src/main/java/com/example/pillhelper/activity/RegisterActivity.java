@@ -12,7 +12,7 @@ import com.example.pillhelper.utils.Constants;
 import com.example.pillhelper.dataBase.DataBaseUserHelper;
 import com.example.pillhelper.services.JsonPlaceHolderApi;
 import com.example.pillhelper.utils.MaskEditUtil;
-import com.example.pillhelper.databinding.ActivityCadastroBinding;
+import com.example.pillhelper.databinding.ActivityRegisterBinding;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -27,18 +27,18 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.example.pillhelper.utils.Constants.BASE_URL;
 
-public class CadastroActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity {
 
-    private static final String TAG = CadastroActivity.class.getSimpleName();
+    private static final String TAG = RegisterActivity.class.getSimpleName();
 
-    private ActivityCadastroBinding binding;
+    private ActivityRegisterBinding binding;
     DataBaseUserHelper mDataBaseUserHelper;
     private JsonPlaceHolderApi jsonPlaceHolderApi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityCadastroBinding.inflate(getLayoutInflater());
+        binding = ActivityRegisterBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         mDataBaseUserHelper = new DataBaseUserHelper(this);

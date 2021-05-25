@@ -19,11 +19,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
-import com.example.pillhelper.receiver.AlarmeReceiver;
+import com.example.pillhelper.receiver.AlarmReceiver;
 import com.example.pillhelper.R;
 import com.example.pillhelper.utils.UserIdSingleton;
 import com.example.pillhelper.dataBase.DataBaseAlarmsHelper;
-import com.example.pillhelper.item.AlarmeItem;
+import com.example.pillhelper.item.AlarmItem;
 import com.example.pillhelper.services.JsonPlaceHolderApi;
 import com.example.pillhelper.utils.Constants;
 import com.google.gson.JsonObject;
@@ -69,7 +69,7 @@ import static com.example.pillhelper.utils.Constants.SONORO;
 import static com.example.pillhelper.utils.Constants.TERCA;
 import static com.example.pillhelper.utils.Constants.VEZES_DIA;
 
-public class AlarmeListAdapter extends ArrayAdapter<AlarmeItem> {
+public class AlarmListAdapter extends ArrayAdapter<AlarmItem> {
 
     private static final String TAG = "AlarmListAdapter";
 
@@ -82,7 +82,7 @@ public class AlarmeListAdapter extends ArrayAdapter<AlarmeItem> {
     private int notificationId;
     private JsonPlaceHolderApi jsonPlaceHolderApi;
 
-    public AlarmeListAdapter(Context context, int resource, ArrayList<AlarmeItem> objects) {
+    public AlarmListAdapter(Context context, int resource, ArrayList<AlarmItem> objects) {
         super(context, resource, objects);
         mContext = context;
         mResource = resource;
@@ -99,7 +99,7 @@ public class AlarmeListAdapter extends ArrayAdapter<AlarmeItem> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        AlarmeItem item = getItem(position);
+        AlarmItem item = getItem(position);
 
         nome = item.getNome();
         horas = item.getHora();
@@ -219,7 +219,7 @@ public class AlarmeListAdapter extends ArrayAdapter<AlarmeItem> {
 
                 ImageView imageViewStatus = convertView.findViewById(R.id.adapter_image);
                 imageViewStatus.setImageResource(ativo == 1 ? R.drawable.ic_alarm_on_black_24dp : R.drawable.ic_alarm_off_black_24dp);
-                AlarmeItem item = getItem(position);
+                AlarmItem item = getItem(position);
                 item.setStatus(item.getStatus() == 1 ? 0 : 1);
                 notifyDataSetChanged();
 
@@ -289,7 +289,7 @@ public class AlarmeListAdapter extends ArrayAdapter<AlarmeItem> {
         calendar.set(anoAtual, mesAtual, diaAtual, horas, minutos, 0);
 
         AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(getContext(), AlarmeReceiver.class);
+        Intent intent = new Intent(getContext(), AlarmReceiver.class);
         intent.putExtra("NOTIFICATION_ID", notificationId);
         intent.putExtra("ALARM_TYPE", 1);
         intent.putExtra("ALARM_HOUR", horas);
@@ -346,7 +346,7 @@ public class AlarmeListAdapter extends ArrayAdapter<AlarmeItem> {
         calendar.set(anoAtual, mesAtual, diaAtual, hora_inicio, min_inicio, 0);
 
         AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(getContext(), AlarmeReceiver.class);
+        Intent intent = new Intent(getContext(), AlarmReceiver.class);
         intent.putExtra("NOTIFICATION_ID", notificationId);
         intent.putExtra("ALARM_TYPE", 2);
         intent.putExtra("ALARM_HOUR", hora_inicio);
@@ -381,8 +381,8 @@ public class AlarmeListAdapter extends ArrayAdapter<AlarmeItem> {
 
                 if (isDeleted > 0) {
                     cancelAlarmIntent();
-                    AlarmeListAdapter.this.remove(getItem(position));
-                    AlarmeListAdapter.this.notifyDataSetChanged();
+                    AlarmListAdapter.this.remove(getItem(position));
+                    AlarmListAdapter.this.notifyDataSetChanged();
                 } else Toast.makeText(getContext(), "Algo deu errado", Toast.LENGTH_LONG).show();
 
                 Log.e(TAG, "onResponse: " + response);
@@ -449,7 +449,7 @@ public class AlarmeListAdapter extends ArrayAdapter<AlarmeItem> {
     }
 
     private void cancelAlarmIntent() {
-        Intent intent = new Intent(getContext().getApplicationContext(), AlarmeReceiver.class);
+        Intent intent = new Intent(getContext().getApplicationContext(), AlarmReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext().getApplicationContext(), notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         pendingIntent.cancel();
     }

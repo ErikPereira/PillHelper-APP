@@ -1,6 +1,6 @@
 package com.example.pillhelper.item;
 
-public class AlarmeItem {
+public class AlarmItem {
     private String uuidAlarm;
     private int status;
     private int hora;
@@ -8,7 +8,7 @@ public class AlarmeItem {
     private String nome;
     private int notificationId;
 
-    public AlarmeItem(String uuidAlarm, int status, String nome, int hora, int minuto, int notificationId) {
+    public AlarmItem(String uuidAlarm, int status, String nome, int hora, int minuto, int notificationId) {
         this.uuidAlarm = uuidAlarm;
         this.status = status;
         this.hora = hora;

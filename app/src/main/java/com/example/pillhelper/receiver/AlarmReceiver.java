@@ -11,19 +11,19 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.example.pillhelper.R;
-import com.example.pillhelper.activity.AlarmeAtivoActivity;
+import com.example.pillhelper.activity.AlarmActiveActivity;
 
 import java.util.Calendar;
 
 import static android.app.AlarmManager.RTC_WAKEUP;
 import static com.example.pillhelper.App.CHANNEL_ID;
 
-public class AlarmeReceiver extends BroadcastReceiver {
+public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(final Context context, Intent intent) {
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
 
-        Intent fullScreenIntent = new Intent(context, AlarmeAtivoActivity.class);
+        Intent fullScreenIntent = new Intent(context, AlarmActiveActivity.class);
         int notificationId = intent.getIntExtra("NOTIFICATION_ID", 0);
         fullScreenIntent.putExtra("NOTIFICATION_ID", notificationId);
 
@@ -70,7 +70,7 @@ public class AlarmeReceiver extends BroadcastReceiver {
                 calendar.set(year, month, day, horas, minutos, 0);
 
                 AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-                Intent newIntent = new Intent(context, AlarmeReceiver.class);
+                Intent newIntent = new Intent(context, AlarmReceiver.class);
                 newIntent.putExtra("NOTIFICATION_ID", notificationId);
                 newIntent.putExtra("ALARM_TYPE", alarmType);
                 newIntent.putExtra("ALARM_HOUR", horas);
@@ -123,7 +123,7 @@ public class AlarmeReceiver extends BroadcastReceiver {
                     vezes_dia_faltante = vezes_dia;
 
                     AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-                    Intent newIntent = new Intent(context, AlarmeReceiver.class);
+                    Intent newIntent = new Intent(context, AlarmReceiver.class);
                     newIntent.putExtra("NOTIFICATION_ID", notificationId);
                     newIntent.putExtra("ALARM_TYPE", alarmType);
                     newIntent.putExtra("ALARM_HOUR", hora_inicio);
@@ -189,7 +189,7 @@ public class AlarmeReceiver extends BroadcastReceiver {
                     vezes_dia_faltante--;
 
                     AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-                    Intent newIntent = new Intent(context, AlarmeReceiver.class);
+                    Intent newIntent = new Intent(context, AlarmReceiver.class);
                     newIntent.putExtra("NOTIFICATION_ID", notificationId);
                     newIntent.putExtra("ALARM_TYPE", alarmType);
                     newIntent.putExtra("ALARM_HOUR", hora_inicio);
@@ -258,7 +258,7 @@ public class AlarmeReceiver extends BroadcastReceiver {
                     vezes_dia_faltante--;
 
                     AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-                    Intent newIntent = new Intent(context, AlarmeReceiver.class);
+                    Intent newIntent = new Intent(context, AlarmReceiver.class);
                     newIntent.putExtra("NOTIFICATION_ID", notificationId);
                     newIntent.putExtra("ALARM_TYPE", alarmType);
                     newIntent.putExtra("ALARM_HOUR", hora_inicio);

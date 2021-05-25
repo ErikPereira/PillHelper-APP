@@ -15,11 +15,11 @@ import com.example.pillhelper.R;
 
 import java.util.ArrayList;
 
-public class AlarmeListedAdapter extends ArrayAdapter<String> {
+public class AlarmListedAdapter extends ArrayAdapter<String> {
     private Context mContext;
     private int mResource;
 
-    public AlarmeListedAdapter(@NonNull Context context, int resource, ArrayList<String> objects) {
+    public AlarmListedAdapter(@NonNull Context context, int resource, ArrayList<String> objects) {
         super(context, resource, objects);
         mContext = context;
         mResource = resource;

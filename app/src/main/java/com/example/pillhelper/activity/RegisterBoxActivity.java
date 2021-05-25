@@ -21,7 +21,7 @@ import com.example.pillhelper.utils.Constants;
 import com.example.pillhelper.dataBase.DataBaseBoxHelper;
 import com.example.pillhelper.services.JsonPlaceHolderApi;
 import com.example.pillhelper.utils.UserIdSingleton;
-import com.example.pillhelper.databinding.ActivityCadastrarCaixaBinding;
+import com.example.pillhelper.databinding.ActivityRegisterBoxBinding;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -44,10 +44,10 @@ import static com.example.pillhelper.utils.Constants.BASE_URL;
 import static com.example.pillhelper.utils.Constants.ID_CAIXA;
 import static com.example.pillhelper.utils.Constants.OPEN_BOX_FRAG;
 
-public class CadastrarCaixaActivity extends AppCompatActivity {
+public class RegisterBoxActivity extends AppCompatActivity {
 
-    private static String TAG = CadastrarCaixaActivity.class.getSimpleName();
-    private ActivityCadastrarCaixaBinding binding;
+    private static String TAG = RegisterBoxActivity.class.getSimpleName();
+    private ActivityRegisterBoxBinding binding;
 
     DataBaseBoxHelper mDataBaseBoxHelper;
 
@@ -59,7 +59,7 @@ public class CadastrarCaixaActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityCadastrarCaixaBinding.inflate(getLayoutInflater());
+        binding = ActivityRegisterBoxBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -81,7 +81,7 @@ public class CadastrarCaixaActivity extends AppCompatActivity {
             public void surfaceCreated(SurfaceHolder holder) {
 
                 try {
-                    if (ActivityCompat.checkSelfPermission(CadastrarCaixaActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    if (ActivityCompat.checkSelfPermission(RegisterBoxActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                         return;
                     }
                     cameraSource.start(holder);

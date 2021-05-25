@@ -15,7 +15,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.pillhelper.fragment.FragmentAlarms;
-import com.example.pillhelper.fragment.FragmentCaixas;
+import com.example.pillhelper.fragment.FragmentBoxes;
 import com.example.pillhelper.R;
 import com.example.pillhelper.databinding.ActivityFragmentsBinding;
 
@@ -46,7 +46,7 @@ public class FragmentsActivity extends AppCompatActivity {
                     break;
                 case R.id.nav_caixas:
                     binding.fabFragment.setImageDrawable(getBaseContext().getDrawable(R.drawable.ic_add_box_white_24dp));
-                    actualFragment = new FragmentCaixas();
+                    actualFragment = new FragmentBoxes();
                     loadFragment(actualFragment);
                     break;
             }
@@ -56,15 +56,15 @@ public class FragmentsActivity extends AppCompatActivity {
 
         binding.fabFragment.setOnClickListener(v -> {
             if (actualFragment instanceof FragmentAlarms) {
-                Intent intent = new Intent(this, CadastrarAlarmeActivity.class);
+                Intent intent = new Intent(this, RegisterAlarmActivity.class);
                 startActivity(intent);
             }
 
-            if (actualFragment instanceof FragmentCaixas) {
+            if (actualFragment instanceof FragmentBoxes) {
                 if (!checkPermissions()) {
                     requestPermissions();
                 } else {
-                    Intent intent = new Intent(this, CadastrarCaixaActivity.class);
+                    Intent intent = new Intent(this, RegisterBoxActivity.class);
                     startActivityForResult(intent, 1);
                 }
             }
@@ -145,7 +145,7 @@ public class FragmentsActivity extends AppCompatActivity {
             if (grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                Intent intent = new Intent(this, CadastrarCaixaActivity.class);
+                Intent intent = new Intent(this, RegisterBoxActivity.class);
                 startActivityForResult(intent, 1);
             }
         }

@@ -14,7 +14,7 @@ public class TimePickerActivity extends Activity implements TimePicker.OnTimeCha
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_horario_fix);
+        setContentView(R.layout.activity_fixed_alarm);
 
         TimePicker picker = findViewById(R.id.id_clock_schedule);
 
