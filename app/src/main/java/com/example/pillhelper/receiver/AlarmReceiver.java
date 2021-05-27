@@ -30,25 +30,25 @@ public class AlarmReceiver extends BroadcastReceiver {
         int alarmType = intent.getIntExtra("ALARM_TYPE", 0);
         if (alarmType != 0) {
             if (alarmType == 1) {
-                int horas = intent.getIntExtra("ALARM_HOUR", 0);
-                int minutos = intent.getIntExtra("ALARM_MINUTES", 0);
-                int[] dias = intent.getIntArrayExtra("ALARM_DAYS");
+                int hour = intent.getIntExtra("ALARM_HOUR", 0);
+                int min = intent.getIntExtra("ALARM_MINUTES", 0);
+                int[] days = intent.getIntArrayExtra("ALARM_DAYS");
 
                 Calendar calendar = Calendar.getInstance();
 
                 int weekDay = calendar.get(Calendar.DAY_OF_WEEK);
                 int daysIndex = weekDay - 1;
 
-                boolean isDiasEmpty = true;
+                boolean isDaysEmpty = true;
 
-                for (int i = 0; i < dias.length; i++) {
-                    if (dias[i] == 1) isDiasEmpty = false;
+                for (int i = 0; i < days.length; i++) {
+                    if (days[i] == 1)
+                        isDaysEmpty = false;
                 }
 
                 int year = calendar.get(Calendar.YEAR);
                 int month = calendar.get(Calendar.MONTH);
                 int day = calendar.get(Calendar.DAY_OF_MONTH);
-
 
                 Calendar nextNotifTime = Calendar.getInstance();
                 nextNotifTime.add(Calendar.MONTH, 1);
@@ -67,41 +67,42 @@ public class AlarmReceiver extends BroadcastReceiver {
                     day = day + 1;
                 }
 
-                calendar.set(year, month, day, horas, minutos, 0);
+                calendar.set(year, month, day, hour, min, 0);
 
                 AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
                 Intent newIntent = new Intent(context, AlarmReceiver.class);
                 newIntent.putExtra("NOTIFICATION_ID", notificationId);
                 newIntent.putExtra("ALARM_TYPE", alarmType);
-                newIntent.putExtra("ALARM_HOUR", horas);
-                newIntent.putExtra("ALARM_MINUTES", minutos);
-                newIntent.putExtra("ALARM_DAYS", dias);
+                newIntent.putExtra("ALARM_HOUR", hour);
+                newIntent.putExtra("ALARM_MINUTES", min);
+                newIntent.putExtra("ALARM_DAYS", days);
 
-                if (dias[daysIndex] == 1 || isDiasEmpty) {
+                if (days[daysIndex] == 1 || isDaysEmpty) {
                     createNotification(context, fullScreenIntent, notificationManagerCompat, notificationId);
                 }
 
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(context, notificationId, newIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(context, notificationId, newIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT);
                 alarmManager.setExactAndAllowWhileIdle(RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
 
             } else if (alarmType == 2) {
 
                 Calendar calendar = Calendar.getInstance();
 
-                int hora_inicio = intent.getIntExtra("ALARM_HOUR", 0);
-                int minuto_inicio = intent.getIntExtra("ALARM_MINUTES", 0);
-                int vezes_dia = intent.getIntExtra("ALARM_TIMES_DAY", 0);
-                int vezes_dia_faltante = intent.getIntExtra("ALARM_TIMES_DAY_MISSING", 0);
-                int periodo_hora = intent.getIntExtra("ALARM_PERIOD_HOUR", 0);
-                int periodo_minuto = intent.getIntExtra("ALARM_PERIOD_MINUTE", 0);
-                int hora_prox = intent.getIntExtra("ALARM_PERIOD_HOUR_NEXT", 0);
-                int minuto_prox = intent.getIntExtra("ALARM_PERIOD_MINUTE_NEXT", 0);
+                int hour_start = intent.getIntExtra("ALARM_HOUR", 0);
+                int min_start = intent.getIntExtra("ALARM_MINUTES", 0);
+                int times_day = intent.getIntExtra("ALARM_TIMES_DAY", 0);
+                int missing_day_times = intent.getIntExtra("ALARM_TIMES_DAY_MISSING", 0);
+                int period_hour = intent.getIntExtra("ALARM_PERIOD_HOUR", 0);
+                int period_min = intent.getIntExtra("ALARM_PERIOD_MINUTE", 0);
+                int hour_prox = intent.getIntExtra("ALARM_PERIOD_HOUR_NEXT", 0);
+                int min_prox = intent.getIntExtra("ALARM_PERIOD_MINUTE_NEXT", 0);
 
                 int year = calendar.get(Calendar.YEAR);
                 int month = calendar.get(Calendar.MONTH);
                 int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-                if (vezes_dia_faltante == 0) {
+                if (missing_day_times == 0) {
                     Calendar nextNotifTime = Calendar.getInstance();
                     nextNotifTime.add(Calendar.MONTH, 1);
                     nextNotifTime.set(Calendar.DATE, 1);
@@ -119,31 +120,32 @@ public class AlarmReceiver extends BroadcastReceiver {
                         day = day + 1;
                     }
 
-                    calendar.set(year, month, day, hora_inicio, minuto_inicio, 0);
-                    vezes_dia_faltante = vezes_dia;
+                    calendar.set(year, month, day, hour_start, min_start, 0);
+                    missing_day_times = times_day;
 
                     AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
                     Intent newIntent = new Intent(context, AlarmReceiver.class);
                     newIntent.putExtra("NOTIFICATION_ID", notificationId);
                     newIntent.putExtra("ALARM_TYPE", alarmType);
-                    newIntent.putExtra("ALARM_HOUR", hora_inicio);
-                    newIntent.putExtra("ALARM_MINUTES", minuto_inicio);
-                    newIntent.putExtra("ALARM_TIMES_DAY", vezes_dia);
-                    newIntent.putExtra("ALARM_TIMES_DAY_MISSING", vezes_dia_faltante);
-                    newIntent.putExtra("ALARM_PERIOD_HOUR", periodo_hora);
-                    newIntent.putExtra("ALARM_PERIOD_MINUTE", periodo_minuto);
-                    newIntent.putExtra("ALARM_PERIOD_HOUR_NEXT", periodo_hora);
-                    newIntent.putExtra("ALARM_PERIOD_MINUTE_NEXT", periodo_minuto);
+                    newIntent.putExtra("ALARM_HOUR", hour_start);
+                    newIntent.putExtra("ALARM_MINUTES", min_start);
+                    newIntent.putExtra("ALARM_TIMES_DAY", times_day);
+                    newIntent.putExtra("ALARM_TIMES_DAY_MISSING", missing_day_times);
+                    newIntent.putExtra("ALARM_PERIOD_HOUR", period_hour);
+                    newIntent.putExtra("ALARM_PERIOD_MINUTE", period_min);
+                    newIntent.putExtra("ALARM_PERIOD_HOUR_NEXT", period_hour);
+                    newIntent.putExtra("ALARM_PERIOD_MINUTE_NEXT", period_min);
 
-                    PendingIntent pendingIntent = PendingIntent.getBroadcast(context, notificationId, newIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(context, notificationId, newIntent,
+                            PendingIntent.FLAG_UPDATE_CURRENT);
                     alarmManager.setExactAndAllowWhileIdle(RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-                } else if (vezes_dia_faltante == vezes_dia) {
-                    if (minuto_inicio + periodo_minuto >= 60) {
-                        minuto_prox = (minuto_inicio + periodo_minuto) - 60;
+                } else if (missing_day_times == times_day) {
+                    if (min_start + period_min >= 60) {
+                        min_prox = (min_start + period_min) - 60;
 
-                        if (hora_inicio + periodo_hora + 1 >= 24) {
+                        if (hour_start + period_hour + 1 >= 24) {
 
-                            hora_prox = (hora_inicio + periodo_hora + 1) - 24;
+                            hour_prox = (hour_start + period_hour + 1) - 24;
                             day++;
 
                             if (day == Calendar.getInstance().get(Calendar.DAY_OF_MONTH)) {
@@ -159,14 +161,14 @@ public class AlarmReceiver extends BroadcastReceiver {
                             }
 
                         } else {
-                            hora_prox = hora_inicio + periodo_hora + 1;
+                            hour_prox = hour_start + period_hour + 1;
                         }
                     } else {
-                        minuto_prox = minuto_inicio + periodo_minuto;
+                        min_prox = min_start + period_min;
 
-                        if (hora_inicio + periodo_hora >= 24) {
+                        if (hour_start + period_hour >= 24) {
 
-                            hora_prox = (hora_inicio + periodo_hora) - 24;
+                            hour_prox = (hour_start + period_hour) - 24;
                             day++;
 
                             if (day == Calendar.getInstance().get(Calendar.DAY_OF_MONTH)) {
@@ -181,38 +183,39 @@ public class AlarmReceiver extends BroadcastReceiver {
                                 day = day + 1;
                             }
                         } else {
-                            hora_prox = hora_inicio + periodo_hora;
+                            hour_prox = hour_start + period_hour;
                         }
                     }
 
-                    calendar.set(year, month, day, hora_prox, minuto_prox, 0);
-                    vezes_dia_faltante--;
+                    calendar.set(year, month, day, hour_prox, min_prox, 0);
+                    missing_day_times--;
 
                     AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
                     Intent newIntent = new Intent(context, AlarmReceiver.class);
                     newIntent.putExtra("NOTIFICATION_ID", notificationId);
                     newIntent.putExtra("ALARM_TYPE", alarmType);
-                    newIntent.putExtra("ALARM_HOUR", hora_inicio);
-                    newIntent.putExtra("ALARM_MINUTES", minuto_inicio);
-                    newIntent.putExtra("ALARM_TIMES_DAY", vezes_dia);
-                    newIntent.putExtra("ALARM_TIMES_DAY_MISSING", vezes_dia_faltante);
-                    newIntent.putExtra("ALARM_PERIOD_HOUR", periodo_hora);
-                    newIntent.putExtra("ALARM_PERIOD_MINUTE", periodo_minuto);
-                    newIntent.putExtra("ALARM_PERIOD_HOUR_NEXT", hora_prox);
-                    newIntent.putExtra("ALARM_PERIOD_MINUTE_NEXT", minuto_prox);
+                    newIntent.putExtra("ALARM_HOUR", hour_start);
+                    newIntent.putExtra("ALARM_MINUTES", min_start);
+                    newIntent.putExtra("ALARM_TIMES_DAY", times_day);
+                    newIntent.putExtra("ALARM_TIMES_DAY_MISSING", missing_day_times);
+                    newIntent.putExtra("ALARM_PERIOD_HOUR", period_hour);
+                    newIntent.putExtra("ALARM_PERIOD_MINUTE", period_min);
+                    newIntent.putExtra("ALARM_PERIOD_HOUR_NEXT", hour_prox);
+                    newIntent.putExtra("ALARM_PERIOD_MINUTE_NEXT", min_prox);
 
-                    PendingIntent pendingIntent = PendingIntent.getBroadcast(context, notificationId, newIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(context, notificationId, newIntent,
+                            PendingIntent.FLAG_UPDATE_CURRENT);
                     alarmManager.setExactAndAllowWhileIdle(RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
                 } else {
                     int next_minute;
                     int next_hour;
 
-                    if (minuto_prox + periodo_minuto >= 60) {
-                        next_minute = (minuto_prox + periodo_minuto) - 60;
+                    if (min_prox + period_min >= 60) {
+                        next_minute = (min_prox + period_min) - 60;
 
-                        if (hora_prox + periodo_hora + 1 >= 24) {
+                        if (hour_prox + period_hour + 1 >= 24) {
 
-                            next_hour = (hora_prox + periodo_hora + 1) - 24;
+                            next_hour = (hour_prox + period_hour + 1) - 24;
                             day++;
 
                             if (day == Calendar.getInstance().get(Calendar.DAY_OF_MONTH)) {
@@ -228,14 +231,14 @@ public class AlarmReceiver extends BroadcastReceiver {
                             }
 
                         } else {
-                            next_hour = hora_prox + periodo_hora + 1;
+                            next_hour = hour_prox + period_hour + 1;
                         }
                     } else {
-                        next_minute = minuto_prox + periodo_minuto;
+                        next_minute = min_prox + period_min;
 
-                        if (hora_prox + periodo_hora >= 24) {
+                        if (hour_prox + period_hour >= 24) {
 
-                            next_hour = (hora_prox + periodo_hora) - 24;
+                            next_hour = (hour_prox + period_hour) - 24;
                             day++;
 
                             if (day == Calendar.getInstance().get(Calendar.DAY_OF_MONTH)) {
@@ -250,27 +253,28 @@ public class AlarmReceiver extends BroadcastReceiver {
                                 day = day + 1;
                             }
                         } else {
-                            next_hour = hora_prox + periodo_hora;
+                            next_hour = hour_prox + period_hour;
                         }
                     }
 
                     calendar.set(year, month, day, next_hour, next_minute, 0);
-                    vezes_dia_faltante--;
+                    missing_day_times--;
 
                     AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
                     Intent newIntent = new Intent(context, AlarmReceiver.class);
                     newIntent.putExtra("NOTIFICATION_ID", notificationId);
                     newIntent.putExtra("ALARM_TYPE", alarmType);
-                    newIntent.putExtra("ALARM_HOUR", hora_inicio);
-                    newIntent.putExtra("ALARM_MINUTES", minuto_inicio);
-                    newIntent.putExtra("ALARM_TIMES_DAY", vezes_dia);
-                    newIntent.putExtra("ALARM_TIMES_DAY_MISSING", vezes_dia_faltante);
-                    newIntent.putExtra("ALARM_PERIOD_HOUR", periodo_hora);
-                    newIntent.putExtra("ALARM_PERIOD_MINUTE", periodo_minuto);
+                    newIntent.putExtra("ALARM_HOUR", hour_start);
+                    newIntent.putExtra("ALARM_MINUTES", min_start);
+                    newIntent.putExtra("ALARM_TIMES_DAY", times_day);
+                    newIntent.putExtra("ALARM_TIMES_DAY_MISSING", missing_day_times);
+                    newIntent.putExtra("ALARM_PERIOD_HOUR", period_hour);
+                    newIntent.putExtra("ALARM_PERIOD_MINUTE", period_min);
                     newIntent.putExtra("ALARM_PERIOD_HOUR_NEXT", next_hour);
                     newIntent.putExtra("ALARM_PERIOD_MINUTE_NEXT", next_minute);
 
-                    PendingIntent pendingIntent = PendingIntent.getBroadcast(context, notificationId, newIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(context, notificationId, newIntent,
+                            PendingIntent.FLAG_UPDATE_CURRENT);
                     alarmManager.setExactAndAllowWhileIdle(RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
                 }
 
@@ -279,19 +283,17 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
     }
 
-    private void createNotification(Context context, Intent fullScreenIntent, NotificationManagerCompat notificationManagerCompat, int notificationId) {
-        PendingIntent fullScreenPendingIntent = PendingIntent.getActivity(context, 0,
-                fullScreenIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+    private void createNotification(Context context, Intent fullScreenIntent,
+            NotificationManagerCompat notificationManagerCompat, int notificationId) {
+        PendingIntent fullScreenPendingIntent = PendingIntent.getActivity(context, 0, fullScreenIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
 
         Notification notification = new NotificationCompat.Builder(context, CHANNEL_ID)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle(context.getString(R.string.notification_title))
+                .setSmallIcon(R.mipmap.ic_launcher).setContentTitle(context.getString(R.string.notification_title))
                 .setContentText(context.getString(R.string.notification_text))
-                .setPriority(NotificationCompat.PRIORITY_MAX)
-                .setCategory(NotificationCompat.CATEGORY_ALARM)
-                .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000})
-                .setFullScreenIntent(fullScreenPendingIntent, true)
-                .build();
+                .setPriority(NotificationCompat.PRIORITY_MAX).setCategory(NotificationCompat.CATEGORY_ALARM)
+                .setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 })
+                .setFullScreenIntent(fullScreenPendingIntent, true).build();
 
         notificationManagerCompat.notify(notificationId, notification);
     }

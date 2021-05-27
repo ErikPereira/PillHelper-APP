@@ -81,7 +81,8 @@ public class RegisterAlarmActivity extends AppCompatActivity {
         binding.backButtonRegisterMedicine.setOnClickListener(v -> finish());
 
         binding.nextButtonRegisterMedicine.setOnClickListener(v -> {
-            Class activity = binding.radioButtonRegisterMedicineFixtime.isChecked() ? FixedAlarmActivity.class : binding.radioButtonRegisterMedicineInterval.isChecked() ? IntervalAlarmActivity.class : null;
+            Class activity = binding.radioButtonRegisterMedicineFixtime.isChecked() ? FixedAlarmActivity.class
+                    : binding.radioButtonRegisterMedicineInterval.isChecked() ? IntervalAlarmActivity.class : null;
 
             if (activity != null) {
                 callActivity(activity);
@@ -121,17 +122,17 @@ public class RegisterAlarmActivity extends AppCompatActivity {
     }
 
     private void callActivity(Class activity) {
-        String nome = binding.nameInfMedicine.getText().toString();
-        boolean isLuminosoChecked = binding.luminosoCheckbox.isChecked();
-        boolean isSonoroChecked = binding.sonoroCheckbox.isChecked();
+        String name = binding.nameInfMedicine.getText().toString();
+        boolean isLuminousChecked = binding.luminosoCheckbox.isChecked();
+        boolean isSoundChecked = binding.sonoroCheckbox.isChecked();
 
         if (binding.radioButtonMedicineTypePill.isChecked()) {
-            String quantidade = binding.infQuantity.getText().toString();
-            String quantidadeCaixa = binding.infBoxQuantity.getText().toString();
-            String posicaoCaixa = binding.infBoxPosition.getText().toString();
+            String qtd = binding.infQuantity.getText().toString();
+            String qtdBox = binding.infBoxQuantity.getText().toString();
+            String posBox = binding.infBoxPosition.getText().toString();
 
-            if (quantidade.length() < 10 && quantidadeCaixa.length() < 10) {
-                if (!nome.isEmpty() && !quantidade.isEmpty() && !quantidadeCaixa.isEmpty() && !posicaoCaixa.isEmpty()) {
+            if (qtd.length() < 10 && qtdBox.length() < 10) {
+                if (!name.isEmpty() && !qtd.isEmpty() && !qtdBox.isEmpty() && !posBox.isEmpty()) {
                     Intent intent = new Intent(this, activity);
                     if (isEdit) {
                         intent.putExtra("IS_EDIT", true);
@@ -141,13 +142,13 @@ public class RegisterAlarmActivity extends AppCompatActivity {
                     }
 
                     intent.putExtra("MEDICINE_TYPE", 1);
-                    intent.putExtra("MEDICINE_QUANTITY", Integer.parseInt(quantidade));
-                    intent.putExtra("MEDICINE_BOX_QUANTITY", Integer.parseInt(quantidadeCaixa));
-                    intent.putExtra("MEDICINE_NAME", nome);
+                    intent.putExtra("MEDICINE_QUANTITY", Integer.parseInt(qtd));
+                    intent.putExtra("MEDICINE_BOX_QUANTITY", Integer.parseInt(qtdBox));
+                    intent.putExtra("MEDICINE_NAME", name);
                     intent.putExtra("NOTIFICATION_ID", validNotificationId);
-                    intent.putExtra("LUMINOSO", isLuminosoChecked ? 1 : 0);
-                    intent.putExtra("SONORO", isSonoroChecked ? 1 : 0);
-                    intent.putExtra("BOX_POSITION", Integer.parseInt(posicaoCaixa));
+                    intent.putExtra("LUMINOSO", isLuminousChecked ? 1 : 0);
+                    intent.putExtra("SONORO", isSoundChecked ? 1 : 0);
+                    intent.putExtra("BOX_POSITION", Integer.parseInt(posBox));
                     startActivity(intent);
                 } else {
                     Toast.makeText(this, "Preencha todos os campos", Toast.LENGTH_SHORT).show();
@@ -156,10 +157,10 @@ public class RegisterAlarmActivity extends AppCompatActivity {
                 Toast.makeText(this, "Número muito grande", Toast.LENGTH_SHORT).show();
             }
         } else if (binding.radioButtonMedicineTypeLiquid.isChecked()) {
-            String dosagem = binding.infDosage.getText().toString();
+            String dosage = binding.infDosage.getText().toString();
 
-            if (dosagem.length() < 10) {
-                if (!nome.isEmpty() && !dosagem.isEmpty()) {
+            if (dosage.length() < 10) {
+                if (!name.isEmpty() && !dosage.isEmpty()) {
                     Intent intent = new Intent(this, activity);
                     if (isEdit) {
                         intent.putExtra("IS_EDIT", true);
@@ -169,11 +170,11 @@ public class RegisterAlarmActivity extends AppCompatActivity {
                     }
 
                     intent.putExtra("MEDICINE_TYPE", 2);
-                    intent.putExtra("MEDICINE_NAME", nome);
-                    intent.putExtra("MEDICINE_DOSAGE", Integer.parseInt(dosagem));
+                    intent.putExtra("MEDICINE_NAME", name);
+                    intent.putExtra("MEDICINE_DOSAGE", Integer.parseInt(dosage));
                     intent.putExtra("NOTIFICATION_ID", validNotificationId);
-                    intent.putExtra("LUMINOSO", isLuminosoChecked ? 1 : 0);
-                    intent.putExtra("SONORO", isSonoroChecked ? 1 : 0);
+                    intent.putExtra("LUMINOSO", isLuminousChecked ? 1 : 0);
+                    intent.putExtra("SONORO", isSoundChecked ? 1 : 0);
                     startActivity(intent);
                 } else {
                     Toast.makeText(this, "Preencha todos os campos", Toast.LENGTH_SHORT).show();
@@ -229,9 +230,11 @@ public class RegisterAlarmActivity extends AppCompatActivity {
                         isInvalid = true;
                     }
 
-                    if (data.isLast() && isInvalid) isInvalid = false;
+                    if (data.isLast() && isInvalid)
+                        isInvalid = false;
                 } while (data.moveToNext());
-            } else isInvalid = false;
+            } else
+                isInvalid = false;
         }
 
         return randomNumber;

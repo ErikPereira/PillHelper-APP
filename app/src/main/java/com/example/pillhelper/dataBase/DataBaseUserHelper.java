@@ -13,7 +13,7 @@ public class DataBaseUserHelper extends SQLiteOpenHelper {
     private static final String TABLE_NAME = "users_table";
     private static final String COL0 = "ID";
     private static final String COL1 = "type";
-    private static final String COL2 = "phone";
+    private static final String COL2 = "cell";
     private static final String COL3 = "email";
     private static final String COL4 = "password";
 
@@ -23,12 +23,8 @@ public class DataBaseUserHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createTable = "CREATE TABLE " + TABLE_NAME + " (" +
-                COL0 + " INTEGER PRIMARY KEY," +
-                COL1 + " INTEGER," +
-                COL2 + " TEXT," +
-                COL3 + " TEXT," +
-                COL4 + " TEXT)";
+        String createTable = "CREATE TABLE " + TABLE_NAME + " (" + COL0 + " INTEGER PRIMARY KEY," + COL1 + " INTEGER,"
+                + COL2 + " TEXT," + COL3 + " TEXT," + COL4 + " TEXT)";
 
         db.execSQL(createTable);
     }
@@ -39,16 +35,16 @@ public class DataBaseUserHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean addData(int tipo, String email, String fone, String senha) {
+    public boolean addData(int type, String email, String cell, String password) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COL1, tipo);
-        if (tipo == 1) {
+        contentValues.put(COL1, type);
+        if (type == 1) {
             contentValues.put(COL3, email);
         } else {
-            contentValues.put(COL2, fone);
+            contentValues.put(COL2, cell);
         }
-        contentValues.put(COL4, senha);
+        contentValues.put(COL4, password);
 
         long result = db.insert(TABLE_NAME, null, contentValues);
 

@@ -104,7 +104,8 @@ public class LoginActivity extends AppCompatActivity {
         binding.loginButton.setOnClickListener(v -> login());
         binding.backButton.setOnClickListener(v -> finish());
 
-        binding.phoneEditText.addTextChangedListener(MaskEditUtil.mask(binding.phoneEditText, MaskEditUtil.FORMAT_FONE));
+        binding.phoneEditText
+                .addTextChangedListener(MaskEditUtil.mask(binding.phoneEditText, MaskEditUtil.FORMAT_FONE));
     }
 
     private void checkSharedPref() {
@@ -147,30 +148,28 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void createPost(String mainString, String senha, String tipo) {
+    private void createPost(String mainString, String password, String tipo) {
 
         binding.progressBar.setVisibility(View.VISIBLE);
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         JsonPlaceHolderApi jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
 
         String email = "";
-        String celular = "";
+        String cell = "";
 
         if (tipo.equals("1")) {
             email = mainString;
         } else if (tipo.equals("2")) {
-            celular = mainString;
+            cell = mainString;
         }
 
         Map<String, String> fields = new HashMap<>();
         fields.put("email", email);
-        fields.put("cell", celular);
-        fields.put("password", senha);
+        fields.put("cell", cell);
+        fields.put("password", password);
 
         Call<JsonObject> call = jsonPlaceHolderApi.postLogin(Constants.TOKEN_ACCESS, fields);
 
@@ -198,7 +197,7 @@ public class LoginActivity extends AppCompatActivity {
                         mEditor.putString(getString(R.string.mainValueKey), mainString);
                         mEditor.commit();
 
-                        mEditor.putString(getString(R.string.passwordKey), senha);
+                        mEditor.putString(getString(R.string.passwordKey), password);
                         mEditor.commit();
 
                         mEditor.putString(getString(R.string.loginTypeKey), loginType);
@@ -232,13 +231,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loadDataBase() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         JsonPlaceHolderApi jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
-        Call<JsonObject> call = jsonPlaceHolderApi.postUserData(Constants.TOKEN_ACCESS, UserIdSingleton.getInstance().getUserId());
+        Call<JsonObject> call = jsonPlaceHolderApi.postUserData(Constants.TOKEN_ACCESS,
+                UserIdSingleton.getInstance().getUserId());
 
         call.enqueue(new Callback<JsonObject>() {
             @Override
@@ -265,34 +263,24 @@ public class LoginActivity extends AppCompatActivity {
                         JsonElement jsonElement = alarmsArray.get(i);
                         JsonObject jsonAlarm = jsonElement.getAsJsonObject();
 
-                        int[] dias = new int[7];
-                        dias[0] = jsonAlarm.get(DOMINGO).getAsInt();
-                        dias[1] = jsonAlarm.get(SEGUNDA).getAsInt();
-                        dias[2] = jsonAlarm.get(TERCA).getAsInt();
-                        dias[3] = jsonAlarm.get(QUARTA).getAsInt();
-                        dias[4] = jsonAlarm.get(QUINTA).getAsInt();
-                        dias[5] = jsonAlarm.get(SEXTA).getAsInt();
-                        dias[6] = jsonAlarm.get(SABADO).getAsInt();
+                        int[] days = new int[7];
+                        days[0] = jsonAlarm.get(DOMINGO).getAsInt();
+                        days[1] = jsonAlarm.get(SEGUNDA).getAsInt();
+                        days[2] = jsonAlarm.get(TERCA).getAsInt();
+                        days[3] = jsonAlarm.get(QUARTA).getAsInt();
+                        days[4] = jsonAlarm.get(QUINTA).getAsInt();
+                        days[5] = jsonAlarm.get(SEXTA).getAsInt();
+                        days[6] = jsonAlarm.get(SABADO).getAsInt();
 
-                        mDataBaseAlarmsHelper.addData(
-                                jsonAlarm.get(ID_ALARME).getAsString(),
-                                jsonAlarm.get(ALARM_TYPE).getAsInt(),
-                                jsonAlarm.get(MEDICINE_TYPE).getAsInt(),
-                                jsonAlarm.get(ATIVO).getAsInt(),
-                                jsonAlarm.get(NOME_REMEDIO).getAsString(),
-                                jsonAlarm.get(DOSAGEM).getAsInt(),
-                                jsonAlarm.get(QUANTIDADE).getAsInt(),
-                                jsonAlarm.get(QUANTIDADE_BOX).getAsInt(),
-                                jsonAlarm.get(HORA).getAsInt(),
-                                jsonAlarm.get(MINUTO).getAsInt(),
-                                dias,
-                                jsonAlarm.get(VEZES_DIA).getAsInt(),
-                                jsonAlarm.get(PERIODO_HORA).getAsInt(),
-                                jsonAlarm.get(PERIODO_MIN).getAsInt(),
-                                jsonAlarm.get(NOTIFICATION_ID).getAsInt(),
-                                jsonAlarm.get(LUMINOSO).getAsInt(),
-                                jsonAlarm.get(SONORO).getAsInt(),
-                                jsonAlarm.get(BOX_POSITION).getAsInt());
+                        mDataBaseAlarmsHelper.addData(jsonAlarm.get(ID_ALARME).getAsString(),
+                                jsonAlarm.get(ALARM_TYPE).getAsInt(), jsonAlarm.get(MEDICINE_TYPE).getAsInt(),
+                                jsonAlarm.get(ATIVO).getAsInt(), jsonAlarm.get(NOME_REMEDIO).getAsString(),
+                                jsonAlarm.get(DOSAGEM).getAsInt(), jsonAlarm.get(QUANTIDADE).getAsInt(),
+                                jsonAlarm.get(QUANTIDADE_BOX).getAsInt(), jsonAlarm.get(HORA).getAsInt(),
+                                jsonAlarm.get(MINUTO).getAsInt(), days, jsonAlarm.get(VEZES_DIA).getAsInt(),
+                                jsonAlarm.get(PERIODO_HORA).getAsInt(), jsonAlarm.get(PERIODO_MIN).getAsInt(),
+                                jsonAlarm.get(NOTIFICATION_ID).getAsInt(), jsonAlarm.get(LUMINOSO).getAsInt(),
+                                jsonAlarm.get(SONORO).getAsInt(), jsonAlarm.get(BOX_POSITION).getAsInt());
                     }
                 }
 
@@ -303,8 +291,7 @@ public class LoginActivity extends AppCompatActivity {
                         JsonElement jsonElement = boxArray.get(i);
                         JsonObject jsonBox = jsonElement.getAsJsonObject();
 
-                        mDataBaseBoxHelper.addData(
-                                jsonBox.get(ID_CAIXA).getAsString(),
+                        mDataBaseBoxHelper.addData(jsonBox.get(ID_CAIXA).getAsString(),
                                 jsonBox.get(NOME_CAIXA).getAsString());
                     }
                 }

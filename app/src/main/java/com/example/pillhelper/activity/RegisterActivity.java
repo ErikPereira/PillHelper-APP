@@ -43,7 +43,8 @@ public class RegisterActivity extends AppCompatActivity {
 
         mDataBaseUserHelper = new DataBaseUserHelper(this);
 
-        binding.telephoneLayout.addTextChangedListener(MaskEditUtil.mask(binding.telephoneLayout, MaskEditUtil.FORMAT_FONE));
+        binding.telephoneLayout
+                .addTextChangedListener(MaskEditUtil.mask(binding.telephoneLayout, MaskEditUtil.FORMAT_FONE));
 
         binding.registerButtonConfirm.setOnClickListener(v -> addDataDB());
         binding.backButton.setOnClickListener(v -> finish());
@@ -62,43 +63,42 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void addDataDB() {
-        String fone = MaskEditUtil.unmask(binding.telephoneLayout.getText().toString());
+        String cell = MaskEditUtil.unmask(binding.telephoneLayout.getText().toString());
         String email = binding.emailLayout.getText().toString();
-        String senha = binding.senhaLayout.getText().toString();
-        int tipo = 0; //1 = login por email  2 = login por telefone
+        String password = binding.senhaLayout.getText().toString();
+        int type = 0; // 1 = login por email 2 = login por telefone
 
         if (binding.emailRadioButton.isChecked()) {
-            if (email.isEmpty() || senha.isEmpty()) {
+            if (email.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "Dados incompletos", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            tipo = 1;
+            type = 1;
         } else if (binding.telefoneRadioButton.isChecked()) {
-            if (fone.isEmpty() || senha.isEmpty()) {
+            if (cell.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "Dados incompletos", Toast.LENGTH_SHORT).show();
                 return;
             }
-            //verifica se a string do telefone possui somente numeros
-            if (!fone.matches("\\d+") || fone.length() != 11) return;
+            // verifica se a string do telefone possui somente numeros
+            if (!cell.matches("\\d+") || cell.length() != 11)
+                return;
 
-            tipo = 2;
+            type = 2;
         }
 
-        createPost(email, senha, fone);
+        createPost(email, password, cell);
     }
 
-    private void createPost(String email, String senha, String celular) {
+    private void createPost(String email, String password, String cell) {
         binding.progressBar.setVisibility(View.VISIBLE);
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
 
-        String requestStr = formatJSON(email, senha, celular);
+        String requestStr = formatJSON(email, password, cell);
         JsonObject request = JsonParser.parseString(requestStr).getAsJsonObject();
 
         Call<JsonObject> call = jsonPlaceHolderApi.postCreateUser(Constants.TOKEN_ACCESS, request);
@@ -126,15 +126,15 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    private String formatJSON(String email, String senha, String celular) {
+    private String formatJSON(String email, String password, String cell) {
         final JSONObject root = new JSONObject();
 
         try {
             JSONObject login = new JSONObject();
 
             login.put("email", email);
-            login.put("cell", celular);
-            login.put("password", senha);
+            login.put("cell", cell);
+            login.put("password", password);
 
             root.put("login", login);
 

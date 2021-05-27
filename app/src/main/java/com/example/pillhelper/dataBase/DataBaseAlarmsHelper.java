@@ -37,9 +37,9 @@ public class DataBaseAlarmsHelper extends SQLiteOpenHelper {
 
     private static final String TABLE_NAME = "alarms_table";
     private static final String COL0 = ID_ALARME;
-    private static final String COL1 = ALARM_TYPE;//1 == fixo 2 == intervalo
-    private static final String COL2 = MEDICINE_TYPE;//1 == pilula 2 == liquid
-    private static final String COL3 = ATIVO;// 1 == ativo 0 == inativo
+    private static final String COL1 = ALARM_TYPE;// 1 == fixo 2 == intervalo
+    private static final String COL2 = MEDICINE_TYPE;// 1 == pilula 2 == liquid
+    private static final String COL3 = ATIVO;// 1 == active 0 == inativo
     private static final String COL4 = NOME_REMEDIO;
     private static final String COL5 = DOSAGEM;
     private static final String COL6 = QUANTIDADE;
@@ -67,31 +67,12 @@ public class DataBaseAlarmsHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createTable = "CREATE TABLE " + TABLE_NAME + " (" +
-                COL0 + " TEXT PRIMARY KEY," +
-                COL1 + " INTEGER," +
-                COL2 + " INTEGER," +
-                COL3 + " INTEGER," +
-                COL4 + " TEXT," +
-                COL5 + " INTEGER," +
-                COL6 + " INTEGER," +
-                COL7 + " INTEGER," +
-                COL8 + " INTEGER," +
-                COL9 + " INTEGER," +
-                COL10 + " INTEGER," +
-                COL11 + " INTEGER," +
-                COL12 + " INTEGER," +
-                COL13 + " INTEGER," +
-                COL14 + " INTEGER," +
-                COL15 + " INTEGER," +
-                COL16 + " INTEGER," +
-                COL17 + " INTEGER," +
-                COL18 + " INTEGER," +
-                COL19 + " INTEGER," +
-                COL20 + " INTEGER," +
-                COL21 + " INTEGER," +
-                COL22 + " INTEGER," +
-                COL23 + " INTEGER)";
+        String createTable = "CREATE TABLE " + TABLE_NAME + " (" + COL0 + " TEXT PRIMARY KEY," + COL1 + " INTEGER,"
+                + COL2 + " INTEGER," + COL3 + " INTEGER," + COL4 + " TEXT," + COL5 + " INTEGER," + COL6 + " INTEGER,"
+                + COL7 + " INTEGER," + COL8 + " INTEGER," + COL9 + " INTEGER," + COL10 + " INTEGER," + COL11
+                + " INTEGER," + COL12 + " INTEGER," + COL13 + " INTEGER," + COL14 + " INTEGER," + COL15 + " INTEGER,"
+                + COL16 + " INTEGER," + COL17 + " INTEGER," + COL18 + " INTEGER," + COL19 + " INTEGER," + COL20
+                + " INTEGER," + COL21 + " INTEGER," + COL22 + " INTEGER," + COL23 + " INTEGER)";
 
         db.execSQL(createTable);
     }
@@ -108,83 +89,77 @@ public class DataBaseAlarmsHelper extends SQLiteOpenHelper {
         return db.rawQuery(query, null);
     }
 
-    public boolean addData(String uuidAlarm, int alarmType, int medicineType,
-                           int ativo, String nome, int dosagem,
-                           int quantidade, int quantidadeBox,
-                           int hora, int minuto, int[] dias, int vezes_dia,
-                           int periodo_hora, int periodo_minuto, int notificationId,
-                           int luminoso, int sonoro, int pos_caixa) {
+    public boolean addData(String uuidAlarm, int alarmType, int medicineType, int active, String name, int dosage,
+            int qtd, int qtdBox, int hour, int min, int[] days, int times_day, int period_hour, int period_min,
+            int notificationId, int luminous, int sound, int posBox) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL0, uuidAlarm);
         contentValues.put(COL1, alarmType);
         contentValues.put(COL2, medicineType);
-        contentValues.put(COL3, ativo);
-        contentValues.put(COL4, nome);
-        contentValues.put(COL5, dosagem);
-        contentValues.put(COL6, quantidade);
-        contentValues.put(COL7, quantidadeBox);
-        contentValues.put(COL8, hora);
-        contentValues.put(COL9, minuto);
-        contentValues.put(COL10, dias[0]);
-        contentValues.put(COL11, dias[1]);
-        contentValues.put(COL12, dias[2]);
-        contentValues.put(COL13, dias[3]);
-        contentValues.put(COL14, dias[4]);
-        contentValues.put(COL15, dias[5]);
-        contentValues.put(COL16, dias[6]);
-        contentValues.put(COL17, vezes_dia);
-        contentValues.put(COL18, periodo_hora);
-        contentValues.put(COL19, periodo_minuto);
+        contentValues.put(COL3, active);
+        contentValues.put(COL4, name);
+        contentValues.put(COL5, dosage);
+        contentValues.put(COL6, qtd);
+        contentValues.put(COL7, qtdBox);
+        contentValues.put(COL8, hour);
+        contentValues.put(COL9, min);
+        contentValues.put(COL10, days[0]);
+        contentValues.put(COL11, days[1]);
+        contentValues.put(COL12, days[2]);
+        contentValues.put(COL13, days[3]);
+        contentValues.put(COL14, days[4]);
+        contentValues.put(COL15, days[5]);
+        contentValues.put(COL16, days[6]);
+        contentValues.put(COL17, times_day);
+        contentValues.put(COL18, period_hour);
+        contentValues.put(COL19, period_min);
         contentValues.put(COL20, notificationId);
-        contentValues.put(COL21, luminoso);
-        contentValues.put(COL22, sonoro);
-        contentValues.put(COL23, pos_caixa);
+        contentValues.put(COL21, luminous);
+        contentValues.put(COL22, sound);
+        contentValues.put(COL23, posBox);
 
         long result = db.insert(TABLE_NAME, null, contentValues);
 
         return result != -1;
     }
 
-    public boolean updateData(String uuidAlarm, int alarmType,
-                              int medicineType, int ativo,
-                              String nome, int dosagem, int quantidade,
-                              int quantidadeBox, int hora, int minuto, int[] dias,
-                              int vezes_dia, int periodo_hora, int periodo_minuto,
-                              int notificationId, int luminoso, int sonoro, int pos_caixa) {
+    public boolean updateData(String uuidAlarm, int alarmType, int medicineType, int active, String name, int dosage,
+            int qtd, int qtdBox, int hour, int min, int[] days, int times_day, int period_hour, int period_min,
+            int notificationId, int luminous, int sound, int posBox) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL0, uuidAlarm);
         contentValues.put(COL1, alarmType);
         contentValues.put(COL2, medicineType);
-        contentValues.put(COL3, ativo);
-        contentValues.put(COL4, nome);
-        contentValues.put(COL5, dosagem);
-        contentValues.put(COL6, quantidade);
-        contentValues.put(COL7, quantidadeBox);
-        contentValues.put(COL8, hora);
-        contentValues.put(COL9, minuto);
-        contentValues.put(COL10, dias[0]);
-        contentValues.put(COL11, dias[1]);
-        contentValues.put(COL12, dias[2]);
-        contentValues.put(COL13, dias[3]);
-        contentValues.put(COL14, dias[4]);
-        contentValues.put(COL15, dias[5]);
-        contentValues.put(COL16, dias[6]);
-        contentValues.put(COL17, vezes_dia);
-        contentValues.put(COL18, periodo_hora);
-        contentValues.put(COL19, periodo_minuto);
+        contentValues.put(COL3, active);
+        contentValues.put(COL4, name);
+        contentValues.put(COL5, dosage);
+        contentValues.put(COL6, qtd);
+        contentValues.put(COL7, qtdBox);
+        contentValues.put(COL8, hour);
+        contentValues.put(COL9, min);
+        contentValues.put(COL10, days[0]);
+        contentValues.put(COL11, days[1]);
+        contentValues.put(COL12, days[2]);
+        contentValues.put(COL13, days[3]);
+        contentValues.put(COL14, days[4]);
+        contentValues.put(COL15, days[5]);
+        contentValues.put(COL16, days[6]);
+        contentValues.put(COL17, times_day);
+        contentValues.put(COL18, period_hour);
+        contentValues.put(COL19, period_min);
         contentValues.put(COL20, notificationId);
-        contentValues.put(COL21, luminoso);
-        contentValues.put(COL22, sonoro);
-        contentValues.put(COL23, pos_caixa);
+        contentValues.put(COL21, luminous);
+        contentValues.put(COL22, sound);
+        contentValues.put(COL23, posBox);
 
-        db.update(TABLE_NAME, contentValues, "uuidAlarm = ?", new String[]{uuidAlarm});
+        db.update(TABLE_NAME, contentValues, "uuidAlarm = ?", new String[] { uuidAlarm });
         return true;
     }
 
     public Integer removeData(String uuidAlarm) {
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(TABLE_NAME, "uuidAlarm = ?", new String[]{uuidAlarm});
+        return db.delete(TABLE_NAME, "uuidAlarm = ?", new String[] { uuidAlarm });
     }
 }

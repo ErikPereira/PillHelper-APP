@@ -3,17 +3,17 @@ package com.example.pillhelper.item;
 public class AlarmItem {
     private String uuidAlarm;
     private int status;
-    private int hora;
-    private int minuto;
-    private String nome;
+    private int hour;
+    private int min;
+    private String name;
     private int notificationId;
 
-    public AlarmItem(String uuidAlarm, int status, String nome, int hora, int minuto, int notificationId) {
+    public AlarmItem(String uuidAlarm, int status, String name, int hour, int min, int notificationId) {
         this.uuidAlarm = uuidAlarm;
         this.status = status;
-        this.hora = hora;
-        this.minuto = minuto;
-        this.nome = nome;
+        this.hour = hour;
+        this.min = min;
+        this.name = name;
         this.notificationId = notificationId;
     }
 
@@ -25,24 +25,24 @@ public class AlarmItem {
         this.status = status;
     }
 
-    public int getHora() {
-        return hora;
+    public int getHours() {
+        return hour;
     }
 
-    public int getMinuto() {
-        return minuto;
+    public int getMin() {
+        return min;
     }
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
     public String getUuidAlarm() {
         return uuidAlarm;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getNotificationId() {

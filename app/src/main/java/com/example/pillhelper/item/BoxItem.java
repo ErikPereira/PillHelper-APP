@@ -2,15 +2,15 @@ package com.example.pillhelper.item;
 
 public class BoxItem {
     private String uuidBox;
-    private String nome;
+    private String name;
 
-    public BoxItem(String uuidBox, String nome) {
+    public BoxItem(String uuidBox, String name) {
         this.uuidBox = uuidBox;
-        this.nome = nome;
+        this.name = name;
     }
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
     public String getUuidBox() {

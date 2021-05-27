@@ -22,9 +22,7 @@ public class DataBaseBoxHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createTable = "CREATE TABLE " + TABLE_NAME + " (" +
-                COL0 + " TEXT PRIMARY KEY," +
-                COL1 + " TEXT)";
+        String createTable = "CREATE TABLE " + TABLE_NAME + " (" + COL0 + " TEXT PRIMARY KEY," + COL1 + " TEXT)";
 
         db.execSQL(createTable);
     }
@@ -35,11 +33,11 @@ public class DataBaseBoxHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean addData(String uuidBox, String nome) {
+    public boolean addData(String uuidBox, String name) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL0, uuidBox);
-        contentValues.put(COL1, nome);
+        contentValues.put(COL1, name);
 
         long result = db.insert(TABLE_NAME, null, contentValues);
 
@@ -52,18 +50,18 @@ public class DataBaseBoxHelper extends SQLiteOpenHelper {
         return db.rawQuery(query, null);
     }
 
-    public boolean updateData(String uuidBox, String nome) {
+    public boolean updateData(String uuidBox, String name) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL0, uuidBox);
-        contentValues.put(COL1, nome);
+        contentValues.put(COL1, name);
 
-        db.update(TABLE_NAME, contentValues, "uuidBox = ?", new String[]{uuidBox});
+        db.update(TABLE_NAME, contentValues, "uuidBox = ?", new String[] { uuidBox });
         return true;
     }
 
     public Integer removeData(String uuidBox) {
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(TABLE_NAME, "uuidBox = ?", new String[]{uuidBox});
+        return db.delete(TABLE_NAME, "uuidBox = ?", new String[] { uuidBox });
     }
 }

@@ -29,7 +29,8 @@ public class FragmentAlarms extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
 
         binding = FragmentAlarmsBinding.inflate(getLayoutInflater());
         mDataBaseAlarmsHelper = new DataBaseAlarmsHelper(getActivity());
@@ -40,14 +41,14 @@ public class FragmentAlarms extends Fragment {
         while (data.moveToNext()) {
             String uuidAlarm = data.getString(0);
             int status = data.getInt(3);
-            String nome = data.getString(4);
-            int horas = data.getInt(8);
-            int minutos = data.getInt(9);
+            String name = data.getString(4);
+            int hours = data.getInt(8);
+            int min = data.getInt(9);
             int notificationId = data.getInt(20);
 
-            AlarmItem alarme;
-            alarme = new AlarmItem(uuidAlarm, status, nome, horas, minutos, notificationId);
-            alarmes.add(alarme);
+            AlarmItem alarm;
+            alarm = new AlarmItem(uuidAlarm, status, name, hours, min, notificationId);
+            alarmes.add(alarm);
         }
 
         AlarmListAdapter adapter = new AlarmListAdapter(getContext(), R.layout.alarms_list_item, alarmes);
@@ -64,8 +65,8 @@ public class FragmentAlarms extends Fragment {
             Intent intent = new Intent(getContext(), AllMedicinesActivity.class);
             ArrayList<String> listaNomeMedicamentos = new ArrayList<>();
 
-            for (AlarmItem alarme : alarmes) {
-                listaNomeMedicamentos.add(alarme.getNome());
+            for (AlarmItem alarm : alarmes) {
+                listaNomeMedicamentos.add(alarm.getName());
             }
 
             intent.putStringArrayListExtra("MEDICINE_NAME_LIST", listaNomeMedicamentos);

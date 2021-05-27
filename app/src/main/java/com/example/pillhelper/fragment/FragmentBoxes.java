@@ -25,7 +25,8 @@ public class FragmentBoxes extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
 
         binding = FragmentBoxesBinding.inflate(getLayoutInflater());
 
@@ -36,9 +37,9 @@ public class FragmentBoxes extends Fragment {
 
         while (data.moveToNext()) {
             String uuidBox = data.getString(0);
-            String nome = data.getString(1);
+            String name = data.getString(1);
 
-            BoxItem box = new BoxItem(uuidBox, nome);
+            BoxItem box = new BoxItem(uuidBox, name);
             caixas.add(box);
         }
 

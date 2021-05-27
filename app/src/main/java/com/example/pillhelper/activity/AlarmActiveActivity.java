@@ -38,8 +38,8 @@ public class AlarmActiveActivity extends AppCompatActivity {
         if (intCurrentMinute < 10) strCurrentMinute = "0" + intCurrentMinute;
         else strCurrentMinute = String.valueOf(intCurrentMinute);
 
-        String horario = strCurrentHour + ":" + strCurrentMinute;
-        binding.scheduleAlarm.setText(horario);
+        String time = strCurrentHour + ":" + strCurrentMinute;
+        binding.scheduleAlarm.setText(time);
 
         mediaPlayer = MediaPlayer.create(this, Settings.System.DEFAULT_RINGTONE_URI);
         mediaPlayer.start();
