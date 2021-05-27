@@ -16,32 +16,32 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.example.pillhelper.ActivityAlarmeAtivo" />
-        <activity android:name="com.example.pillhelper.IntervaloHorarioActivity" />
-        <activity android:name="com.example.pillhelper.HorarioFixActivity" />
-        <activity android:name="com.example.pillhelper.CadastrarAlarmeActivity" />
+        <activity android:name="com.example.pillhelper.activity.AlarmActiveActivity" />
+        <activity android:name="com.example.pillhelper.activity.IntervalAlarmActivity" />
+        <activity android:name="com.example.pillhelper.activity.FixedAlarmActivity" />
+        <activity android:name="com.example.pillhelper.activity.RegisterAlarmActivity" />
         <activity
-            android:name="com.example.pillhelper.FragmentsActivity"
-            android:parentActivityName="com.example.pillhelper.MainActivity" />
-        <activity android:name="com.example.pillhelper.MainActivity">
+            android:name="com.example.pillhelper.activity.FragmentsActivity"
+            android:parentActivityName="com.example.pillhelper.activity.MainActivity" />
+        <activity android:name="com.example.pillhelper.activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.example.pillhelper.CadastroActivity" />
-        <activity android:name="com.example.pillhelper.LoginActivity" />
-        <activity android:name="com.example.pillhelper.TimePickerActivity" />
+        <activity android:name="com.example.pillhelper.activity.RegisterActivity" />
+        <activity android:name="com.example.pillhelper.activity.LoginActivity" />
+        <activity android:name="com.example.pillhelper.activity.TimePickerActivity" />
         <activity
-            android:name="com.example.pillhelper.AllMedicinesActivity"
-            android:parentActivityName="com.example.pillhelper.FragmentsActivity" />
+            android:name="com.example.pillhelper.activity.AllMedicinesActivity"
+            android:parentActivityName="com.example.pillhelper.activity.FragmentsActivity" />
         <activity
-            android:name="com.example.pillhelper.CadastrarCaixaActivity"
-            android:parentActivityName="com.example.pillhelper.FragmentsActivity" />
+            android:name="com.example.pillhelper.activity.RegisterBoxActivity"
+            android:parentActivityName="com.example.pillhelper.activity.FragmentsActivity" />
 
         <receiver
-            android:name="com.example.pillhelper.AlarmeReceiver"
+            android:name="com.example.pillhelper.receiver.AlarmReceiver"
             android:enabled="true"
             android:exported="true"
             android:permission="TODO" />
