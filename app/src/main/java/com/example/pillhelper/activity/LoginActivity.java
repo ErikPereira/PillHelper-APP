@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.pillhelper.dataBase.DataBaseSupervisorHelper;
 import com.example.pillhelper.utils.Constants;
 import com.example.pillhelper.dataBase.DataBaseAlarmsHelper;
 import com.example.pillhelper.dataBase.DataBaseBoxHelper;
@@ -41,11 +42,13 @@ import static com.example.pillhelper.utils.Constants.DOMINGO;
 import static com.example.pillhelper.utils.Constants.DOSAGEM;
 import static com.example.pillhelper.utils.Constants.HORA;
 import static com.example.pillhelper.utils.Constants.ID_CAIXA;
+import static com.example.pillhelper.utils.Constants.ID_SUPERVISOR;
 import static com.example.pillhelper.utils.Constants.LUMINOSO;
 import static com.example.pillhelper.utils.Constants.MEDICINE_TYPE;
 import static com.example.pillhelper.utils.Constants.MINUTO;
 import static com.example.pillhelper.utils.Constants.NOME_CAIXA;
 import static com.example.pillhelper.utils.Constants.NOME_REMEDIO;
+import static com.example.pillhelper.utils.Constants.NOME_SUPERVISOR;
 import static com.example.pillhelper.utils.Constants.NOTIFICATION_ID;
 import static com.example.pillhelper.utils.Constants.OPEN_BOX_FRAG;
 import static com.example.pillhelper.utils.Constants.PERIODO_HORA;
@@ -54,12 +57,14 @@ import static com.example.pillhelper.utils.Constants.QUANTIDADE;
 import static com.example.pillhelper.utils.Constants.QUANTIDADE_BOX;
 import static com.example.pillhelper.utils.Constants.QUARTA;
 import static com.example.pillhelper.utils.Constants.QUINTA;
+import static com.example.pillhelper.utils.Constants.REGISTRADO_POR;
 import static com.example.pillhelper.utils.Constants.SABADO;
 import static com.example.pillhelper.utils.Constants.SEGUNDA;
 import static com.example.pillhelper.utils.Constants.SEXTA;
 import static com.example.pillhelper.utils.Constants.SONORO;
 import static com.example.pillhelper.utils.Constants.TERCA;
 import static com.example.pillhelper.utils.Constants.VEZES_DIA;
+import static com.example.pillhelper.utils.Constants.VINCULO;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -71,6 +76,7 @@ public class LoginActivity extends AppCompatActivity {
     private SharedPreferences.Editor mEditor;
     DataBaseAlarmsHelper mDataBaseAlarmsHelper;
     DataBaseBoxHelper mDataBaseBoxHelper;
+    DataBaseSupervisorHelper mDataBaseSupervisorHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -252,6 +258,7 @@ public class LoginActivity extends AppCompatActivity {
                 JsonObject jsonObject = response.body();
                 JsonArray alarmsArray = jsonObject.getAsJsonObject("response").getAsJsonArray("alarms");
                 JsonArray boxArray = jsonObject.getAsJsonObject("response").getAsJsonArray("box");
+                JsonArray supervisorArray = jsonObject.getAsJsonObject("response").getAsJsonArray("supervisors");
 
                 getBaseContext().deleteDatabase("alarms_table");
                 getBaseContext().deleteDatabase("boxes_table");
@@ -293,6 +300,20 @@ public class LoginActivity extends AppCompatActivity {
 
                         mDataBaseBoxHelper.addData(jsonBox.get(ID_CAIXA).getAsString(),
                                 jsonBox.get(NOME_CAIXA).getAsString());
+                    }
+                }
+
+                if (supervisorArray != null) {
+                    mDataBaseSupervisorHelper = new DataBaseSupervisorHelper(getBaseContext());
+
+                    for (int i = 0; i < supervisorArray.size(); i++) {
+                        JsonElement jsonElement = supervisorArray.get(i);
+                        JsonObject jsonSupervisor = jsonElement.getAsJsonObject();
+
+                        mDataBaseSupervisorHelper.addData(jsonSupervisor.get(ID_SUPERVISOR).getAsString(),
+                                jsonSupervisor.get(REGISTRADO_POR).getAsString(),
+                                jsonSupervisor.get(VINCULO).getAsString(),
+                                jsonSupervisor.get(NOME_SUPERVISOR).getAsString());
                     }
                 }
 

@@ -2,7 +2,7 @@ package com.example.pillhelper.utils;
 
 public class Constants {
 
-    public static final String BASE_URL = "http://192.168.1.11:3000/"; //URL BASE
+    public static final String BASE_URL = "http://192.168.1.9:3000/"; //URL BASE
     public static final String TOKEN_ACCESS = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiZGV2Iiwic3lzdGVtIjoiQVBJIn0.6lrvVMtHdb6P5f-Au4c36SK1OT8kb0_gg5BuEok_TpU";
     public static final String CREATE_USER = "insertOneUser";//O POST PARA CRIAR O USUARIO
     public static final String LOGIN_USER = "checkLoginUser";//POST PARA EFETUAR O LOGIN
@@ -45,4 +45,9 @@ public class Constants {
     public static final String MUDAR_USUARIO = "mudarUsuario";
 
     public static final String OPEN_BOX_FRAG = "open_box_frag";
+
+    public static final String ID_SUPERVISOR = "uuidSupervisor";
+    public static final String REGISTRADO_POR = "registeredBy";
+    public static final String VINCULO = "bond";
+    public static final String NOME_SUPERVISOR = "name";
 }

@@ -8,4 +8,9 @@
         android:id="@+id/nav_caixas"
         android:icon="@drawable/ic_dashboard_black_24dp"
         android:title="@string/menu_caixas"/>
+
+    <item
+        android:id="@+id/nav_supervisor"
+        android:icon="@drawable/ic_supervisor_black_24dp"
+        android:title="@string/menu_supervisor"/>
 </menu>

@@ -23,6 +23,7 @@
     <string name="login_type_senha">Senha</string>
     <string name="menu_alarme">Alarmes</string>
     <string name="menu_caixas">Caixas</string>
+    <string name="menu_supervisor">Supervisor</string>
     <string name="login_back_button">Voltar</string>
 
     <!--Box founded activity-->

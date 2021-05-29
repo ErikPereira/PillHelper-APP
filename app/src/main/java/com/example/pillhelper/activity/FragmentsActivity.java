@@ -49,6 +49,11 @@ public class FragmentsActivity extends AppCompatActivity {
                     actualFragment = new FragmentBoxes();
                     loadFragment(actualFragment);
                     break;
+                case R.id.nav_supervisor:
+                    binding.fabFragment.setImageDrawable(getBaseContext().getDrawable(R.drawable.ic_add_supervisor_white_24dp));
+                    actualFragment = new FragmentBoxes();
+                    loadFragment(actualFragment);
+                    break;
             }
 
             return true;
