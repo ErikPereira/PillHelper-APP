@@ -56,6 +56,7 @@
     <string name="button_back_clock_interval">Voltar</string>
     <string name="inf_interval_clock">Digite as informações</string>
     <string name="box_list_item_image_description">Deletar Caixa</string>
+    <string name="supervisor_list_item_image_description">Deletar Supervisor</string>
 
     <!-- Mensagens gerais para ambos os relógios-->
     <string name="dialog_message">Quer mesmo deletar?</string>
@@ -74,6 +75,9 @@
 
     <string name="dialog_change_name_title">Altere o Nome da Caixa</string>
     <string name="dialog_change_name_hint">Nome da Caixa</string>
+
+    <string name="dialog_change_name_title_supervisor">Altere o Nome do Supervisor</string>
+    <string name="dialog_change_name_hint_supervisor">Nome do Supervisor</string>
     <!-- Dias da semana-->
     <string name="sunday">D</string>
     <string name="monday">S</string>

@@ -262,6 +262,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 getBaseContext().deleteDatabase("alarms_table");
                 getBaseContext().deleteDatabase("boxes_table");
+                getBaseContext().deleteDatabase("supervisors_table");
 
                 if (alarmsArray != null) {
                     mDataBaseAlarmsHelper = new DataBaseAlarmsHelper(getBaseContext());
@@ -279,15 +280,25 @@ public class LoginActivity extends AppCompatActivity {
                         days[5] = jsonAlarm.get(SEXTA).getAsInt();
                         days[6] = jsonAlarm.get(SABADO).getAsInt();
 
-                        mDataBaseAlarmsHelper.addData(jsonAlarm.get(ID_ALARME).getAsString(),
-                                jsonAlarm.get(ALARM_TYPE).getAsInt(), jsonAlarm.get(MEDICINE_TYPE).getAsInt(),
-                                jsonAlarm.get(ATIVO).getAsInt(), jsonAlarm.get(NOME_REMEDIO).getAsString(),
-                                jsonAlarm.get(DOSAGEM).getAsInt(), jsonAlarm.get(QUANTIDADE).getAsInt(),
-                                jsonAlarm.get(QUANTIDADE_BOX).getAsInt(), jsonAlarm.get(HORA).getAsInt(),
-                                jsonAlarm.get(MINUTO).getAsInt(), days, jsonAlarm.get(VEZES_DIA).getAsInt(),
-                                jsonAlarm.get(PERIODO_HORA).getAsInt(), jsonAlarm.get(PERIODO_MIN).getAsInt(),
-                                jsonAlarm.get(NOTIFICATION_ID).getAsInt(), jsonAlarm.get(LUMINOSO).getAsInt(),
-                                jsonAlarm.get(SONORO).getAsInt(), jsonAlarm.get(BOX_POSITION).getAsInt());
+                        mDataBaseAlarmsHelper.addData(
+                                jsonAlarm.get(ID_ALARME).getAsString(),
+                                jsonAlarm.get(ALARM_TYPE).getAsInt(),
+                                jsonAlarm.get(MEDICINE_TYPE).getAsInt(),
+                                jsonAlarm.get(ATIVO).getAsInt(),
+                                jsonAlarm.get(NOME_REMEDIO).getAsString(),
+                                jsonAlarm.get(DOSAGEM).getAsInt(),
+                                jsonAlarm.get(QUANTIDADE).getAsInt(),
+                                jsonAlarm.get(QUANTIDADE_BOX).getAsInt(),
+                                jsonAlarm.get(HORA).getAsInt(),
+                                jsonAlarm.get(MINUTO).getAsInt(),
+                                days,
+                                jsonAlarm.get(VEZES_DIA).getAsInt(),
+                                jsonAlarm.get(PERIODO_HORA).getAsInt(),
+                                jsonAlarm.get(PERIODO_MIN).getAsInt(),
+                                jsonAlarm.get(NOTIFICATION_ID).getAsInt(),
+                                jsonAlarm.get(LUMINOSO).getAsInt(),
+                                jsonAlarm.get(SONORO).getAsInt(),
+                                jsonAlarm.get(BOX_POSITION).getAsInt());
                     }
                 }
 
@@ -310,7 +321,8 @@ public class LoginActivity extends AppCompatActivity {
                         JsonElement jsonElement = supervisorArray.get(i);
                         JsonObject jsonSupervisor = jsonElement.getAsJsonObject();
 
-                        mDataBaseSupervisorHelper.addData(jsonSupervisor.get(ID_SUPERVISOR).getAsString(),
+                        mDataBaseSupervisorHelper.addData(
+                                jsonSupervisor.get(ID_SUPERVISOR).getAsString(),
                                 jsonSupervisor.get(REGISTRADO_POR).getAsString(),
                                 jsonSupervisor.get(VINCULO).getAsString(),
                                 jsonSupervisor.get(NOME_SUPERVISOR).getAsString());

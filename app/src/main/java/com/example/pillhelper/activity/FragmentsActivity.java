@@ -18,6 +18,7 @@ import com.example.pillhelper.fragment.FragmentAlarms;
 import com.example.pillhelper.fragment.FragmentBoxes;
 import com.example.pillhelper.R;
 import com.example.pillhelper.databinding.ActivityFragmentsBinding;
+import com.example.pillhelper.fragment.FragmentSupervisors;
 
 import static com.example.pillhelper.utils.Constants.OPEN_BOX_FRAG;
 
@@ -51,7 +52,7 @@ public class FragmentsActivity extends AppCompatActivity {
                     break;
                 case R.id.nav_supervisor:
                     binding.fabFragment.setImageDrawable(getBaseContext().getDrawable(R.drawable.ic_add_supervisor_white_24dp));
-                    actualFragment = new FragmentBoxes();
+                    actualFragment = new FragmentSupervisors();
                     loadFragment(actualFragment);
                     break;
             }

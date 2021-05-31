@@ -41,6 +41,12 @@ public class DataBaseSupervisorHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    public Cursor getData() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM " + TABLE_NAME;
+        return db.rawQuery(query, null);
+    }
+
     public boolean addData(String uuidSupervisor, String registeredBy, String bond,  String name) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -54,11 +60,7 @@ public class DataBaseSupervisorHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
-    public Cursor getData() {
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT * FROM " + TABLE_NAME;
-        return db.rawQuery(query, null);
-    }
+
 
     public boolean updateData(String uuidSupervisor, String registeredBy, String bond,  String name) {
         SQLiteDatabase db = this.getWritableDatabase();

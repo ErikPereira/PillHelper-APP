@@ -13,6 +13,8 @@ public class Constants {
     public static final String CREATE_BOX = "registerBox";//POST PARA CRIAR E ALTERAR UMA CAIXA
     public static final String UPDATE_BOX = "updateBoxUser";//POST PARA CRIAR E ALTERAR UMA CAIXA
     public static final String DELETE_BOX = "deleteBoxInUser";//POST PARA DELETAR UMA CAIXA
+    public static final String UPDATE_SUPERVISOR_IN_USER = "updateSupervisorInUser"; // POST para atualizar os dados do supervisor dentro de um usuario
+    public static final String DELETE_SUPERVISOR_IN_USER = "deleteSupervisorInUser"; // POST para deletar os dados do supervisor dentro de um usuario
 
     public static final String ALARM_TYPE = "alarm_type";//1 == fixo 2 == intervalo
     public static final String MEDICINE_TYPE = "medicine_type";//1 == pilula 2 == liquid
