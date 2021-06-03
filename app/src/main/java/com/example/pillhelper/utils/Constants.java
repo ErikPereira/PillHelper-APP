@@ -2,7 +2,7 @@ package com.example.pillhelper.utils;
 
 public class Constants {
 
-    public static final String BASE_URL = "http://192.168.1.9:3000/"; //URL BASE
+    public static final String BASE_URL = "http://192.168.1.11:3000/"; //URL BASE
     public static final String TOKEN_ACCESS = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiZGV2Iiwic3lzdGVtIjoiQVBJIn0.6lrvVMtHdb6P5f-Au4c36SK1OT8kb0_gg5BuEok_TpU";
     public static final String CREATE_USER = "insertOneUser";//O POST PARA CRIAR O USUARIO
     public static final String LOGIN_USER = "checkLoginUser";//POST PARA EFETUAR O LOGIN
@@ -15,6 +15,7 @@ public class Constants {
     public static final String DELETE_BOX = "deleteBoxInUser";//POST PARA DELETAR UMA CAIXA
     public static final String UPDATE_SUPERVISOR_IN_USER = "updateSupervisorInUser"; // POST para atualizar os dados do supervisor dentro de um usuario
     public static final String DELETE_SUPERVISOR_IN_USER = "deleteSupervisorInUser"; // POST para deletar os dados do supervisor dentro de um usuario
+    public static final String REGISTER_SUPERVISOR = "registerSupervisor"; // POST para registar um supervisor dentro de um usuario
 
     public static final String ALARM_TYPE = "alarm_type";//1 == fixo 2 == intervalo
     public static final String MEDICINE_TYPE = "medicine_type";//1 == pilula 2 == liquid
@@ -52,4 +53,6 @@ public class Constants {
     public static final String REGISTRADO_POR = "registeredBy";
     public static final String VINCULO = "bond";
     public static final String NOME_SUPERVISOR = "name";
+    public static final String EMAIL_SUPERVISOR = "email";
+    public static final String CELL_SUPERVISOR = "cell";
 }

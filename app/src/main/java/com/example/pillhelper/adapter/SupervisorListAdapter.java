@@ -115,6 +115,9 @@ public class SupervisorListAdapter extends ArrayAdapter<SupervisorItem> {
             String stringBondView = "";
             TextView bondView = view.findViewById(R.id.edit_status_supervisor);
 
+            data = mDataBaseSupervisorHelper.getData();
+            data.move(position + 1);
+
             String uuidSupervisor = data.getString(0);
             String registeredBy = data.getString(1);
             String bond = data.getString(2);

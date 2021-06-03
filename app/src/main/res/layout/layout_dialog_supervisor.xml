@@ -14,13 +14,13 @@
 
     <TextView
         android:id="@+id/string_status_supervisor"
+        style="@style/GeralText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/edit_supervisor_name"
         android:layout_margin="15dp"
         android:gravity="center_vertical"
-        android:textColor="@android:color/black"
-        android:textSize="20sp"
+        android:textSize="16dp"
         android:textStyle="bold"
         tools:text="Status do vinculo: "/>
 

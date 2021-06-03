@@ -66,6 +66,11 @@ public class FragmentsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
 
+            if (actualFragment instanceof FragmentSupervisors) {
+                Intent intent = new Intent(this, RegisterSupervisorActivity.class);
+                startActivity(intent);
+            }
+
             if (actualFragment instanceof FragmentBoxes) {
                 if (!checkPermissions()) {
                     requestPermissions();
@@ -74,8 +79,9 @@ public class FragmentsActivity extends AppCompatActivity {
                     startActivityForResult(intent, 1);
                 }
             }
-        });
 
+        });
+        // aki pode ocorrer algum problema
         binding.bottomNavigation.setSelectedItemId(getIntent().getBooleanExtra(OPEN_BOX_FRAG, false) ? R.id.nav_caixas : R.id.nav_alarmes);
         binding.bottomNavigation.performClick();
     }
@@ -83,6 +89,10 @@ public class FragmentsActivity extends AppCompatActivity {
     public void loadFragment(Fragment fragment) {
         if (fragment instanceof FragmentAlarms)
             getSupportActionBar().setTitle(R.string.menu_alarme);
+
+        else if (fragment instanceof FragmentSupervisors)
+            getSupportActionBar().setTitle(R.string.menu_supervisor);
+
         else getSupportActionBar().setTitle(R.string.menu_caixas);
 
         FragmentManager fragmentManager = getSupportFragmentManager();

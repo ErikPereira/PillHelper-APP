@@ -20,6 +20,7 @@
         <activity android:name="com.example.pillhelper.activity.IntervalAlarmActivity" />
         <activity android:name="com.example.pillhelper.activity.FixedAlarmActivity" />
         <activity android:name="com.example.pillhelper.activity.RegisterAlarmActivity" />
+        <activity android:name="com.example.pillhelper.activity.RegisterSupervisorActivity" />
         <activity
             android:name="com.example.pillhelper.activity.FragmentsActivity"
             android:parentActivityName="com.example.pillhelper.activity.MainActivity" />
