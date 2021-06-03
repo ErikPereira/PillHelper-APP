@@ -3,6 +3,7 @@ package com.example.pillhelper.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,11 +20,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.pillhelper.R;
-import com.example.pillhelper.utils.UserIdSingleton;
-import com.example.pillhelper.dataBase.DataBaseBoxHelper;
-import com.example.pillhelper.item.BoxItem;
+import com.example.pillhelper.dataBase.DataBaseSupervisorHelper;
+import com.example.pillhelper.item.SupervisorItem;
 import com.example.pillhelper.services.JsonPlaceHolderApi;
 import com.example.pillhelper.utils.Constants;
+import com.example.pillhelper.utils.UserIdSingleton;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -39,24 +40,27 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.example.pillhelper.utils.Constants.BASE_URL;
-import static com.example.pillhelper.utils.Constants.ID_CAIXA;
+import static com.example.pillhelper.utils.Constants.ID_SUPERVISOR;
+import static com.example.pillhelper.utils.Constants.NOME_SUPERVISOR;
+import static com.example.pillhelper.utils.Constants.REGISTRADO_POR;
+import static com.example.pillhelper.utils.Constants.VINCULO;
 
-public class BoxListAdapter extends ArrayAdapter<BoxItem> {
+public class SupervisorListAdapter extends ArrayAdapter<SupervisorItem> {
 
-    private static final String TAG = "BoxListAdapter";
+    private static final String TAG = "SupervisorListAdapter";
 
     private Context mContext;
     private int mResource;
-    private DataBaseBoxHelper mDataBaseBoxHelper;
+    private DataBaseSupervisorHelper mDataBaseSupervisorHelper;
     private JsonPlaceHolderApi jsonPlaceHolderApi;
     private EditText editTextName;
     private Cursor data;
 
-    public BoxListAdapter(Context context, int resource, ArrayList<BoxItem> objects) {
+    public SupervisorListAdapter(Context context, int resource, ArrayList<SupervisorItem> objects) {
         super(context, resource, objects);
         mContext = context;
         mResource = resource;
-        mDataBaseBoxHelper = new DataBaseBoxHelper(context);
+        mDataBaseSupervisorHelper = new DataBaseSupervisorHelper(context);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -75,45 +79,79 @@ public class BoxListAdapter extends ArrayAdapter<BoxItem> {
 
         loadDataToView(convertView, position);
 
-        ConstraintLayout constraintLayout = convertView.findViewById(R.id.caixa_list_layout);
+        ConstraintLayout constraintLayout = convertView.findViewById(R.id.supervisor_list_layout);
 
-        View finalConvertView = convertView;
         constraintLayout.setOnClickListener(v -> {
 
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             LayoutInflater insideInflater = LayoutInflater.from(getContext());
 
-            View view = insideInflater.inflate(R.layout.layout_dialog_box, parent, false);
+            View view = insideInflater.inflate(R.layout.layout_dialog_supervisor, parent, false);
 
             builder.setView(view)
-                    .setTitle(R.string.dialog_change_name_title)
+                    .setTitle(R.string.dialog_change_name_title_supervisor)
                     .setNegativeButton(R.string.cancel, (dialog, id) -> dialog.dismiss())
                     .setPositiveButton(R.string.ok, (dialog, which) -> {
-                        data = mDataBaseBoxHelper.getData();
+                        data = mDataBaseSupervisorHelper.getData();
                         data.move(position + 1);
 
+                        String uuidSupervisor = data.getString(0);
+                        String registeredBy = data.getString(1);
+                        String bond = data.getString(2);
                         String newName = editTextName.getText().toString();
 
                         if (!newName.isEmpty()) {
-                            createPostUpdateBox(finalConvertView, position, data.getString(0), newName);
+                            createPostUpdateSupervisor(uuidSupervisor, registeredBy, bond, newName);
                         } else {
                             Toast.makeText(getContext(), "Nome inválido", Toast.LENGTH_LONG).show();
                         }
                     });
 
-            editTextName = view.findViewById(R.id.edit_box_name);
+            editTextName = view.findViewById(R.id.edit_supervisor_name);
+
+            TextView statusView = view.findViewById(R.id.string_status_supervisor);
+            statusView.setText("Status do vinculo: ");
+
+            String stringBondView = "";
+            TextView bondView = view.findViewById(R.id.edit_status_supervisor);
+
+            data = mDataBaseSupervisorHelper.getData();
+            data.move(position + 1);
+
+            String uuidSupervisor = data.getString(0);
+            String registeredBy = data.getString(1);
+            String bond = data.getString(2);
+
+            switch (bond.toLowerCase()){
+                case "wait":
+                    stringBondView = "Aguardando confirmação";
+                    bondView.setTextColor(Color.GRAY);
+                    break;
+                case "refused":
+                    stringBondView = "Vinculo Recusado";
+                    bondView.setTextColor(Color.RED);
+                    break;
+                case "accepted":
+                    stringBondView = "Vinculo Aceito";
+                    bondView.setTextColor(Color.GREEN);
+                    break;
+                default:
+                    stringBondView = "Vinculo deletado";
+                    bondView.setTextColor(Color.RED);
+            }
+            bondView.setText(stringBondView);
 
             AlertDialog dialog = builder.create();
             dialog.show();
         });
 
-        ImageView imageView = convertView.findViewById(R.id.caixa_list_image);
+        ImageView imageView = convertView.findViewById(R.id.supervisor_list_image);
         imageView.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
 
             builder.setMessage(R.string.dialog_message)
                     .setTitle(R.string.dialog_title)
-                    .setPositiveButton(R.string.ok, (dialog, id) -> createPostDeleteBox(position, getItem(position).getUuidBox()))
+                    .setPositiveButton(R.string.ok, (dialog, id) -> createPostDeleteSupervisor(position, getItem(position).getUuidSupervisor()))
                     .setNegativeButton(R.string.cancel, (dialog, id) -> dialog.dismiss());
 
             AlertDialog dialog = builder.create();
@@ -124,18 +162,18 @@ public class BoxListAdapter extends ArrayAdapter<BoxItem> {
     }
 
     private void loadDataToView(View view, int position){
-        data = mDataBaseBoxHelper.getData();
+        data = mDataBaseSupervisorHelper.getData();
         data.move(position + 1);
 
-        TextView nameView = view.findViewById(R.id.box_name);
-        nameView.setText(data.getString(1));
+        TextView nameView = view.findViewById(R.id.supervisor_name);
+        nameView.setText(data.getString(3));
     }
 
-    private void createPostUpdateBox(View convertView, int position, String uuidBox, String newName) {
-        String requestStr = formatJSONUpdateBox(uuidBox, newName);
+    private void createPostUpdateSupervisor(String uuidSupervisor, String registeredBy, String bond, String newName) {
+        String requestStr = formatJSONUpdateSupervisor(uuidSupervisor, registeredBy, bond, newName);
         JsonObject request = JsonParser.parseString(requestStr).getAsJsonObject();
 
-        Call<JsonObject> call = jsonPlaceHolderApi.postUpdateBox(Constants.TOKEN_ACCESS, request);
+        Call<JsonObject> call = jsonPlaceHolderApi.postUpdateSupervisorInUser(Constants.TOKEN_ACCESS, request);
 
         call.enqueue(new Callback<JsonObject>() {
             @Override
@@ -145,8 +183,10 @@ public class BoxListAdapter extends ArrayAdapter<BoxItem> {
                     return;
                 }
 
-                mDataBaseBoxHelper.updateData(
-                        uuidBox,
+                mDataBaseSupervisorHelper.updateData(
+                        uuidSupervisor,
+                        registeredBy,
+                        bond,
                         newName);
 
                 notifyDataSetChanged();
@@ -161,27 +201,11 @@ public class BoxListAdapter extends ArrayAdapter<BoxItem> {
         });
     }
 
-    private String formatJSONUpdateBox(String uuidBox, String nameBox) {
-        final JSONObject root = new JSONObject();
-
-        try {
-            root.put("uuidUser", UserIdSingleton.getInstance().getUserId());
-            root.put(ID_CAIXA, String.valueOf(uuidBox));
-            root.put("newNameBox", String.valueOf(nameBox));
-
-            return root.toString();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    private void createPostDeleteBox(int position, String uuidBox){
-        String requestStr = formatJSONDeleteBox(uuidBox);
+    private void createPostDeleteSupervisor(int position, String uuidSupervisor){
+        String requestStr = formatJSONDeleteSupervisor(uuidSupervisor);
         JsonObject request = JsonParser.parseString(requestStr).getAsJsonObject();
 
-        Call<JsonObject> call = jsonPlaceHolderApi.postDeleteBox(Constants.TOKEN_ACCESS, request);
+        Call<JsonObject> call = jsonPlaceHolderApi.postDeleteSupervisorInUser(Constants.TOKEN_ACCESS, request);
 
         call.enqueue(new Callback<JsonObject>() {
             @Override
@@ -192,14 +216,14 @@ public class BoxListAdapter extends ArrayAdapter<BoxItem> {
                     return;
                 }
 
-                Cursor data = mDataBaseBoxHelper.getData();
+                Cursor data = mDataBaseSupervisorHelper.getData();
                 data.move(position + 1);
 
-                int isDeleted = mDataBaseBoxHelper.removeData(uuidBox);
+                int isDeleted = mDataBaseSupervisorHelper.removeData(uuidSupervisor);
 
                 if (isDeleted > 0) {
-                    BoxListAdapter.this.remove(getItem(position));
-                    BoxListAdapter.this.notifyDataSetChanged();
+                    SupervisorListAdapter.this.remove(getItem(position));
+                    SupervisorListAdapter.this.notifyDataSetChanged();
                 } else Toast.makeText(getContext(), "Algo deu errado", Toast.LENGTH_LONG).show();
 
                 Log.e(TAG, "onResponse: " + response);
@@ -212,12 +236,19 @@ public class BoxListAdapter extends ArrayAdapter<BoxItem> {
         });
     }
 
-    private String formatJSONDeleteBox(String uuidBox) {
+    private String formatJSONUpdateSupervisor(String uuidSupervisor, String registeredBy, String bond, String newName) {
         final JSONObject root = new JSONObject();
 
         try {
+            JSONObject updateSupervisor = new JSONObject();
+            updateSupervisor.put(ID_SUPERVISOR, String.valueOf(uuidSupervisor));
+            updateSupervisor.put(REGISTRADO_POR, String.valueOf(registeredBy));
+            updateSupervisor.put(VINCULO, String.valueOf(bond));
+            updateSupervisor.put(NOME_SUPERVISOR, String.valueOf(newName));
+
+
             root.put("uuidUser", UserIdSingleton.getInstance().getUserId());
-            root.put(ID_CAIXA, uuidBox);
+            root.put("supervisor", updateSupervisor);
 
             return root.toString();
         } catch (JSONException e) {
@@ -225,4 +256,20 @@ public class BoxListAdapter extends ArrayAdapter<BoxItem> {
         }
         return null;
     }
+
+    private String formatJSONDeleteSupervisor(String uuidSupervisor) {
+        final JSONObject root = new JSONObject();
+
+        try {
+            root.put("uuidUser", UserIdSingleton.getInstance().getUserId());
+            root.put(ID_SUPERVISOR, uuidSupervisor);
+
+            return root.toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }
+

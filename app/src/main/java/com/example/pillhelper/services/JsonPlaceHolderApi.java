@@ -54,4 +54,16 @@ public interface JsonPlaceHolderApi {
     @POST(Constants.DELETE_BOX)
     Call<JsonObject> postDeleteBox(@Header("authorization") String token,
                                    @Body JsonObject body);
+
+    @POST(Constants.UPDATE_SUPERVISOR_IN_USER)
+    Call<JsonObject> postUpdateSupervisorInUser(@Header("authorization") String token,
+                                   @Body JsonObject body);
+
+    @POST(Constants.DELETE_SUPERVISOR_IN_USER)
+    Call<JsonObject> postDeleteSupervisorInUser(@Header("authorization") String token,
+                                                @Body JsonObject body);
+
+    @POST(Constants.REGISTER_SUPERVISOR)
+    Call<JsonObject> postRegisterSupervisor(@Header("authorization") String token,
+                                                @Body JsonObject body);
 }

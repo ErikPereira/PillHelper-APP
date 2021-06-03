@@ -18,6 +18,7 @@ import com.example.pillhelper.fragment.FragmentAlarms;
 import com.example.pillhelper.fragment.FragmentBoxes;
 import com.example.pillhelper.R;
 import com.example.pillhelper.databinding.ActivityFragmentsBinding;
+import com.example.pillhelper.fragment.FragmentSupervisors;
 
 import static com.example.pillhelper.utils.Constants.OPEN_BOX_FRAG;
 
@@ -49,6 +50,11 @@ public class FragmentsActivity extends AppCompatActivity {
                     actualFragment = new FragmentBoxes();
                     loadFragment(actualFragment);
                     break;
+                case R.id.nav_supervisor:
+                    binding.fabFragment.setImageDrawable(getBaseContext().getDrawable(R.drawable.ic_add_supervisor_white_24dp));
+                    actualFragment = new FragmentSupervisors();
+                    loadFragment(actualFragment);
+                    break;
             }
 
             return true;
@@ -60,6 +66,11 @@ public class FragmentsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
 
+            if (actualFragment instanceof FragmentSupervisors) {
+                Intent intent = new Intent(this, RegisterSupervisorActivity.class);
+                startActivity(intent);
+            }
+
             if (actualFragment instanceof FragmentBoxes) {
                 if (!checkPermissions()) {
                     requestPermissions();
@@ -68,8 +79,9 @@ public class FragmentsActivity extends AppCompatActivity {
                     startActivityForResult(intent, 1);
                 }
             }
-        });
 
+        });
+        // aki pode ocorrer algum problema
         binding.bottomNavigation.setSelectedItemId(getIntent().getBooleanExtra(OPEN_BOX_FRAG, false) ? R.id.nav_caixas : R.id.nav_alarmes);
         binding.bottomNavigation.performClick();
     }
@@ -77,6 +89,10 @@ public class FragmentsActivity extends AppCompatActivity {
     public void loadFragment(Fragment fragment) {
         if (fragment instanceof FragmentAlarms)
             getSupportActionBar().setTitle(R.string.menu_alarme);
+
+        else if (fragment instanceof FragmentSupervisors)
+            getSupportActionBar().setTitle(R.string.menu_supervisor);
+
         else getSupportActionBar().setTitle(R.string.menu_caixas);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
