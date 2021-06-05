@@ -77,6 +77,11 @@ public class FragmentsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
 
+            if (actualFragment instanceof FragmentClinicalData) {
+                Intent intent = new Intent(this, RegisterClinicalDataActivity.class);
+                startActivity(intent);
+            }
+
             if (actualFragment instanceof FragmentBoxes) {
                 if (!checkPermissions()) {
                     requestPermissions();

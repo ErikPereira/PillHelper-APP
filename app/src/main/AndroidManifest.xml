@@ -40,6 +40,9 @@
         <activity
             android:name="com.example.pillhelper.activity.RegisterBoxActivity"
             android:parentActivityName="com.example.pillhelper.activity.FragmentsActivity" />
+        <activity
+            android:name="com.example.pillhelper.activity.RegisterClinicalDataActivity"
+            android:parentActivityName="com.example.pillhelper.activity.FragmentsActivity" />
 
         <receiver
             android:name="com.example.pillhelper.receiver.AlarmReceiver"

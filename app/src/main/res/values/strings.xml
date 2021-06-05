@@ -122,6 +122,13 @@
     <string name="select_supervisor_text">Informe a forma de salvar o supervisor:</string>
 
     <!-- Register Clinical Data-->
+    <string name="register_clinical_data_title">Cadastrar Dados Clínicos</string>
     <string name="dialog_change_clinical_data_hint">Novo valor</string>
     <string name="dialog_change_name_title_clinical_data">Altere o valor do dado Clínico</string>
+    <string name="inf_text_clinical_data">Novo Dado Clínico</string>
+    <string name="clinical_data_name">Nome do Dado Clínico</string>
+    <string name="clinical_data_value">Valor do Dado Clínico</string>
+    <string name="dialog_text_clinical_data_name_info">Informe o nome do Dado Clínico, obrigatório</string>
+    <string name="dialog_text_clinical_data_value_info">Informe o valor do Dado Clínico, opcional</string>
+
 </resources>

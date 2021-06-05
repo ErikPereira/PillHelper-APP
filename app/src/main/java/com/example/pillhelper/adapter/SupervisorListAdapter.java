@@ -134,7 +134,7 @@ public class SupervisorListAdapter extends ArrayAdapter<SupervisorItem> {
                     bondView.setTextColor(Color.GREEN);
                     break;
                 default:
-                    stringBondView = "Vinculo deletado";
+                    stringBondView = "Vinculo Deletado";
                     bondView.setTextColor(Color.RED);
             }
             bondView.setText(stringBondView);
