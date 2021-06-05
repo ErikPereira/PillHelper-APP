@@ -24,6 +24,7 @@
     <string name="menu_alarme">Alarmes</string>
     <string name="menu_caixas">Caixas</string>
     <string name="menu_supervisor">Supervisor</string>
+    <string name="menu_dados_clinicos">Dados Clínicos</string>
     <string name="login_back_button">Voltar</string>
 
     <!--Box founded activity-->
@@ -119,4 +120,8 @@
     <string name="dialog_text_supervisor_name_info">Informe o nome do supervisor, opcional</string>
     <string name="dialog_text_supervisor_email_info">Informe o email do supervisor, obrigatório</string>
     <string name="select_supervisor_text">Informe a forma de salvar o supervisor:</string>
+
+    <!-- Register Clinical Data-->
+    <string name="dialog_change_clinical_data_hint">Novo valor</string>
+    <string name="dialog_change_name_title_clinical_data">Altere o valor do dado Clínico</string>
 </resources>

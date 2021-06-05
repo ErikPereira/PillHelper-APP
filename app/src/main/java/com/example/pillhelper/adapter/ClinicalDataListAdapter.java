@@ -20,8 +20,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.pillhelper.R;
-import com.example.pillhelper.dataBase.DataBaseSupervisorHelper;
-import com.example.pillhelper.item.SupervisorItem;
+import com.example.pillhelper.dataBase.DataBaseClinicalDataHelper;
+import com.example.pillhelper.item.ClinicalDataItem;
 import com.example.pillhelper.services.JsonPlaceHolderApi;
 import com.example.pillhelper.utils.Constants;
 import com.example.pillhelper.utils.UserIdSingleton;
@@ -40,27 +40,22 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.example.pillhelper.utils.Constants.BASE_URL;
-import static com.example.pillhelper.utils.Constants.ID_SUPERVISOR;
-import static com.example.pillhelper.utils.Constants.NOME_SUPERVISOR;
-import static com.example.pillhelper.utils.Constants.REGISTRADO_POR;
-import static com.example.pillhelper.utils.Constants.VINCULO;
 
-public class SupervisorListAdapter extends ArrayAdapter<SupervisorItem> {
-
-    private static final String TAG = "SupervisorListAdapter";
+public class ClinicalDataListAdapter extends ArrayAdapter<ClinicalDataItem> {
+    private static final String TAG = "ClinicalDataListAdapter";
 
     private Context mContext;
     private int mResource;
-    private DataBaseSupervisorHelper mDataBaseSupervisorHelper;
+    private DataBaseClinicalDataHelper mDataBaseClinicalDataHelper;
     private JsonPlaceHolderApi jsonPlaceHolderApi;
-    private EditText editTextName;
+    private EditText editTextValue;
     private Cursor data;
 
-    public SupervisorListAdapter(Context context, int resource, ArrayList<SupervisorItem> objects) {
+    public ClinicalDataListAdapter(Context context, int resource, ArrayList<ClinicalDataItem> objects) {
         super(context, resource, objects);
         mContext = context;
         mResource = resource;
-        mDataBaseSupervisorHelper = new DataBaseSupervisorHelper(context);
+        mDataBaseClinicalDataHelper = new DataBaseClinicalDataHelper(context);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -79,77 +74,45 @@ public class SupervisorListAdapter extends ArrayAdapter<SupervisorItem> {
 
         loadDataToView(convertView, position);
 
-        ConstraintLayout constraintLayout = convertView.findViewById(R.id.supervisor_list_layout);
+        ConstraintLayout constraintLayout = convertView.findViewById(R.id.clinical_data_list_layout);
 
         constraintLayout.setOnClickListener(v -> {
 
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             LayoutInflater insideInflater = LayoutInflater.from(getContext());
 
-            View view = insideInflater.inflate(R.layout.layout_dialog_supervisor, parent, false);
+            View view = insideInflater.inflate(R.layout.layout_dialog_clinical_data, parent, false);
 
             builder.setView(view)
-                    .setTitle(R.string.dialog_change_name_title_supervisor)
+                    .setTitle(R.string.dialog_change_name_title_clinical_data)
                     .setNegativeButton(R.string.cancel, (dialog, id) -> dialog.dismiss())
                     .setPositiveButton(R.string.ok, (dialog, which) -> {
-                        data = mDataBaseSupervisorHelper.getData();
+                        data = mDataBaseClinicalDataHelper.getData();
                         data.move(position + 1);
 
-                        String uuidSupervisor = data.getString(0);
-                        String registeredBy = data.getString(1);
-                        String bond = data.getString(2);
-                        String newName = editTextName.getText().toString();
+                        String nameClinicalData = data.getString(0);
+                        String newValue = editTextValue.getText().toString();
 
-                        if (!newName.isEmpty()) {
-                            createPostUpdateSupervisor(uuidSupervisor, registeredBy, bond, newName);
+                        if (!newValue.isEmpty()) {
+                            createPostUpdateClinicalData(nameClinicalData, newValue);
                         } else {
                             Toast.makeText(getContext(), "Nome inválido", Toast.LENGTH_LONG).show();
                         }
                     });
 
-            editTextName = view.findViewById(R.id.edit_supervisor_name);
-
-            TextView statusView = view.findViewById(R.id.string_status_supervisor);
-            statusView.setText("Status do vinculo: ");
-
-            String stringBondView = "";
-            TextView bondView = view.findViewById(R.id.edit_status_supervisor);
-
-            data = mDataBaseSupervisorHelper.getData();
-            data.move(position + 1);
-
-            String bond = data.getString(2);
-
-            switch (bond.toLowerCase()){
-                case "wait":
-                    stringBondView = "Aguardando confirmação";
-                    bondView.setTextColor(Color.GRAY);
-                    break;
-                case "refused":
-                    stringBondView = "Vinculo Recusado";
-                    bondView.setTextColor(Color.RED);
-                    break;
-                case "accepted":
-                    stringBondView = "Vinculo Aceito";
-                    bondView.setTextColor(Color.GREEN);
-                    break;
-                default:
-                    stringBondView = "Vinculo deletado";
-                    bondView.setTextColor(Color.RED);
-            }
-            bondView.setText(stringBondView);
+            editTextValue = view.findViewById(R.id.edit_clinical_data_value);
 
             AlertDialog dialog = builder.create();
             dialog.show();
         });
 
-        ImageView imageView = convertView.findViewById(R.id.supervisor_list_image);
+        ImageView imageView = convertView.findViewById(R.id.clinical_data_list_image);
         imageView.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
 
             builder.setMessage(R.string.dialog_message)
                     .setTitle(R.string.dialog_title)
-                    .setPositiveButton(R.string.ok, (dialog, id) -> createPostDeleteSupervisor(position, getItem(position).getUuidSupervisor()))
+                    .setPositiveButton(R.string.ok, (dialog, id) -> createPostDeleteClinicalData(position, getItem(position).getName()))
                     .setNegativeButton(R.string.cancel, (dialog, id) -> dialog.dismiss());
 
             AlertDialog dialog = builder.create();
@@ -160,18 +123,21 @@ public class SupervisorListAdapter extends ArrayAdapter<SupervisorItem> {
     }
 
     private void loadDataToView(View view, int position){
-        data = mDataBaseSupervisorHelper.getData();
+        data = mDataBaseClinicalDataHelper.getData();
         data.move(position + 1);
 
-        TextView nameView = view.findViewById(R.id.supervisor_name);
-        nameView.setText(data.getString(3));
+        TextView nameView = view.findViewById(R.id.clinical_data_name);
+        TextView valueView = view.findViewById(R.id.clinical_data_value);
+
+        nameView.setText(data.getString(0).replaceAll(" ","\n"));
+        valueView.setText(data.getString(1));
     }
 
-    private void createPostUpdateSupervisor(String uuidSupervisor, String registeredBy, String bond, String newName) {
-        String requestStr = formatJSONUpdateSupervisor(uuidSupervisor, registeredBy, bond, newName);
+    private void createPostUpdateClinicalData(String nameClinicalData, String newValue) {
+        String requestStr = formatJSONUpdateClinicalData(nameClinicalData, newValue);
         JsonObject request = JsonParser.parseString(requestStr).getAsJsonObject();
 
-        Call<JsonObject> call = jsonPlaceHolderApi.postUpdateSupervisorInUser(Constants.TOKEN_ACCESS, request);
+        Call<JsonObject> call = jsonPlaceHolderApi.postUpdateClinicalData(Constants.TOKEN_ACCESS, request);
 
         call.enqueue(new Callback<JsonObject>() {
             @Override
@@ -181,11 +147,9 @@ public class SupervisorListAdapter extends ArrayAdapter<SupervisorItem> {
                     return;
                 }
 
-                mDataBaseSupervisorHelper.updateData(
-                        uuidSupervisor,
-                        registeredBy,
-                        bond,
-                        newName);
+                mDataBaseClinicalDataHelper.updateData(
+                        nameClinicalData,
+                        newValue);
 
                 notifyDataSetChanged();
 
@@ -199,11 +163,11 @@ public class SupervisorListAdapter extends ArrayAdapter<SupervisorItem> {
         });
     }
 
-    private void createPostDeleteSupervisor(int position, String uuidSupervisor){
-        String requestStr = formatJSONDeleteSupervisor(uuidSupervisor);
+    private void createPostDeleteClinicalData(int position, String nameClinicalData){
+        String requestStr = formatJSONDeleteClinicalData(nameClinicalData);
         JsonObject request = JsonParser.parseString(requestStr).getAsJsonObject();
 
-        Call<JsonObject> call = jsonPlaceHolderApi.postDeleteSupervisorInUser(Constants.TOKEN_ACCESS, request);
+        Call<JsonObject> call = jsonPlaceHolderApi.postDeleteClinicalData(Constants.TOKEN_ACCESS, request);
 
         call.enqueue(new Callback<JsonObject>() {
             @Override
@@ -214,14 +178,14 @@ public class SupervisorListAdapter extends ArrayAdapter<SupervisorItem> {
                     return;
                 }
 
-                Cursor data = mDataBaseSupervisorHelper.getData();
+                Cursor data = mDataBaseClinicalDataHelper.getData();
                 data.move(position + 1);
 
-                int isDeleted = mDataBaseSupervisorHelper.removeData(uuidSupervisor);
+                int isDeleted = mDataBaseClinicalDataHelper.removeData(nameClinicalData);
 
                 if (isDeleted > 0) {
-                    SupervisorListAdapter.this.remove(getItem(position));
-                    SupervisorListAdapter.this.notifyDataSetChanged();
+                    ClinicalDataListAdapter.this.remove(getItem(position));
+                    ClinicalDataListAdapter.this.notifyDataSetChanged();
                 } else Toast.makeText(getContext(), "Algo deu errado", Toast.LENGTH_LONG).show();
 
                 Log.e(TAG, "onResponse: " + response);
@@ -234,19 +198,13 @@ public class SupervisorListAdapter extends ArrayAdapter<SupervisorItem> {
         });
     }
 
-    private String formatJSONUpdateSupervisor(String uuidSupervisor, String registeredBy, String bond, String newName) {
+    private String formatJSONUpdateClinicalData(String nameClinicalData, String newValue) {
         final JSONObject root = new JSONObject();
 
         try {
-            JSONObject updateSupervisor = new JSONObject();
-            updateSupervisor.put(ID_SUPERVISOR, String.valueOf(uuidSupervisor));
-            updateSupervisor.put(REGISTRADO_POR, String.valueOf(registeredBy));
-            updateSupervisor.put(VINCULO, String.valueOf(bond));
-            updateSupervisor.put(NOME_SUPERVISOR, String.valueOf(newName));
-
-
             root.put("uuidUser", UserIdSingleton.getInstance().getUserId());
-            root.put("supervisor", updateSupervisor);
+            root.put("nameClinicalData", nameClinicalData);
+            root.put("valueClinicalData", newValue);
 
             return root.toString();
         } catch (JSONException e) {
@@ -255,12 +213,12 @@ public class SupervisorListAdapter extends ArrayAdapter<SupervisorItem> {
         return null;
     }
 
-    private String formatJSONDeleteSupervisor(String uuidSupervisor) {
+    private String formatJSONDeleteClinicalData(String nameClinicalData) {
         final JSONObject root = new JSONObject();
 
         try {
             root.put("uuidUser", UserIdSingleton.getInstance().getUserId());
-            root.put(ID_SUPERVISOR, uuidSupervisor);
+            root.put("nameClinicalData", nameClinicalData);
 
             return root.toString();
         } catch (JSONException e) {
@@ -270,4 +228,3 @@ public class SupervisorListAdapter extends ArrayAdapter<SupervisorItem> {
     }
 
 }
-

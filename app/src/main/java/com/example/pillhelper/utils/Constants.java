@@ -16,6 +16,9 @@ public class Constants {
     public static final String UPDATE_SUPERVISOR_IN_USER = "updateSupervisorInUser"; // POST para atualizar os dados do supervisor dentro de um usuario
     public static final String DELETE_SUPERVISOR_IN_USER = "deleteSupervisorInUser"; // POST para deletar os dados do supervisor dentro de um usuario
     public static final String REGISTER_SUPERVISOR = "registerSupervisor"; // POST para registar um supervisor dentro de um usuario
+    public static final String ADD_CLINICAL_DATA = "addClinicalData"; // POST para registar um supervisor dentro de um usuario
+    public static final String DELETE_CLINICAL_DATA = "deleteClinicalData"; // POST para registar um supervisor dentro de um usuario
+    public static final String UPDATE_CLINICAL_DATA = "updateClinicalData"; // POST para registar um supervisor dentro de um usuario
 
     public static final String ALARM_TYPE = "alarm_type";//1 == fixo 2 == intervalo
     public static final String MEDICINE_TYPE = "medicine_type";//1 == pilula 2 == liquid
@@ -46,6 +49,9 @@ public class Constants {
     public static final String ID_CAIXA = "uuidBox";
     public static final String NOME_CAIXA = "nameBox";
     public static final String MUDAR_USUARIO = "mudarUsuario";
+
+    public static final String NAME_CLINICAL_DATA = "name";
+    public static final String VALUE_CLINICAL_DATA = "value";
 
     public static final String OPEN_BOX_FRAG = "open_box_frag";
 

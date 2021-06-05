@@ -13,4 +13,9 @@
         android:id="@+id/nav_supervisor"
         android:icon="@drawable/ic_supervisor_black_24dp"
         android:title="@string/menu_supervisor"/>
+
+    <item
+        android:id="@+id/nav_dados_clinicos"
+        android:icon="@drawable/ic_dadosclinicos_black_24dp"
+        android:title="@string/menu_dados_clinicos"/>
 </menu>

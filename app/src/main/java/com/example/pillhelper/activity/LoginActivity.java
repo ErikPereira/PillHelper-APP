@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.pillhelper.dataBase.DataBaseClinicalDataHelper;
 import com.example.pillhelper.dataBase.DataBaseSupervisorHelper;
 import com.example.pillhelper.utils.Constants;
 import com.example.pillhelper.dataBase.DataBaseAlarmsHelper;
@@ -77,6 +78,7 @@ public class LoginActivity extends AppCompatActivity {
     DataBaseAlarmsHelper mDataBaseAlarmsHelper;
     DataBaseBoxHelper mDataBaseBoxHelper;
     DataBaseSupervisorHelper mDataBaseSupervisorHelper;
+    DataBaseClinicalDataHelper mDataBaseClinicalDataHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -259,10 +261,12 @@ public class LoginActivity extends AppCompatActivity {
                 JsonArray alarmsArray = jsonObject.getAsJsonObject("response").getAsJsonArray("alarms");
                 JsonArray boxArray = jsonObject.getAsJsonObject("response").getAsJsonArray("box");
                 JsonArray supervisorArray = jsonObject.getAsJsonObject("response").getAsJsonArray("supervisors");
+                JsonObject clinicalDataObject = jsonObject.getAsJsonObject("response").getAsJsonObject("clinicalData");
 
                 getBaseContext().deleteDatabase("alarms_table");
                 getBaseContext().deleteDatabase("boxes_table");
                 getBaseContext().deleteDatabase("supervisors_table");
+                getBaseContext().deleteDatabase("clinical_data_table");
 
                 if (alarmsArray != null) {
                     mDataBaseAlarmsHelper = new DataBaseAlarmsHelper(getBaseContext());
@@ -326,6 +330,20 @@ public class LoginActivity extends AppCompatActivity {
                                 jsonSupervisor.get(REGISTRADO_POR).getAsString(),
                                 jsonSupervisor.get(VINCULO).getAsString(),
                                 jsonSupervisor.get(NOME_SUPERVISOR).getAsString());
+                    }
+                }
+
+                if (clinicalDataObject != null) {
+                    mDataBaseClinicalDataHelper = new DataBaseClinicalDataHelper(getBaseContext());
+                    JsonArray clinicalDataNamesArray = clinicalDataObject.getAsJsonArray("clinicalDataNames");
+
+                    for (int i = 0; i < clinicalDataNamesArray.size(); i++) {
+                        String name = clinicalDataNamesArray.get(i).getAsString();
+
+                        mDataBaseClinicalDataHelper.addData(
+                                name,
+                                clinicalDataObject.get(name).getAsString());
+
                     }
                 }
 
