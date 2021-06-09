@@ -24,7 +24,7 @@ import com.example.pillhelper.dataBase.DataBaseSupervisorHelper;
 import com.example.pillhelper.item.SupervisorItem;
 import com.example.pillhelper.services.JsonPlaceHolderApi;
 import com.example.pillhelper.utils.Constants;
-import com.example.pillhelper.utils.UserIdSingleton;
+import com.example.pillhelper.singleton.UserIdSingleton;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -118,8 +118,6 @@ public class SupervisorListAdapter extends ArrayAdapter<SupervisorItem> {
             data = mDataBaseSupervisorHelper.getData();
             data.move(position + 1);
 
-            String uuidSupervisor = data.getString(0);
-            String registeredBy = data.getString(1);
             String bond = data.getString(2);
 
             switch (bond.toLowerCase()){
@@ -136,7 +134,7 @@ public class SupervisorListAdapter extends ArrayAdapter<SupervisorItem> {
                     bondView.setTextColor(Color.GREEN);
                     break;
                 default:
-                    stringBondView = "Vinculo deletado";
+                    stringBondView = "Vinculo Deletado";
                     bondView.setTextColor(Color.RED);
             }
             bondView.setText(stringBondView);

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.RegisterClinicalDataActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="50dp">
+
+        <TextView
+            android:id="@+id/info_text_medicine"
+            style="@style/MainTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:text="@string/inf_interval_clock"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/info_text_clinical_data"
+            style="@style/MainTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp"
+            android:text="@string/inf_text_clinical_data"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/info_text_medicine" />
+
+
+
+
+        <RelativeLayout
+            android:id="@+id/name_inf_clinical_data_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="35dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginEnd="35dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/info_text_clinical_data">
+
+
+            <EditText
+                android:id="@+id/name_inf_clinical_data"
+                style="@style/EditTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:drawableStart="@drawable/ic_namedadosclinicos"
+                android:drawablePadding="10dp"
+                android:hint="@string/clinical_data_name"
+                android:inputType="text"
+                android:paddingEnd="40dp" />
+
+            <ImageView
+                android:id="@+id/inf_name_clinical_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="5dp"
+                android:src="@drawable/ic_help" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/value_inf_clinical_data_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="35dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="35dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/name_inf_clinical_data_layout">
+
+            <EditText
+                android:id="@+id/value_inf_clinical_data"
+                style="@style/EditTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_valuedadosclinicos"
+                android:drawablePadding="10dp"
+                android:hint="@string/clinical_data_value"
+                android:inputType="text"
+                android:paddingEnd="40dp" />
+
+            <ImageView
+                android:id="@+id/inf_value_clinical_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="5dp"
+                android:src="@drawable/ic_help" />
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/button_register_clinical_data"
+            style="@style/Button_login_sign_in"
+            android:layout_marginTop="450dp"
+            android:background="@drawable/custom_button_login_register"
+            android:stateListAnimator="@null"
+            android:text="Cadastrar"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/info_text_medicine" />
+
+        <Button
+            android:id="@+id/back_button_register_clinical_data"
+            style="@style/Button_login_sign_in"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/custom_button_login_register"
+            android:stateListAnimator="@null"
+            android:text="@string/login_back_button"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/button_register_clinical_data" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

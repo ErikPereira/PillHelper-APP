@@ -66,7 +66,6 @@ public class RegisterActivity extends AppCompatActivity {
         String cell = MaskEditUtil.unmask(binding.telephoneLayout.getText().toString());
         String email = binding.emailLayout.getText().toString();
         String password = binding.senhaLayout.getText().toString();
-        int type = 0; // 1 = login por email 2 = login por telefone
 
         if (binding.emailRadioButton.isChecked()) {
             if (email.isEmpty() || password.isEmpty()) {
@@ -74,7 +73,6 @@ public class RegisterActivity extends AppCompatActivity {
                 return;
             }
 
-            type = 1;
         } else if (binding.telefoneRadioButton.isChecked()) {
             if (cell.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "Dados incompletos", Toast.LENGTH_SHORT).show();
@@ -83,14 +81,18 @@ public class RegisterActivity extends AppCompatActivity {
             // verifica se a string do telefone possui somente numeros
             if (!cell.matches("\\d+") || cell.length() != 11)
                 return;
-
-            type = 2;
         }
 
-        createPost(email, password, cell);
+        String who = "supervisor";
+
+        if(binding.userRadioButton.isChecked()){
+            who = "user";
+        }
+
+        createPostUser(email, password, cell, who);
     }
 
-    private void createPost(String email, String password, String cell) {
+    private void createPostUser(String email, String password, String cell, String who) {
         binding.progressBar.setVisibility(View.VISIBLE);
 
         Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create())
@@ -101,7 +103,14 @@ public class RegisterActivity extends AppCompatActivity {
         String requestStr = formatJSON(email, password, cell);
         JsonObject request = JsonParser.parseString(requestStr).getAsJsonObject();
 
-        Call<JsonObject> call = jsonPlaceHolderApi.postCreateUser(Constants.TOKEN_ACCESS, request);
+        Call<JsonObject> call;
+
+        if (who.equals("user")){
+            call = jsonPlaceHolderApi.postCreateUser(Constants.TOKEN_ACCESS, request);
+        }
+        else {
+            call = jsonPlaceHolderApi.postCreateSupervisors(Constants.TOKEN_ACCESS, request);
+        }
 
         call.enqueue(new Callback<JsonObject>() {
             @Override
@@ -130,13 +139,9 @@ public class RegisterActivity extends AppCompatActivity {
         final JSONObject root = new JSONObject();
 
         try {
-            JSONObject login = new JSONObject();
-
-            login.put("email", email);
-            login.put("cell", cell);
-            login.put("password", password);
-
-            root.put("login", login);
+            root.put("email", email);
+            root.put("cell", cell);
+            root.put("password", password);
 
             return root.toString();
         } catch (JSONException e) {

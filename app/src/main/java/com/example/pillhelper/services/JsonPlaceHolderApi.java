@@ -21,6 +21,10 @@ public interface JsonPlaceHolderApi {
     Call<JsonObject> postCreateUser(@Header("authorization") String token,
                                     @Body JsonObject body);
 
+    @POST(Constants.INSERT_ONE_SUPERVISOR)
+    Call<JsonObject> postCreateSupervisors(@Header("authorization") String token,
+                                    @Body JsonObject body);
+
     @FormUrlEncoded
     @POST(Constants.LOGIN_USER)
     Call<JsonObject> postLogin(@Header("authorization") String token,
@@ -66,4 +70,17 @@ public interface JsonPlaceHolderApi {
     @POST(Constants.REGISTER_SUPERVISOR)
     Call<JsonObject> postRegisterSupervisor(@Header("authorization") String token,
                                                 @Body JsonObject body);
+
+    @POST(Constants.UPDATE_CLINICAL_DATA)
+    Call<JsonObject> postUpdateClinicalData(@Header("authorization") String token,
+                                            @Body JsonObject body);
+
+    @POST(Constants.DELETE_CLINICAL_DATA)
+    Call<JsonObject> postDeleteClinicalData(@Header("authorization") String token,
+                                            @Body JsonObject body);
+
+    @POST(Constants.ADD_CLINICAL_DATA)
+    Call<JsonObject> postAddClinicalData(@Header("authorization") String token,
+                                            @Body JsonObject body);
+
 }

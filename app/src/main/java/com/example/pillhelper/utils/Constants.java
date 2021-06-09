@@ -5,17 +5,22 @@ public class Constants {
     public static final String BASE_URL = "http://192.168.1.11:3000/"; //URL BASE
     public static final String TOKEN_ACCESS = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiZGV2Iiwic3lzdGVtIjoiQVBJIn0.6lrvVMtHdb6P5f-Au4c36SK1OT8kb0_gg5BuEok_TpU";
     public static final String CREATE_USER = "insertOneUser";//O POST PARA CRIAR O USUARIO
-    public static final String LOGIN_USER = "checkLoginUser";//POST PARA EFETUAR O LOGIN
+    public static final String LOGIN_USER = "checkLogin";//POST PARA EFETUAR O LOGIN
     public static final String USER_DATA = "getOneUser";//POST PARA RECEBER OS DADOS DO USUARIO
     public static final String CREATE_ALARM = "createAlarmUser";//POST PARA CRIAR ALARME
     public static final String MODIFY_ALARM = "updateAlarmUser";//POST PARA ALTERAR UM ALARME
     public static final String DELETE_ALARM = "deleteAlarmUser";//POST PARA ALTERAR UM ALARME
     public static final String CREATE_BOX = "registerBox";//POST PARA CRIAR E ALTERAR UMA CAIXA
     public static final String UPDATE_BOX = "updateBoxUser";//POST PARA CRIAR E ALTERAR UMA CAIXA
-    public static final String DELETE_BOX = "deleteBoxInUser";//POST PARA DELETAR UMA CAIXA
+    public static final String DELETE_BOX = "deletecheckLoginBoxInUser";//POST PARA DELETAR UMA CAIXA
     public static final String UPDATE_SUPERVISOR_IN_USER = "updateSupervisorInUser"; // POST para atualizar os dados do supervisor dentro de um usuario
     public static final String DELETE_SUPERVISOR_IN_USER = "deleteSupervisorInUser"; // POST para deletar os dados do supervisor dentro de um usuario
     public static final String REGISTER_SUPERVISOR = "registerSupervisor"; // POST para registar um supervisor dentro de um usuario
+    public static final String ADD_CLINICAL_DATA = "addClinicalData"; // POST para registar um supervisor dentro de um usuario
+    public static final String DELETE_CLINICAL_DATA = "deleteClinicalData"; // POST para registar um supervisor dentro de um usuario
+    public static final String UPDATE_CLINICAL_DATA = "updateClinicalData"; // POST para registar um supervisor dentro de um usuario
+
+    public static final String INSERT_ONE_SUPERVISOR = "insertOneSupervisor"; // POST para registar um supervisor
 
     public static final String ALARM_TYPE = "alarm_type";//1 == fixo 2 == intervalo
     public static final String MEDICINE_TYPE = "medicine_type";//1 == pilula 2 == liquid
@@ -46,6 +51,9 @@ public class Constants {
     public static final String ID_CAIXA = "uuidBox";
     public static final String NOME_CAIXA = "nameBox";
     public static final String MUDAR_USUARIO = "mudarUsuario";
+
+    public static final String NAME_CLINICAL_DATA = "name";
+    public static final String VALUE_CLINICAL_DATA = "value";
 
     public static final String OPEN_BOX_FRAG = "open_box_frag";
 

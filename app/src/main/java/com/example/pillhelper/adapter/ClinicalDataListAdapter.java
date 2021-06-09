@@ -19,11 +19,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.pillhelper.R;
-import com.example.pillhelper.singleton.UserIdSingleton;
-import com.example.pillhelper.dataBase.DataBaseBoxHelper;
-import com.example.pillhelper.item.BoxItem;
+import com.example.pillhelper.dataBase.DataBaseClinicalDataHelper;
+import com.example.pillhelper.item.ClinicalDataItem;
 import com.example.pillhelper.services.JsonPlaceHolderApi;
 import com.example.pillhelper.utils.Constants;
+import com.example.pillhelper.singleton.UserIdSingleton;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -39,24 +39,22 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.example.pillhelper.utils.Constants.BASE_URL;
-import static com.example.pillhelper.utils.Constants.ID_CAIXA;
 
-public class BoxListAdapter extends ArrayAdapter<BoxItem> {
-
-    private static final String TAG = "BoxListAdapter";
+public class ClinicalDataListAdapter extends ArrayAdapter<ClinicalDataItem> {
+    private static final String TAG = "ClinicalDataListAdapter";
 
     private Context mContext;
     private int mResource;
-    private DataBaseBoxHelper mDataBaseBoxHelper;
+    private DataBaseClinicalDataHelper mDataBaseClinicalDataHelper;
     private JsonPlaceHolderApi jsonPlaceHolderApi;
-    private EditText editTextName;
+    private EditText editTextValue;
     private Cursor data;
 
-    public BoxListAdapter(Context context, int resource, ArrayList<BoxItem> objects) {
+    public ClinicalDataListAdapter(Context context, int resource, ArrayList<ClinicalDataItem> objects) {
         super(context, resource, objects);
         mContext = context;
         mResource = resource;
-        mDataBaseBoxHelper = new DataBaseBoxHelper(context);
+        mDataBaseClinicalDataHelper = new DataBaseClinicalDataHelper(context);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -75,45 +73,45 @@ public class BoxListAdapter extends ArrayAdapter<BoxItem> {
 
         loadDataToView(convertView, position);
 
-        ConstraintLayout constraintLayout = convertView.findViewById(R.id.caixa_list_layout);
+        ConstraintLayout constraintLayout = convertView.findViewById(R.id.clinical_data_list_layout);
 
-        View finalConvertView = convertView;
         constraintLayout.setOnClickListener(v -> {
 
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             LayoutInflater insideInflater = LayoutInflater.from(getContext());
 
-            View view = insideInflater.inflate(R.layout.layout_dialog_box, parent, false);
+            View view = insideInflater.inflate(R.layout.layout_dialog_clinical_data, parent, false);
 
             builder.setView(view)
-                    .setTitle(R.string.dialog_change_name_title)
+                    .setTitle(R.string.dialog_change_name_title_clinical_data)
                     .setNegativeButton(R.string.cancel, (dialog, id) -> dialog.dismiss())
                     .setPositiveButton(R.string.ok, (dialog, which) -> {
-                        data = mDataBaseBoxHelper.getData();
+                        data = mDataBaseClinicalDataHelper.getData();
                         data.move(position + 1);
 
-                        String newName = editTextName.getText().toString();
+                        String nameClinicalData = data.getString(0);
+                        String newValue = editTextValue.getText().toString();
 
-                        if (!newName.isEmpty()) {
-                            createPostUpdateBox(finalConvertView, position, data.getString(0), newName);
+                        if (!newValue.isEmpty()) {
+                            createPostUpdateClinicalData(nameClinicalData, newValue);
                         } else {
                             Toast.makeText(getContext(), "Nome inválido", Toast.LENGTH_LONG).show();
                         }
                     });
 
-            editTextName = view.findViewById(R.id.edit_box_name);
+            editTextValue = view.findViewById(R.id.edit_clinical_data_value);
 
             AlertDialog dialog = builder.create();
             dialog.show();
         });
 
-        ImageView imageView = convertView.findViewById(R.id.caixa_list_image);
+        ImageView imageView = convertView.findViewById(R.id.clinical_data_list_image);
         imageView.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
 
             builder.setMessage(R.string.dialog_message)
                     .setTitle(R.string.dialog_title)
-                    .setPositiveButton(R.string.ok, (dialog, id) -> createPostDeleteBox(position, getItem(position).getUuidBox()))
+                    .setPositiveButton(R.string.ok, (dialog, id) -> createPostDeleteClinicalData(position, getItem(position).getName()))
                     .setNegativeButton(R.string.cancel, (dialog, id) -> dialog.dismiss());
 
             AlertDialog dialog = builder.create();
@@ -124,18 +122,21 @@ public class BoxListAdapter extends ArrayAdapter<BoxItem> {
     }
 
     private void loadDataToView(View view, int position){
-        data = mDataBaseBoxHelper.getData();
+        data = mDataBaseClinicalDataHelper.getData();
         data.move(position + 1);
 
-        TextView nameView = view.findViewById(R.id.box_name);
-        nameView.setText(data.getString(1));
+        TextView nameView = view.findViewById(R.id.clinical_data_name);
+        TextView valueView = view.findViewById(R.id.clinical_data_value);
+
+        nameView.setText(data.getString(0).replaceAll(" ","\n"));
+        valueView.setText(data.getString(1));
     }
 
-    private void createPostUpdateBox(View convertView, int position, String uuidBox, String newName) {
-        String requestStr = formatJSONUpdateBox(uuidBox, newName);
+    private void createPostUpdateClinicalData(String nameClinicalData, String newValue) {
+        String requestStr = formatJSONUpdateClinicalData(nameClinicalData, newValue);
         JsonObject request = JsonParser.parseString(requestStr).getAsJsonObject();
 
-        Call<JsonObject> call = jsonPlaceHolderApi.postUpdateBox(Constants.TOKEN_ACCESS, request);
+        Call<JsonObject> call = jsonPlaceHolderApi.postUpdateClinicalData(Constants.TOKEN_ACCESS, request);
 
         call.enqueue(new Callback<JsonObject>() {
             @Override
@@ -145,9 +146,9 @@ public class BoxListAdapter extends ArrayAdapter<BoxItem> {
                     return;
                 }
 
-                mDataBaseBoxHelper.updateData(
-                        uuidBox,
-                        newName);
+                mDataBaseClinicalDataHelper.updateData(
+                        nameClinicalData,
+                        newValue);
 
                 notifyDataSetChanged();
 
@@ -161,27 +162,11 @@ public class BoxListAdapter extends ArrayAdapter<BoxItem> {
         });
     }
 
-    private String formatJSONUpdateBox(String uuidBox, String nameBox) {
-        final JSONObject root = new JSONObject();
-
-        try {
-            root.put("uuidUser", UserIdSingleton.getInstance().getUserId());
-            root.put(ID_CAIXA, String.valueOf(uuidBox));
-            root.put("newNameBox", String.valueOf(nameBox));
-
-            return root.toString();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    private void createPostDeleteBox(int position, String uuidBox){
-        String requestStr = formatJSONDeleteBox(uuidBox);
+    private void createPostDeleteClinicalData(int position, String nameClinicalData){
+        String requestStr = formatJSONDeleteClinicalData(nameClinicalData);
         JsonObject request = JsonParser.parseString(requestStr).getAsJsonObject();
 
-        Call<JsonObject> call = jsonPlaceHolderApi.postDeleteBox(Constants.TOKEN_ACCESS, request);
+        Call<JsonObject> call = jsonPlaceHolderApi.postDeleteClinicalData(Constants.TOKEN_ACCESS, request);
 
         call.enqueue(new Callback<JsonObject>() {
             @Override
@@ -192,14 +177,14 @@ public class BoxListAdapter extends ArrayAdapter<BoxItem> {
                     return;
                 }
 
-                Cursor data = mDataBaseBoxHelper.getData();
+                Cursor data = mDataBaseClinicalDataHelper.getData();
                 data.move(position + 1);
 
-                int isDeleted = mDataBaseBoxHelper.removeData(uuidBox);
+                int isDeleted = mDataBaseClinicalDataHelper.removeData(nameClinicalData);
 
                 if (isDeleted > 0) {
-                    BoxListAdapter.this.remove(getItem(position));
-                    BoxListAdapter.this.notifyDataSetChanged();
+                    ClinicalDataListAdapter.this.remove(getItem(position));
+                    ClinicalDataListAdapter.this.notifyDataSetChanged();
                 } else Toast.makeText(getContext(), "Algo deu errado", Toast.LENGTH_LONG).show();
 
                 Log.e(TAG, "onResponse: " + response);
@@ -212,12 +197,13 @@ public class BoxListAdapter extends ArrayAdapter<BoxItem> {
         });
     }
 
-    private String formatJSONDeleteBox(String uuidBox) {
+    private String formatJSONUpdateClinicalData(String nameClinicalData, String newValue) {
         final JSONObject root = new JSONObject();
 
         try {
             root.put("uuidUser", UserIdSingleton.getInstance().getUserId());
-            root.put(ID_CAIXA, uuidBox);
+            root.put("nameClinicalData", nameClinicalData);
+            root.put("valueClinicalData", newValue);
 
             return root.toString();
         } catch (JSONException e) {
@@ -225,4 +211,19 @@ public class BoxListAdapter extends ArrayAdapter<BoxItem> {
         }
         return null;
     }
+
+    private String formatJSONDeleteClinicalData(String nameClinicalData) {
+        final JSONObject root = new JSONObject();
+
+        try {
+            root.put("uuidUser", UserIdSingleton.getInstance().getUserId());
+            root.put("nameClinicalData", nameClinicalData);
+
+            return root.toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

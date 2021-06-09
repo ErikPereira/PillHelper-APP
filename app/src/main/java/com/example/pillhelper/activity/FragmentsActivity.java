@@ -18,6 +18,7 @@ import com.example.pillhelper.fragment.FragmentAlarms;
 import com.example.pillhelper.fragment.FragmentBoxes;
 import com.example.pillhelper.R;
 import com.example.pillhelper.databinding.ActivityFragmentsBinding;
+import com.example.pillhelper.fragment.FragmentClinicalData;
 import com.example.pillhelper.fragment.FragmentSupervisors;
 
 import static com.example.pillhelper.utils.Constants.OPEN_BOX_FRAG;
@@ -55,6 +56,11 @@ public class FragmentsActivity extends AppCompatActivity {
                     actualFragment = new FragmentSupervisors();
                     loadFragment(actualFragment);
                     break;
+                case R.id.nav_dados_clinicos:
+                    binding.fabFragment.setImageDrawable(getBaseContext().getDrawable(R.drawable.ic_add_dadosclinicos));
+                    actualFragment = new FragmentClinicalData();
+                    loadFragment(actualFragment);
+                    break;
             }
 
             return true;
@@ -68,6 +74,11 @@ public class FragmentsActivity extends AppCompatActivity {
 
             if (actualFragment instanceof FragmentSupervisors) {
                 Intent intent = new Intent(this, RegisterSupervisorActivity.class);
+                startActivity(intent);
+            }
+
+            if (actualFragment instanceof FragmentClinicalData) {
+                Intent intent = new Intent(this, RegisterClinicalDataActivity.class);
                 startActivity(intent);
             }
 
@@ -92,6 +103,9 @@ public class FragmentsActivity extends AppCompatActivity {
 
         else if (fragment instanceof FragmentSupervisors)
             getSupportActionBar().setTitle(R.string.menu_supervisor);
+
+        else if (fragment instanceof FragmentClinicalData)
+            getSupportActionBar().setTitle(R.string.menu_dados_clinicos);
 
         else getSupportActionBar().setTitle(R.string.menu_caixas);
 
