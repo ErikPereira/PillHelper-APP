@@ -19,7 +19,8 @@ import com.example.pillhelper.dataBase.DataBaseUserHelper;
 import com.example.pillhelper.services.JsonPlaceHolderApi;
 import com.example.pillhelper.utils.MaskEditUtil;
 import com.example.pillhelper.R;
-import com.example.pillhelper.utils.UserIdSingleton;
+import com.example.pillhelper.singleton.UserIdSingleton;
+import com.example.pillhelper.singleton.SupervisorIdSingleton;
 import com.example.pillhelper.databinding.ActivityLoginBinding;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -195,8 +196,10 @@ public class LoginActivity extends AppCompatActivity {
                 JsonObject postResponse = response.body();
                 Boolean error = postResponse.get("error").getAsBoolean();
                 if (error.equals(false)) {
-                    String userId = postResponse.get("response").getAsString();
-                    UserIdSingleton.getInstance().setUserId(userId);
+
+                    JsonObject responseObject = postResponse.get("response").getAsJsonObject();
+                    String uuid = responseObject.get("uuid").getAsString();
+                    String who = responseObject.get("who").getAsString();
 
                     if (binding.rememberMeCheckbox.isChecked()) {
                         mEditor.putString(getString(R.string.checkboxKey), "True");
@@ -224,7 +227,13 @@ public class LoginActivity extends AppCompatActivity {
                         mEditor.commit();
                     }
 
-                    loadDataBase();
+                    if (who.equals("user")) {
+                        UserIdSingleton.getInstance().setUserId(uuid);
+                        loadDataBaseUser();
+                    }
+                    else {
+                        SupervisorIdSingleton.getInstance().setSupervisorId(uuid);
+                    }
                     return;
                 }
 
@@ -238,7 +247,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void loadDataBase() {
+    private void loadDataBaseUser() {
         Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create())
                 .build();
 

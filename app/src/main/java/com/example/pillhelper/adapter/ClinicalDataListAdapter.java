@@ -3,7 +3,6 @@ package com.example.pillhelper.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +23,7 @@ import com.example.pillhelper.dataBase.DataBaseClinicalDataHelper;
 import com.example.pillhelper.item.ClinicalDataItem;
 import com.example.pillhelper.services.JsonPlaceHolderApi;
 import com.example.pillhelper.utils.Constants;
-import com.example.pillhelper.utils.UserIdSingleton;
+import com.example.pillhelper.singleton.UserIdSingleton;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 

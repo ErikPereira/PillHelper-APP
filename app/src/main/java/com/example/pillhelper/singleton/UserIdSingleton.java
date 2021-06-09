@@ -1,4 +1,4 @@
-package com.example.pillhelper.utils;
+package com.example.pillhelper.singleton;
 
 public class UserIdSingleton {
     private static UserIdSingleton mInstance= null;

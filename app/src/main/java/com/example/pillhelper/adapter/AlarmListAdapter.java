@@ -21,7 +21,7 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.example.pillhelper.receiver.AlarmReceiver;
 import com.example.pillhelper.R;
-import com.example.pillhelper.utils.UserIdSingleton;
+import com.example.pillhelper.singleton.UserIdSingleton;
 import com.example.pillhelper.dataBase.DataBaseAlarmsHelper;
 import com.example.pillhelper.item.AlarmItem;
 import com.example.pillhelper.services.JsonPlaceHolderApi;

@@ -17,7 +17,7 @@ import com.example.pillhelper.utils.Constants;
 import com.example.pillhelper.dataBase.DataBaseAlarmsHelper;
 import com.example.pillhelper.services.JsonPlaceHolderApi;
 import com.example.pillhelper.R;
-import com.example.pillhelper.utils.UserIdSingleton;
+import com.example.pillhelper.singleton.UserIdSingleton;
 import com.example.pillhelper.databinding.ActivityFixedAlarmBinding;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
