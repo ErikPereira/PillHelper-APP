@@ -18,7 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.example.pillhelper.utils.Constants;
-import com.example.pillhelper.dataBase.DataBaseBoxHelper;
+import com.example.pillhelper.dataBaseUser.DataBaseBoxHelper;
 import com.example.pillhelper.services.JsonPlaceHolderApi;
 import com.example.pillhelper.singleton.UserIdSingleton;
 import com.example.pillhelper.databinding.ActivityRegisterBoxBinding;

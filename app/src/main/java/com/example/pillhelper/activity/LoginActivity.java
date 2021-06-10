@@ -10,12 +10,13 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.pillhelper.dataBase.DataBaseClinicalDataHelper;
-import com.example.pillhelper.dataBase.DataBaseSupervisorHelper;
+import com.example.pillhelper.dataBaseSupervisor.DataBaseBoundUserHelper;
+import com.example.pillhelper.dataBaseUser.DataBaseClinicalDataHelper;
+import com.example.pillhelper.dataBaseUser.DataBaseBoundSupervisorHelper;
 import com.example.pillhelper.utils.Constants;
-import com.example.pillhelper.dataBase.DataBaseAlarmsHelper;
-import com.example.pillhelper.dataBase.DataBaseBoxHelper;
-import com.example.pillhelper.dataBase.DataBaseUserHelper;
+import com.example.pillhelper.dataBaseUser.DataBaseAlarmsHelper;
+import com.example.pillhelper.dataBaseUser.DataBaseBoxHelper;
+import com.example.pillhelper.dataBaseUser.DataBaseUserHelper;
 import com.example.pillhelper.services.JsonPlaceHolderApi;
 import com.example.pillhelper.utils.MaskEditUtil;
 import com.example.pillhelper.R;
@@ -51,8 +52,10 @@ import static com.example.pillhelper.utils.Constants.MINUTO;
 import static com.example.pillhelper.utils.Constants.NOME_CAIXA;
 import static com.example.pillhelper.utils.Constants.NOME_REMEDIO;
 import static com.example.pillhelper.utils.Constants.NOME_SUPERVISOR;
+import static com.example.pillhelper.utils.Constants.NOME_USER;
 import static com.example.pillhelper.utils.Constants.NOTIFICATION_ID;
 import static com.example.pillhelper.utils.Constants.OPEN_BOX_FRAG;
+import static com.example.pillhelper.utils.Constants.WHO_USER_FRAG;
 import static com.example.pillhelper.utils.Constants.PERIODO_HORA;
 import static com.example.pillhelper.utils.Constants.PERIODO_MIN;
 import static com.example.pillhelper.utils.Constants.QUANTIDADE;
@@ -78,7 +81,8 @@ public class LoginActivity extends AppCompatActivity {
     private SharedPreferences.Editor mEditor;
     DataBaseAlarmsHelper mDataBaseAlarmsHelper;
     DataBaseBoxHelper mDataBaseBoxHelper;
-    DataBaseSupervisorHelper mDataBaseSupervisorHelper;
+    DataBaseBoundSupervisorHelper mDataBaseBoundSupervisorHelper;
+    DataBaseBoundUserHelper mDataBaseBoundUserHelper;
     DataBaseClinicalDataHelper mDataBaseClinicalDataHelper;
 
     @Override
@@ -233,6 +237,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
                     else {
                         SupervisorIdSingleton.getInstance().setSupervisorId(uuid);
+                        loadDataBaseSupervisor();
                     }
                     return;
                 }
@@ -328,13 +333,13 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 if (supervisorArray != null) {
-                    mDataBaseSupervisorHelper = new DataBaseSupervisorHelper(getBaseContext());
+                    mDataBaseBoundSupervisorHelper = new DataBaseBoundSupervisorHelper(getBaseContext());
 
                     for (int i = 0; i < supervisorArray.size(); i++) {
                         JsonElement jsonElement = supervisorArray.get(i);
                         JsonObject jsonSupervisor = jsonElement.getAsJsonObject();
 
-                        mDataBaseSupervisorHelper.addData(
+                        mDataBaseBoundSupervisorHelper.addData(
                                 jsonSupervisor.get(ID_SUPERVISOR).getAsString(),
                                 jsonSupervisor.get(REGISTRADO_POR).getAsString(),
                                 jsonSupervisor.get(VINCULO).getAsString(),
@@ -358,6 +363,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(LoginActivity.this, FragmentsActivity.class);
                 intent.putExtra(OPEN_BOX_FRAG, false);
+                intent.putExtra(WHO_USER_FRAG, "user");
                 startActivity(intent);
                 finish();
 
@@ -371,4 +377,65 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void loadDataBaseSupervisor() {
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        JsonPlaceHolderApi jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
+        Call<JsonObject> call = jsonPlaceHolderApi.postSupervisorData(Constants.TOKEN_ACCESS,
+                SupervisorIdSingleton.getInstance().getSupervisorId());
+
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                if (!response.isSuccessful()) {
+                    binding.progressBar.setVisibility(View.GONE);
+                    Toast.makeText(getBaseContext(), "Um erro ocorreu", Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "onResponse: " + response);
+                    return;
+                }
+
+                JsonObject jsonObject = response.body();
+                JsonArray usersArray = jsonObject.getAsJsonObject("response").getAsJsonArray("users");
+
+                getBaseContext().deleteDatabase("alarms_table");
+                getBaseContext().deleteDatabase("boxes_table");
+                getBaseContext().deleteDatabase("bound_supervisors_table");
+                getBaseContext().deleteDatabase("bound_user_table");
+                getBaseContext().deleteDatabase("clinical_data_table");
+
+                if (usersArray != null) {
+                    mDataBaseBoundUserHelper = new DataBaseBoundUserHelper(getBaseContext());
+
+                    for (int i = 0; i < usersArray.size(); i++) {
+                        JsonElement jsonElement = usersArray.get(i);
+                        JsonObject jsonUser = jsonElement.getAsJsonObject();
+
+                        mDataBaseBoundUserHelper.addData(
+                                jsonUser.get("uuidUser").getAsString(),
+                                jsonUser.get(REGISTRADO_POR).getAsString(),
+                                jsonUser.get(VINCULO).getAsString(),
+                                jsonUser.get(NOME_USER).getAsString());
+                    }
+                }
+
+                Intent intent = new Intent(LoginActivity.this, FragmentsActivity.class);
+                intent.putExtra(OPEN_BOX_FRAG, false);
+                intent.putExtra(WHO_USER_FRAG, "supervisor");
+                startActivity(intent);
+                finish();
+
+                binding.progressBar.setVisibility(View.GONE);
+                Log.e(TAG, "onResponse: " + response);
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.e(TAG, "onFailure:" + t);
+            }
+        });
+    }
+
 }

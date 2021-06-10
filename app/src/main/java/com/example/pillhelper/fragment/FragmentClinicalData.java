@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.pillhelper.R;
 import com.example.pillhelper.adapter.ClinicalDataListAdapter;
-import com.example.pillhelper.dataBase.DataBaseClinicalDataHelper;
+import com.example.pillhelper.dataBaseUser.DataBaseClinicalDataHelper;
 import com.example.pillhelper.databinding.FragmentClinicalDataBinding;
 import com.example.pillhelper.item.ClinicalDataItem;
 

@@ -24,6 +24,7 @@
     <string name="menu_alarme">Alarmes</string>
     <string name="menu_caixas">Caixas</string>
     <string name="menu_supervisor">Supervisor</string>
+    <string name="menu_usuarios">Usuários</string>
     <string name="menu_dados_clinicos">Dados Clínicos</string>
     <string name="login_back_button">Voltar</string>
 
@@ -79,6 +80,9 @@
 
     <string name="dialog_change_name_title_supervisor">Altere o Nome do Supervisor</string>
     <string name="dialog_change_name_hint_supervisor">Nome do Supervisor</string>
+
+    <string name="dialog_change_name_title_user">Altere o Nome do Usuário</string>
+    <string name="dialog_change_name_hint_user">Nome do Usuário</string>
 
     <!-- Dias da semana-->
     <string name="sunday">D</string>

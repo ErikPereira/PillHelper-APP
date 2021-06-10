@@ -20,11 +20,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.pillhelper.R;
-import com.example.pillhelper.dataBase.DataBaseSupervisorHelper;
+import com.example.pillhelper.dataBaseSupervisor.DataBaseBoundUserHelper;
 import com.example.pillhelper.item.SupervisorItem;
 import com.example.pillhelper.services.JsonPlaceHolderApi;
+import com.example.pillhelper.singleton.SupervisorIdSingleton;
 import com.example.pillhelper.utils.Constants;
-import com.example.pillhelper.singleton.UserIdSingleton;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -42,25 +42,26 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import static com.example.pillhelper.utils.Constants.BASE_URL;
 import static com.example.pillhelper.utils.Constants.ID_SUPERVISOR;
 import static com.example.pillhelper.utils.Constants.NOME_SUPERVISOR;
+import static com.example.pillhelper.utils.Constants.NOME_USER;
 import static com.example.pillhelper.utils.Constants.REGISTRADO_POR;
 import static com.example.pillhelper.utils.Constants.VINCULO;
 
-public class SupervisorListAdapter extends ArrayAdapter<SupervisorItem> {
+public class BoundUserListAdapter extends ArrayAdapter<SupervisorItem> {
 
-    private static final String TAG = "SupervisorListAdapter";
+    private static final String TAG = "BoundSupervisorListAdapter";
 
     private Context mContext;
     private int mResource;
-    private DataBaseSupervisorHelper mDataBaseSupervisorHelper;
+    private DataBaseBoundUserHelper mDataBaseBoundUserHelper;
     private JsonPlaceHolderApi jsonPlaceHolderApi;
     private EditText editTextName;
     private Cursor data;
 
-    public SupervisorListAdapter(Context context, int resource, ArrayList<SupervisorItem> objects) {
+    public BoundUserListAdapter(Context context, int resource, ArrayList<SupervisorItem> objects) {
         super(context, resource, objects);
         mContext = context;
         mResource = resource;
-        mDataBaseSupervisorHelper = new DataBaseSupervisorHelper(context);
+        mDataBaseBoundUserHelper = new DataBaseBoundUserHelper(context);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -89,19 +90,19 @@ public class SupervisorListAdapter extends ArrayAdapter<SupervisorItem> {
             View view = insideInflater.inflate(R.layout.layout_dialog_supervisor, parent, false);
 
             builder.setView(view)
-                    .setTitle(R.string.dialog_change_name_title_supervisor)
+                    .setTitle(R.string.dialog_change_name_title_user)
                     .setNegativeButton(R.string.cancel, (dialog, id) -> dialog.dismiss())
                     .setPositiveButton(R.string.ok, (dialog, which) -> {
-                        data = mDataBaseSupervisorHelper.getData();
+                        data = mDataBaseBoundUserHelper.getData();
                         data.move(position + 1);
 
-                        String uuidSupervisor = data.getString(0);
+                        String uuidUser = data.getString(0);
                         String registeredBy = data.getString(1);
                         String bond = data.getString(2);
                         String newName = editTextName.getText().toString();
 
                         if (!newName.isEmpty()) {
-                            createPostUpdateSupervisor(uuidSupervisor, registeredBy, bond, newName);
+                            createPostUpdateUser(uuidUser, registeredBy, bond, newName);
                         } else {
                             Toast.makeText(getContext(), "Nome inválido", Toast.LENGTH_LONG).show();
                         }
@@ -115,7 +116,7 @@ public class SupervisorListAdapter extends ArrayAdapter<SupervisorItem> {
             String stringBondView = "";
             TextView bondView = view.findViewById(R.id.edit_status_supervisor);
 
-            data = mDataBaseSupervisorHelper.getData();
+            data = mDataBaseBoundUserHelper.getData();
             data.move(position + 1);
 
             String bond = data.getString(2);
@@ -149,7 +150,7 @@ public class SupervisorListAdapter extends ArrayAdapter<SupervisorItem> {
 
             builder.setMessage(R.string.dialog_message)
                     .setTitle(R.string.dialog_title)
-                    .setPositiveButton(R.string.ok, (dialog, id) -> createPostDeleteSupervisor(position, getItem(position).getUuidSupervisor()))
+                    .setPositiveButton(R.string.ok, (dialog, id) -> createPostDeleteUser(position, getItem(position).getUuidSupervisor()))
                     .setNegativeButton(R.string.cancel, (dialog, id) -> dialog.dismiss());
 
             AlertDialog dialog = builder.create();
@@ -160,18 +161,18 @@ public class SupervisorListAdapter extends ArrayAdapter<SupervisorItem> {
     }
 
     private void loadDataToView(View view, int position){
-        data = mDataBaseSupervisorHelper.getData();
+        data = mDataBaseBoundUserHelper.getData();
         data.move(position + 1);
 
         TextView nameView = view.findViewById(R.id.supervisor_name);
         nameView.setText(data.getString(3));
     }
 
-    private void createPostUpdateSupervisor(String uuidSupervisor, String registeredBy, String bond, String newName) {
-        String requestStr = formatJSONUpdateSupervisor(uuidSupervisor, registeredBy, bond, newName);
+    private void createPostUpdateUser(String uuidUser, String registeredBy, String bond, String newName) {
+        String requestStr = formatJSONUpdateUser(uuidUser, registeredBy, bond, newName);
         JsonObject request = JsonParser.parseString(requestStr).getAsJsonObject();
 
-        Call<JsonObject> call = jsonPlaceHolderApi.postUpdateSupervisorInUser(Constants.TOKEN_ACCESS, request);
+        Call<JsonObject> call = jsonPlaceHolderApi.postUpdateUserInSupervisor(Constants.TOKEN_ACCESS, request);
 
         call.enqueue(new Callback<JsonObject>() {
             @Override
@@ -181,8 +182,8 @@ public class SupervisorListAdapter extends ArrayAdapter<SupervisorItem> {
                     return;
                 }
 
-                mDataBaseSupervisorHelper.updateData(
-                        uuidSupervisor,
+                mDataBaseBoundUserHelper.updateData(
+                        uuidUser,
                         registeredBy,
                         bond,
                         newName);
@@ -199,11 +200,11 @@ public class SupervisorListAdapter extends ArrayAdapter<SupervisorItem> {
         });
     }
 
-    private void createPostDeleteSupervisor(int position, String uuidSupervisor){
-        String requestStr = formatJSONDeleteSupervisor(uuidSupervisor);
+    private void createPostDeleteUser(int position, String uuidUser){
+        String requestStr = formatJSONDeleteUser(uuidUser);
         JsonObject request = JsonParser.parseString(requestStr).getAsJsonObject();
 
-        Call<JsonObject> call = jsonPlaceHolderApi.postDeleteSupervisorInUser(Constants.TOKEN_ACCESS, request);
+        Call<JsonObject> call = jsonPlaceHolderApi.postDeleteUserInSupervisor(Constants.TOKEN_ACCESS, request);
 
         call.enqueue(new Callback<JsonObject>() {
             @Override
@@ -214,14 +215,14 @@ public class SupervisorListAdapter extends ArrayAdapter<SupervisorItem> {
                     return;
                 }
 
-                Cursor data = mDataBaseSupervisorHelper.getData();
+                Cursor data = mDataBaseBoundUserHelper.getData();
                 data.move(position + 1);
 
-                int isDeleted = mDataBaseSupervisorHelper.removeData(uuidSupervisor);
+                int isDeleted = mDataBaseBoundUserHelper.removeData(uuidUser);
 
                 if (isDeleted > 0) {
-                    SupervisorListAdapter.this.remove(getItem(position));
-                    SupervisorListAdapter.this.notifyDataSetChanged();
+                    BoundUserListAdapter.this.remove(getItem(position));
+                    BoundUserListAdapter.this.notifyDataSetChanged();
                 } else Toast.makeText(getContext(), "Algo deu errado", Toast.LENGTH_LONG).show();
 
                 Log.e(TAG, "onResponse: " + response);
@@ -234,19 +235,19 @@ public class SupervisorListAdapter extends ArrayAdapter<SupervisorItem> {
         });
     }
 
-    private String formatJSONUpdateSupervisor(String uuidSupervisor, String registeredBy, String bond, String newName) {
+    private String formatJSONUpdateUser(String uuidSupervisor, String registeredBy, String bond, String newName) {
         final JSONObject root = new JSONObject();
 
         try {
             JSONObject updateSupervisor = new JSONObject();
-            updateSupervisor.put(ID_SUPERVISOR, String.valueOf(uuidSupervisor));
+            updateSupervisor.put("uuidUser", String.valueOf(uuidSupervisor));
             updateSupervisor.put(REGISTRADO_POR, String.valueOf(registeredBy));
             updateSupervisor.put(VINCULO, String.valueOf(bond));
-            updateSupervisor.put(NOME_SUPERVISOR, String.valueOf(newName));
+            updateSupervisor.put(NOME_USER, String.valueOf(newName));
 
 
-            root.put("uuidUser", UserIdSingleton.getInstance().getUserId());
-            root.put("supervisor", updateSupervisor);
+            root.put(ID_SUPERVISOR, SupervisorIdSingleton.getInstance().getSupervisorId());
+            root.put("user", updateSupervisor);
 
             return root.toString();
         } catch (JSONException e) {
@@ -255,12 +256,12 @@ public class SupervisorListAdapter extends ArrayAdapter<SupervisorItem> {
         return null;
     }
 
-    private String formatJSONDeleteSupervisor(String uuidSupervisor) {
+    private String formatJSONDeleteUser(String uuidUser) {
         final JSONObject root = new JSONObject();
 
         try {
-            root.put("uuidUser", UserIdSingleton.getInstance().getUserId());
-            root.put(ID_SUPERVISOR, uuidSupervisor);
+            root.put(ID_SUPERVISOR, SupervisorIdSingleton.getInstance().getSupervisorId());
+            root.put("uuidUser", uuidUser);
 
             return root.toString();
         } catch (JSONException e) {

@@ -14,98 +14,127 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.pillhelper.databinding.ActivityFragmentsSupervisorBinding;
 import com.example.pillhelper.fragment.FragmentAlarms;
 import com.example.pillhelper.fragment.FragmentBoxes;
 import com.example.pillhelper.R;
 import com.example.pillhelper.databinding.ActivityFragmentsBinding;
 import com.example.pillhelper.fragment.FragmentClinicalData;
-import com.example.pillhelper.fragment.FragmentSupervisors;
+import com.example.pillhelper.fragment.FragmentBoundSupervisors;
+import com.example.pillhelper.fragment.FragmentBoundUsers;
 
 import static com.example.pillhelper.utils.Constants.OPEN_BOX_FRAG;
+import static com.example.pillhelper.utils.Constants.WHO_USER_FRAG;
 
 public class FragmentsActivity extends AppCompatActivity {
 
-    private ActivityFragmentsBinding binding;
+    private ActivityFragmentsBinding bindingUser;
+    private ActivityFragmentsSupervisorBinding bindingSupervisor;
     private static final String TAG = "AlarmeActivity";
     private Fragment actualFragment;
     private static final int MY_CAMERA_REQUEST_CODE = 100;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        final String whoUserFrag = getIntent().getStringExtra(WHO_USER_FRAG);
         super.onCreate(savedInstanceState);
-        binding = ActivityFragmentsBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        bindingUser = ActivityFragmentsBinding.inflate(getLayoutInflater());
+        bindingSupervisor = ActivityFragmentsSupervisorBinding.inflate(getLayoutInflater());
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        binding.bottomNavigation.setOnNavigationItemSelectedListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.nav_alarmes:
-                    binding.fabFragment.setImageDrawable(getBaseContext().getDrawable(R.drawable.ic_alarm_add_white_24dp));
-                    actualFragment = new FragmentAlarms();
-                    loadFragment(actualFragment);
-                    break;
-                case R.id.nav_caixas:
-                    binding.fabFragment.setImageDrawable(getBaseContext().getDrawable(R.drawable.ic_add_box_white_24dp));
-                    actualFragment = new FragmentBoxes();
-                    loadFragment(actualFragment);
-                    break;
-                case R.id.nav_supervisor:
-                    binding.fabFragment.setImageDrawable(getBaseContext().getDrawable(R.drawable.ic_add_supervisor_white_24dp));
-                    actualFragment = new FragmentSupervisors();
-                    loadFragment(actualFragment);
-                    break;
-                case R.id.nav_dados_clinicos:
-                    binding.fabFragment.setImageDrawable(getBaseContext().getDrawable(R.drawable.ic_add_dadosclinicos));
-                    actualFragment = new FragmentClinicalData();
-                    loadFragment(actualFragment);
-                    break;
-            }
+        if (whoUserFrag.equals("user")) {
+            setContentView(bindingUser.getRoot());
+            bindingUser.bottomNavigation.setOnNavigationItemSelectedListener(item -> {
+                switch (item.getItemId()) {
+                    case R.id.nav_alarmes:
+                        bindingUser.fabFragment.setImageDrawable(getBaseContext().getDrawable(R.drawable.ic_alarm_add_white_24dp));
+                        actualFragment = new FragmentAlarms();
+                        loadFragment(actualFragment);
+                        break;
+                    case R.id.nav_caixas:
+                        bindingUser.fabFragment.setImageDrawable(getBaseContext().getDrawable(R.drawable.ic_add_box_white_24dp));
+                        actualFragment = new FragmentBoxes();
+                        loadFragment(actualFragment);
+                        break;
+                    case R.id.nav_supervisor:
+                        bindingUser.fabFragment.setImageDrawable(getBaseContext().getDrawable(R.drawable.ic_add_supervisor_white_24dp));
+                        actualFragment = new FragmentBoundSupervisors();
+                        loadFragment(actualFragment);
+                        break;
+                    case R.id.nav_dados_clinicos:
+                        bindingUser.fabFragment.setImageDrawable(getBaseContext().getDrawable(R.drawable.ic_add_dadosclinicos));
+                        actualFragment = new FragmentClinicalData();
+                        loadFragment(actualFragment);
+                        break;
+                }
 
-            return true;
-        });
+                return true;
+            });
 
-        binding.fabFragment.setOnClickListener(v -> {
-            if (actualFragment instanceof FragmentAlarms) {
-                Intent intent = new Intent(this, RegisterAlarmActivity.class);
-                startActivity(intent);
-            }
+            bindingUser.fabFragment.setOnClickListener(v -> {
+                if (actualFragment instanceof FragmentAlarms) {
+                    Intent intent = new Intent(this, RegisterAlarmActivity.class);
+                    startActivity(intent);
+                }
 
-            if (actualFragment instanceof FragmentSupervisors) {
+                if (actualFragment instanceof FragmentBoundSupervisors) {
+                    Intent intent = new Intent(this, RegisterSupervisorActivity.class);
+                    startActivity(intent);
+                }
+
+                if (actualFragment instanceof FragmentClinicalData) {
+                    Intent intent = new Intent(this, RegisterClinicalDataActivity.class);
+                    startActivity(intent);
+                }
+
+                if (actualFragment instanceof FragmentBoxes) {
+                    if (!checkPermissions()) {
+                        requestPermissions();
+                    } else {
+                        Intent intent = new Intent(this, RegisterBoxActivity.class);
+                        startActivityForResult(intent, 1);
+                    }
+                }
+
+            });
+            bindingUser.bottomNavigation.setSelectedItemId(getIntent().getBooleanExtra(OPEN_BOX_FRAG, false) ? R.id.nav_caixas : R.id.nav_alarmes);
+            bindingUser.bottomNavigation.performClick();
+        }
+        else {
+            setContentView(bindingSupervisor.getRoot());
+            bindingSupervisor.bottomNavigation.setOnNavigationItemSelectedListener(item -> {
+                bindingSupervisor.fabFragment.setImageDrawable(getBaseContext().getDrawable(R.drawable.ic_add_supervisor_white_24dp));
+                actualFragment = new FragmentBoundUsers();
+                loadFragment(actualFragment);
+                return true;
+            });
+
+            bindingSupervisor.fabFragment.setOnClickListener(v -> {
                 Intent intent = new Intent(this, RegisterSupervisorActivity.class);
                 startActivity(intent);
-            }
-
-            if (actualFragment instanceof FragmentClinicalData) {
-                Intent intent = new Intent(this, RegisterClinicalDataActivity.class);
-                startActivity(intent);
-            }
-
-            if (actualFragment instanceof FragmentBoxes) {
-                if (!checkPermissions()) {
-                    requestPermissions();
-                } else {
-                    Intent intent = new Intent(this, RegisterBoxActivity.class);
-                    startActivityForResult(intent, 1);
-                }
-            }
-
-        });
-        // aki pode ocorrer algum problema
-        binding.bottomNavigation.setSelectedItemId(getIntent().getBooleanExtra(OPEN_BOX_FRAG, false) ? R.id.nav_caixas : R.id.nav_alarmes);
-        binding.bottomNavigation.performClick();
+            });
+            bindingSupervisor.bottomNavigation.setSelectedItemId(R.id.nav_usuarios);
+            bindingSupervisor.bottomNavigation.performClick();
+        }
     }
 
     public void loadFragment(Fragment fragment) {
+        final String whoUserFrag = getIntent().getStringExtra(WHO_USER_FRAG);
         if (fragment instanceof FragmentAlarms)
             getSupportActionBar().setTitle(R.string.menu_alarme);
 
-        else if (fragment instanceof FragmentSupervisors)
+        else if (fragment instanceof FragmentBoundSupervisors)
             getSupportActionBar().setTitle(R.string.menu_supervisor);
 
         else if (fragment instanceof FragmentClinicalData)
             getSupportActionBar().setTitle(R.string.menu_dados_clinicos);
+
+        else if (fragment instanceof FragmentBoundUsers)
+            getSupportActionBar().setTitle(R.string.menu_usuarios);
 
         else getSupportActionBar().setTitle(R.string.menu_caixas);
 

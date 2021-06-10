@@ -16,7 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.pillhelper.receiver.AlarmReceiver;
 import com.example.pillhelper.utils.Constants;
-import com.example.pillhelper.dataBase.DataBaseAlarmsHelper;
+import com.example.pillhelper.dataBaseUser.DataBaseAlarmsHelper;
 import com.example.pillhelper.services.JsonPlaceHolderApi;
 import com.example.pillhelper.utils.MaskEditUtil;
 import com.example.pillhelper.R;

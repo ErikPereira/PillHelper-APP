@@ -15,7 +15,7 @@ import com.example.pillhelper.adapter.AlarmListAdapter;
 import com.example.pillhelper.R;
 import com.example.pillhelper.activity.AllMedicinesActivity;
 import com.example.pillhelper.activity.RegisterAlarmActivity;
-import com.example.pillhelper.dataBase.DataBaseAlarmsHelper;
+import com.example.pillhelper.dataBaseUser.DataBaseAlarmsHelper;
 import com.example.pillhelper.databinding.FragmentAlarmsBinding;
 import com.example.pillhelper.item.AlarmItem;
 

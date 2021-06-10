@@ -11,7 +11,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.pillhelper.R;
-import com.example.pillhelper.dataBase.DataBaseSupervisorHelper;
+import com.example.pillhelper.dataBaseUser.DataBaseBoundSupervisorHelper;
 import com.example.pillhelper.databinding.ActivityRegisterSupervisorBinding;
 import com.example.pillhelper.services.JsonPlaceHolderApi;
 import com.example.pillhelper.utils.Constants;
@@ -39,7 +39,7 @@ public class RegisterSupervisorActivity extends AppCompatActivity {
     private static final String TAG = "RegisterSupervisorActivity";
 
     private ActivityRegisterSupervisorBinding binding;
-    private DataBaseSupervisorHelper mDataBaseSupervisorHelper;
+    private DataBaseBoundSupervisorHelper mDataBaseBoundSupervisorHelper;
     private JsonPlaceHolderApi jsonPlaceHolderApi;
 
     @Override
@@ -52,7 +52,7 @@ public class RegisterSupervisorActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle(R.string.register_supervisor_title);
 
-        mDataBaseSupervisorHelper = new DataBaseSupervisorHelper(this);
+        mDataBaseBoundSupervisorHelper = new DataBaseBoundSupervisorHelper(this);
 
         binding.emailRadioButton.setOnClickListener((View v) -> {
             binding.emailInfSupervisor.setVisibility(View.VISIBLE);
@@ -160,7 +160,7 @@ public class RegisterSupervisorActivity extends AppCompatActivity {
                 String bond = postResponse.get("bond").getAsString();
                 String name = postResponse.get("name").getAsString();
 
-                boolean confirmation = mDataBaseSupervisorHelper.addData(
+                boolean confirmation = mDataBaseBoundSupervisorHelper.addData(
                         uuidSupervisor,
                         registeredBy,
                         bond,

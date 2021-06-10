@@ -11,7 +11,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.pillhelper.R;
-import com.example.pillhelper.dataBase.DataBaseClinicalDataHelper;
+import com.example.pillhelper.dataBaseUser.DataBaseClinicalDataHelper;
 import com.example.pillhelper.databinding.ActivityRegisterClinicalDataBinding;
 import com.example.pillhelper.services.JsonPlaceHolderApi;
 import com.example.pillhelper.utils.Constants;

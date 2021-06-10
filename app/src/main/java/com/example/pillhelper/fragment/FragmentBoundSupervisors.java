@@ -11,27 +11,28 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.pillhelper.R;
-import com.example.pillhelper.adapter.SupervisorListAdapter;
-import com.example.pillhelper.dataBase.DataBaseSupervisorHelper;
+import com.example.pillhelper.adapter.BoundSupervisorListAdapter;
+import com.example.pillhelper.dataBaseSupervisor.DataBaseBoundUserHelper;
+import com.example.pillhelper.dataBaseUser.DataBaseBoundSupervisorHelper;
 import com.example.pillhelper.databinding.FragmentSupervisorsBinding;
 import com.example.pillhelper.item.SupervisorItem;
 
 import java.util.ArrayList;
 
-public class FragmentSupervisors extends Fragment {
+public class FragmentBoundSupervisors extends Fragment {
     private FragmentSupervisorsBinding binding;
-    private DataBaseSupervisorHelper mDataBaseSupervisorHelper;
+    private DataBaseBoundSupervisorHelper mDataBaseBoundSupervisorHelper;
+    private DataBaseBoundUserHelper mDataBaseBoundUserHelper;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-
         binding = FragmentSupervisorsBinding.inflate(getLayoutInflater());
 
-        mDataBaseSupervisorHelper = new DataBaseSupervisorHelper(getContext());
+        mDataBaseBoundSupervisorHelper = new DataBaseBoundSupervisorHelper(getContext());
 
-        Cursor data = mDataBaseSupervisorHelper.getData();
+        Cursor data = mDataBaseBoundSupervisorHelper.getData();
         ArrayList<SupervisorItem> supervisors = new ArrayList<>();
 
         while (data.moveToNext()) {
@@ -44,7 +45,7 @@ public class FragmentSupervisors extends Fragment {
             supervisors.add(supervisor);
         }
 
-        SupervisorListAdapter adapter = new SupervisorListAdapter(getContext(), R.layout.supervisors_list_item, supervisors);
+        BoundSupervisorListAdapter adapter = new BoundSupervisorListAdapter(getContext(), R.layout.supervisors_list_item, supervisors);
         binding.supervisorListView.setAdapter(adapter);
 
         return binding.getRoot();
