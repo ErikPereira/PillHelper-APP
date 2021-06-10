@@ -82,7 +82,7 @@ public class FragmentsActivity extends AppCompatActivity {
                 }
 
                 if (actualFragment instanceof FragmentBoundSupervisors) {
-                    Intent intent = new Intent(this, RegisterSupervisorActivity.class);
+                    Intent intent = new Intent(this, RegisterBoundSupervisorActivity.class);
                     startActivity(intent);
                 }
 
@@ -114,7 +114,7 @@ public class FragmentsActivity extends AppCompatActivity {
             });
 
             bindingSupervisor.fabFragment.setOnClickListener(v -> {
-                Intent intent = new Intent(this, RegisterSupervisorActivity.class);
+                Intent intent = new Intent(this, RegisterBoundUserActivity.class);
                 startActivity(intent);
             });
             bindingSupervisor.bottomNavigation.setSelectedItemId(R.id.nav_usuarios);
@@ -123,7 +123,6 @@ public class FragmentsActivity extends AppCompatActivity {
     }
 
     public void loadFragment(Fragment fragment) {
-        final String whoUserFrag = getIntent().getStringExtra(WHO_USER_FRAG);
         if (fragment instanceof FragmentAlarms)
             getSupportActionBar().setTitle(R.string.menu_alarme);
 

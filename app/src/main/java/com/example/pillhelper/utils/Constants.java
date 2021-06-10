@@ -24,6 +24,7 @@ public class Constants {
     public static final String SUPERVISOR_DATA = "getOneSupervisor";//POST PARA RECEBER OS DADOS DO USUARIO
     public static final String DELETE_USER_IN_SUPERVISOR = "deleteUserInSupervisor"; // POST para deletar os dados do supervisor dentro de um usuario
     public static final String UPDATE_USER_IN_SUPERVISOR = "updateUserInSupervisor"; // POST para registar um supervisor dentro de um usuario
+    public static final String REGISTER_USER= "registerUser";
 
     public static final String ALARM_TYPE = "alarm_type";//1 == fixo 2 == intervalo
     public static final String MEDICINE_TYPE = "medicine_type";//1 == pilula 2 == liquid
@@ -68,4 +69,6 @@ public class Constants {
     public static final String NOME_SUPERVISOR = "name";
     public static final String EMAIL_SUPERVISOR = "email";
     public static final String CELL_SUPERVISOR = "cell";
+    public static final String EMAIL_USER = "email";
+    public static final String CELL_USER = "cell";
 }

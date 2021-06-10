@@ -85,6 +85,10 @@ public interface JsonPlaceHolderApi {
     Call<JsonObject> postRegisterSupervisor(@Header("authorization") String token,
                                                 @Body JsonObject body);
 
+    @POST(Constants.REGISTER_USER)
+    Call<JsonObject> postRegisterUser(@Header("authorization") String token,
+                                            @Body JsonObject body);
+
     @POST(Constants.UPDATE_CLINICAL_DATA)
     Call<JsonObject> postUpdateClinicalData(@Header("authorization") String token,
                                             @Body JsonObject body);

@@ -11,12 +11,12 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.pillhelper.R;
-import com.example.pillhelper.dataBaseUser.DataBaseBoundSupervisorHelper;
+import com.example.pillhelper.dataBaseSupervisor.DataBaseBoundUserHelper;
 import com.example.pillhelper.databinding.ActivityRegisterSupervisorBinding;
 import com.example.pillhelper.services.JsonPlaceHolderApi;
+import com.example.pillhelper.singleton.SupervisorIdSingleton;
 import com.example.pillhelper.utils.Constants;
 import com.example.pillhelper.utils.MaskEditUtil;
-import com.example.pillhelper.singleton.UserIdSingleton;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -30,16 +30,18 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.example.pillhelper.utils.Constants.BASE_URL;
-import static com.example.pillhelper.utils.Constants.CELL_SUPERVISOR;
-import static com.example.pillhelper.utils.Constants.NOME_SUPERVISOR;
-import static com.example.pillhelper.utils.Constants.EMAIL_SUPERVISOR;
+import static com.example.pillhelper.utils.Constants.CELL_USER;
+import static com.example.pillhelper.utils.Constants.EMAIL_USER;
+import static com.example.pillhelper.utils.Constants.ID_SUPERVISOR;
+import static com.example.pillhelper.utils.Constants.NOME_USER;
 import static com.example.pillhelper.utils.Constants.OPEN_BOX_FRAG;
+import static com.example.pillhelper.utils.Constants.WHO_USER_FRAG;
 
-public class RegisterSupervisorActivity extends AppCompatActivity {
-    private static final String TAG = "RegisterSupervisorActivity";
+public class RegisterBoundUserActivity extends AppCompatActivity {
+    private static final String TAG = "RegisterBoundUserActivity";
 
     private ActivityRegisterSupervisorBinding binding;
-    private DataBaseBoundSupervisorHelper mDataBaseBoundSupervisorHelper;
+    private DataBaseBoundUserHelper mDataBaseBoundUserHelper;
     private JsonPlaceHolderApi jsonPlaceHolderApi;
 
     @Override
@@ -50,9 +52,9 @@ public class RegisterSupervisorActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle(R.string.register_supervisor_title);
+        getSupportActionBar().setTitle(R.string.register_usuario_title);
 
-        mDataBaseBoundSupervisorHelper = new DataBaseBoundSupervisorHelper(this);
+        mDataBaseBoundUserHelper = new DataBaseBoundUserHelper(this);
 
         binding.emailRadioButton.setOnClickListener((View v) -> {
             binding.emailInfSupervisor.setVisibility(View.VISIBLE);
@@ -79,13 +81,13 @@ public class RegisterSupervisorActivity extends AppCompatActivity {
             String name = binding.nameInfSupervisor.getText().toString();
 
             if(binding.emailRadioButton.isChecked()) {
-                String emailSupervisor = binding.emailInfSupervisor.getText().toString();
-                createPostRegisterSupervisor(emailSupervisor, "", name);
+                String email = binding.emailInfSupervisor.getText().toString();
+                createPostRegisterUser(email, "", name);
             }
             else {
-                String cellSupervisor = binding.cellInfSupervisor.getText().toString();
-                cellSupervisor = MaskEditUtil.unmask(cellSupervisor);
-                createPostRegisterSupervisor("", cellSupervisor, name);
+                String cell = binding.cellInfSupervisor.getText().toString();
+                cell = MaskEditUtil.unmask(cell);
+                createPostRegisterUser("", cell, name);
             }
 
         });
@@ -102,9 +104,9 @@ public class RegisterSupervisorActivity extends AppCompatActivity {
         builder.setTitle(R.string.info_dialog_title_text);
 
         if (binding.infNameSupervisor.equals(imageView)) {
-            builder.setMessage(R.string.dialog_text_supervisor_name_info);
+            builder.setMessage(R.string.dialog_text_user_name_info);
         } else if (binding.infEmailSupervisor.equals(imageView)) {
-            builder.setMessage(R.string.dialog_text_supervisor_email_info);
+            builder.setMessage(R.string.dialog_text_user_email_info);
         }
 
         builder.setPositiveButton(R.string.ok, (dialog, id) -> dialog.dismiss());
@@ -118,7 +120,7 @@ public class RegisterSupervisorActivity extends AppCompatActivity {
         return true;
     }
 
-    private void createPostRegisterSupervisor(String emailSupervisor, String cellSupervisor, String nameSupervisor) {
+    private void createPostRegisterUser(String email, String cell, String name) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -126,10 +128,10 @@ public class RegisterSupervisorActivity extends AppCompatActivity {
 
         jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
 
-        String requestStr = formatJSONRegisterSupervisor(emailSupervisor, cellSupervisor, nameSupervisor);
+        String requestStr = formatJSONRegisterUser(email, cell, name);
         JsonObject request = JsonParser.parseString(requestStr).getAsJsonObject();
 
-        Call<JsonObject> call = jsonPlaceHolderApi.postRegisterSupervisor(Constants.TOKEN_ACCESS, request);
+        Call<JsonObject> call = jsonPlaceHolderApi.postRegisterUser(Constants.TOKEN_ACCESS, request);
 
         call.enqueue(new Callback<JsonObject>() {
             @Override
@@ -138,7 +140,7 @@ public class RegisterSupervisorActivity extends AppCompatActivity {
 
                 if (!response.isSuccessful()) {
                     if (response.code() == 404) {
-                        Toast.makeText(getBaseContext(), "Supervisor não encontrado", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getBaseContext(), "Usuário não encontrado", Toast.LENGTH_SHORT).show();
                         return;
                     }
                     Toast.makeText(getBaseContext(), "Um erro ocorreu", Toast.LENGTH_SHORT).show();
@@ -155,12 +157,12 @@ public class RegisterSupervisorActivity extends AppCompatActivity {
 
                 JsonObject postResponse = jsonObject.getAsJsonObject("response");
 
-                String uuidSupervisor = postResponse.get("uuidSupervisor").getAsString();
+                String uuidSupervisor = postResponse.get("uuidUser").getAsString();
                 String registeredBy = postResponse.get("registeredBy").getAsString();
                 String bond = postResponse.get("bond").getAsString();
                 String name = postResponse.get("name").getAsString();
 
-                boolean confirmation = mDataBaseBoundSupervisorHelper.addData(
+                boolean confirmation = mDataBaseBoundUserHelper.addData(
                         uuidSupervisor,
                         registeredBy,
                         bond,
@@ -170,6 +172,7 @@ public class RegisterSupervisorActivity extends AppCompatActivity {
                     Intent intent = new Intent(getBaseContext(), FragmentsActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra(OPEN_BOX_FRAG, false);
+                    intent.putExtra(WHO_USER_FRAG, "supervisor");
                     startActivity(intent);
                     finish();
                 }
@@ -184,18 +187,18 @@ public class RegisterSupervisorActivity extends AppCompatActivity {
         });
     }
 
-    private String formatJSONRegisterSupervisor(String emailSupervisor, String cellSupervisor, String nameSupervisor) {
+    private String formatJSONRegisterUser(String email, String cell, String name) {
         final JSONObject root = new JSONObject();
 
         try {
-            JSONObject loginSupervisor = new JSONObject();
-            loginSupervisor.put(CELL_SUPERVISOR, String.valueOf(cellSupervisor));
-            loginSupervisor.put(EMAIL_SUPERVISOR, String.valueOf(emailSupervisor));
-            loginSupervisor.put(NOME_SUPERVISOR, String.valueOf(nameSupervisor));
+            JSONObject loginUser = new JSONObject();
+            loginUser.put(CELL_USER, String.valueOf(cell));
+            loginUser.put(EMAIL_USER, String.valueOf(email));
+            loginUser.put(NOME_USER, String.valueOf(name));
 
 
-            root.put("uuidUser", UserIdSingleton.getInstance().getUserId());
-            root.put("loginSupervisor", loginSupervisor);
+            root.put(ID_SUPERVISOR, SupervisorIdSingleton.getInstance().getSupervisorId());
+            root.put("loginUser", loginUser);
 
             return root.toString();
         } catch (JSONException e) {
