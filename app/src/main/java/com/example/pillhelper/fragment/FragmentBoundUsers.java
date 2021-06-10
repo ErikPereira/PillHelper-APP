@@ -11,11 +11,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.pillhelper.R;
-import com.example.pillhelper.adapter.BoundSupervisorListAdapter;
 import com.example.pillhelper.adapter.BoundUserListAdapter;
 import com.example.pillhelper.dataBaseSupervisor.DataBaseBoundUserHelper;
 import com.example.pillhelper.databinding.FragmentSupervisorsBinding;
-import com.example.pillhelper.item.SupervisorItem;
+import com.example.pillhelper.item.BoundItem;
 
 import java.util.ArrayList;
 
@@ -32,7 +31,7 @@ public class FragmentBoundUsers extends Fragment {
         mDataBaseBoundUserHelper = new DataBaseBoundUserHelper(getContext());
 
         Cursor data = mDataBaseBoundUserHelper.getData();
-        ArrayList<SupervisorItem> user = new ArrayList<>();
+        ArrayList<BoundItem> user = new ArrayList<>();
 
         while (data.moveToNext()) {
             String uuidUser = data.getString(0);
@@ -40,7 +39,7 @@ public class FragmentBoundUsers extends Fragment {
             String bond = data.getString(2);
             String name = data.getString(3);
 
-            SupervisorItem u = new SupervisorItem(uuidUser, registeredBy, bond, name);
+            BoundItem u = new BoundItem(uuidUser, registeredBy, bond, name);
             user.add(u);
         }
 

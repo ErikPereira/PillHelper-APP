@@ -1,13 +1,13 @@
 package com.example.pillhelper.item;
 
-public class SupervisorItem {
-    private String uuidSupervisor;
+public class BoundItem {
+    private String uuid;
     private String registeredBy;
     private String bond;
     private String name;
 
-    public SupervisorItem(String uuidSupervisor, String registeredBy, String bond, String name) {
-        this.uuidSupervisor = uuidSupervisor;
+    public BoundItem(String uuid, String registeredBy, String bond, String name) {
+        this.uuid = uuid;
         this.registeredBy = registeredBy;
         this.bond = bond;
         this.name = name;
@@ -17,8 +17,8 @@ public class SupervisorItem {
         return name;
     }
 
-    public String getUuidSupervisor() {
-        return uuidSupervisor;
+    public String getUuid() {
+        return uuid;
     }
 
     public String getRegisteredBy() {

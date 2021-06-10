@@ -21,7 +21,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.pillhelper.R;
 import com.example.pillhelper.dataBaseSupervisor.DataBaseBoundUserHelper;
-import com.example.pillhelper.item.SupervisorItem;
+import com.example.pillhelper.item.BoundItem;
 import com.example.pillhelper.services.JsonPlaceHolderApi;
 import com.example.pillhelper.singleton.SupervisorIdSingleton;
 import com.example.pillhelper.utils.Constants;
@@ -41,12 +41,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.example.pillhelper.utils.Constants.BASE_URL;
 import static com.example.pillhelper.utils.Constants.ID_SUPERVISOR;
-import static com.example.pillhelper.utils.Constants.NOME_SUPERVISOR;
 import static com.example.pillhelper.utils.Constants.NOME_USER;
 import static com.example.pillhelper.utils.Constants.REGISTRADO_POR;
 import static com.example.pillhelper.utils.Constants.VINCULO;
 
-public class BoundUserListAdapter extends ArrayAdapter<SupervisorItem> {
+public class BoundUserListAdapter extends ArrayAdapter<BoundItem> {
 
     private static final String TAG = "BoundSupervisorListAdapter";
 
@@ -57,7 +56,7 @@ public class BoundUserListAdapter extends ArrayAdapter<SupervisorItem> {
     private EditText editTextName;
     private Cursor data;
 
-    public BoundUserListAdapter(Context context, int resource, ArrayList<SupervisorItem> objects) {
+    public BoundUserListAdapter(Context context, int resource, ArrayList<BoundItem> objects) {
         super(context, resource, objects);
         mContext = context;
         mResource = resource;
@@ -150,7 +149,7 @@ public class BoundUserListAdapter extends ArrayAdapter<SupervisorItem> {
 
             builder.setMessage(R.string.dialog_message)
                     .setTitle(R.string.dialog_title)
-                    .setPositiveButton(R.string.ok, (dialog, id) -> createPostDeleteUser(position, getItem(position).getUuidSupervisor()))
+                    .setPositiveButton(R.string.ok, (dialog, id) -> createPostDeleteUser(position, getItem(position).getUuid()))
                     .setNegativeButton(R.string.cancel, (dialog, id) -> dialog.dismiss());
 
             AlertDialog dialog = builder.create();

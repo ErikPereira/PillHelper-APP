@@ -15,7 +15,7 @@ import com.example.pillhelper.adapter.BoundSupervisorListAdapter;
 import com.example.pillhelper.dataBaseSupervisor.DataBaseBoundUserHelper;
 import com.example.pillhelper.dataBaseUser.DataBaseBoundSupervisorHelper;
 import com.example.pillhelper.databinding.FragmentSupervisorsBinding;
-import com.example.pillhelper.item.SupervisorItem;
+import com.example.pillhelper.item.BoundItem;
 
 import java.util.ArrayList;
 
@@ -33,7 +33,7 @@ public class FragmentBoundSupervisors extends Fragment {
         mDataBaseBoundSupervisorHelper = new DataBaseBoundSupervisorHelper(getContext());
 
         Cursor data = mDataBaseBoundSupervisorHelper.getData();
-        ArrayList<SupervisorItem> supervisors = new ArrayList<>();
+        ArrayList<BoundItem> supervisors = new ArrayList<>();
 
         while (data.moveToNext()) {
             String uuidSupervisor = data.getString(0);
@@ -41,7 +41,7 @@ public class FragmentBoundSupervisors extends Fragment {
             String bond = data.getString(2);
             String name = data.getString(3);
 
-            SupervisorItem supervisor = new SupervisorItem(uuidSupervisor, registeredBy, bond, name);
+            BoundItem supervisor = new BoundItem(uuidSupervisor, registeredBy, bond, name);
             supervisors.add(supervisor);
         }
 

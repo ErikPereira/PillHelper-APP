@@ -21,7 +21,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.pillhelper.R;
 import com.example.pillhelper.dataBaseUser.DataBaseBoundSupervisorHelper;
-import com.example.pillhelper.item.SupervisorItem;
+import com.example.pillhelper.item.BoundItem;
 import com.example.pillhelper.services.JsonPlaceHolderApi;
 import com.example.pillhelper.utils.Constants;
 import com.example.pillhelper.singleton.UserIdSingleton;
@@ -45,7 +45,7 @@ import static com.example.pillhelper.utils.Constants.NOME_SUPERVISOR;
 import static com.example.pillhelper.utils.Constants.REGISTRADO_POR;
 import static com.example.pillhelper.utils.Constants.VINCULO;
 
-public class BoundSupervisorListAdapter extends ArrayAdapter<SupervisorItem> {
+public class BoundSupervisorListAdapter extends ArrayAdapter<BoundItem> {
 
     private static final String TAG = "BoundSupervisorListAdapter";
 
@@ -56,7 +56,7 @@ public class BoundSupervisorListAdapter extends ArrayAdapter<SupervisorItem> {
     private EditText editTextName;
     private Cursor data;
 
-    public BoundSupervisorListAdapter(Context context, int resource, ArrayList<SupervisorItem> objects) {
+    public BoundSupervisorListAdapter(Context context, int resource, ArrayList<BoundItem> objects) {
         super(context, resource, objects);
         mContext = context;
         mResource = resource;
@@ -149,7 +149,7 @@ public class BoundSupervisorListAdapter extends ArrayAdapter<SupervisorItem> {
 
             builder.setMessage(R.string.dialog_message)
                     .setTitle(R.string.dialog_title)
-                    .setPositiveButton(R.string.ok, (dialog, id) -> createPostDeleteSupervisor(position, getItem(position).getUuidSupervisor()))
+                    .setPositiveButton(R.string.ok, (dialog, id) -> createPostDeleteSupervisor(position, getItem(position).getUuid()))
                     .setNegativeButton(R.string.cancel, (dialog, id) -> dialog.dismiss());
 
             AlertDialog dialog = builder.create();
