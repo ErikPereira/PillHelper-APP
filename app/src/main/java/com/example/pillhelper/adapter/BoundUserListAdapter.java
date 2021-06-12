@@ -157,6 +157,7 @@ public class BoundUserListAdapter extends ArrayAdapter<BoundItem> {
 
             AlertDialog dialog = builder.create();
             dialog.show();
+
         });
 
         ImageView imageView = convertView.findViewById(R.id.supervisor_list_image);
@@ -170,6 +171,29 @@ public class BoundUserListAdapter extends ArrayAdapter<BoundItem> {
 
             AlertDialog dialog = builder.create();
             dialog.show();
+        });
+
+        ImageView bondImage = convertView.findViewById(R.id.adapter_image_bound);
+        bondImage.setOnClickListener(u -> {
+            Intent intent = new Intent(mContext, FragmentsActivity.class);
+            intent.putExtra(OPEN_BOX_FRAG, false);
+            intent.putExtra(WHO_USER_FRAG, "user");
+            UserIdSingleton.getInstance().setUserId(getItem(position).getUuid());
+
+            getContext().deleteDatabase("alarms_table");
+            getContext().deleteDatabase("boxes_table");
+            getContext().deleteDatabase("bound_supervisors_table");
+            getContext().deleteDatabase("clinical_data_table");
+
+            postGetUser(getItem(position).getUuid());
+
+            mContext.startActivity(intent);
+            intent.putExtra(WHO_USER_FRAG, "supervisor");
+
+            getContext().deleteDatabase("alarms_table");
+            getContext().deleteDatabase("boxes_table");
+            getContext().deleteDatabase("bound_supervisors_table");
+            getContext().deleteDatabase("clinical_data_table");
         });
 
         return convertView;
@@ -200,28 +224,6 @@ public class BoundUserListAdapter extends ArrayAdapter<BoundItem> {
                 bondImage.setImageResource(R.drawable.ic_supervisor_48dp);
         }
 
-        bondImage.setOnClickListener(v -> {
-            //ToDo: Verificar caso para mostrar infos do Usuario para o Supervisor
-            Intent intent = new Intent(mContext, FragmentsActivity.class);
-            intent.putExtra(OPEN_BOX_FRAG, false);
-            intent.putExtra(WHO_USER_FRAG, "user");
-            UserIdSingleton.getInstance().setUserId(data.getString(0));
-
-            getContext().deleteDatabase("alarms_table");
-            getContext().deleteDatabase("boxes_table");
-            getContext().deleteDatabase("bound_supervisors_table");
-            getContext().deleteDatabase("clinical_data_table");
-
-            postGetUser(data.getString(0));
-
-            mContext.startActivity(intent);
-            intent.putExtra(WHO_USER_FRAG, "supervisor");
-
-            getContext().deleteDatabase("alarms_table");
-            getContext().deleteDatabase("boxes_table");
-            getContext().deleteDatabase("bound_supervisors_table");
-            getContext().deleteDatabase("clinical_data_table");
-        });
     }
 
     private void createPostUpdateUser(String uuidUser, String registeredBy, String bond, String newName) {
