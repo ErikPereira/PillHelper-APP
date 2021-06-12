@@ -18,6 +18,7 @@ import com.example.pillhelper.dataBaseUser.DataBaseAlarmsHelper;
 import com.example.pillhelper.dataBaseUser.DataBaseBoxHelper;
 import com.example.pillhelper.dataBaseUser.DataBaseUserHelper;
 import com.example.pillhelper.services.JsonPlaceHolderApi;
+import com.example.pillhelper.utils.LoadDataBase;
 import com.example.pillhelper.utils.MaskEditUtil;
 import com.example.pillhelper.R;
 import com.example.pillhelper.singleton.UserIdSingleton;
@@ -279,87 +280,26 @@ public class LoginActivity extends AppCompatActivity {
 
                 getBaseContext().deleteDatabase("alarms_table");
                 getBaseContext().deleteDatabase("boxes_table");
-                getBaseContext().deleteDatabase("supervisors_table");
+                getBaseContext().deleteDatabase("bound_supervisors_table");
                 getBaseContext().deleteDatabase("clinical_data_table");
 
-                if (alarmsArray != null) {
-                    mDataBaseAlarmsHelper = new DataBaseAlarmsHelper(getBaseContext());
+                getBaseContext().deleteDatabase("bound_user_table");
 
-                    for (int i = 0; i < alarmsArray.size(); i++) {
-                        JsonElement jsonElement = alarmsArray.get(i);
-                        JsonObject jsonAlarm = jsonElement.getAsJsonObject();
+                mDataBaseAlarmsHelper = new DataBaseAlarmsHelper(getBaseContext());
+                mDataBaseBoxHelper = new DataBaseBoxHelper(getBaseContext());
+                mDataBaseBoundSupervisorHelper = new DataBaseBoundSupervisorHelper(getBaseContext());
+                mDataBaseClinicalDataHelper = new DataBaseClinicalDataHelper(getBaseContext());
 
-                        int[] days = new int[7];
-                        days[0] = jsonAlarm.get(DOMINGO).getAsInt();
-                        days[1] = jsonAlarm.get(SEGUNDA).getAsInt();
-                        days[2] = jsonAlarm.get(TERCA).getAsInt();
-                        days[3] = jsonAlarm.get(QUARTA).getAsInt();
-                        days[4] = jsonAlarm.get(QUINTA).getAsInt();
-                        days[5] = jsonAlarm.get(SEXTA).getAsInt();
-                        days[6] = jsonAlarm.get(SABADO).getAsInt();
-
-                        mDataBaseAlarmsHelper.addData(
-                                jsonAlarm.get(ID_ALARME).getAsString(),
-                                jsonAlarm.get(ALARM_TYPE).getAsInt(),
-                                jsonAlarm.get(MEDICINE_TYPE).getAsInt(),
-                                jsonAlarm.get(ATIVO).getAsInt(),
-                                jsonAlarm.get(NOME_REMEDIO).getAsString(),
-                                jsonAlarm.get(DOSAGEM).getAsInt(),
-                                jsonAlarm.get(QUANTIDADE).getAsInt(),
-                                jsonAlarm.get(QUANTIDADE_BOX).getAsInt(),
-                                jsonAlarm.get(HORA).getAsInt(),
-                                jsonAlarm.get(MINUTO).getAsInt(),
-                                days,
-                                jsonAlarm.get(VEZES_DIA).getAsInt(),
-                                jsonAlarm.get(PERIODO_HORA).getAsInt(),
-                                jsonAlarm.get(PERIODO_MIN).getAsInt(),
-                                jsonAlarm.get(NOTIFICATION_ID).getAsInt(),
-                                jsonAlarm.get(LUMINOSO).getAsInt(),
-                                jsonAlarm.get(SONORO).getAsInt(),
-                                jsonAlarm.get(BOX_POSITION).getAsInt());
-                    }
-                }
-
-                if (boxArray != null) {
-                    mDataBaseBoxHelper = new DataBaseBoxHelper(getBaseContext());
-
-                    for (int i = 0; i < boxArray.size(); i++) {
-                        JsonElement jsonElement = boxArray.get(i);
-                        JsonObject jsonBox = jsonElement.getAsJsonObject();
-
-                        mDataBaseBoxHelper.addData(jsonBox.get(ID_CAIXA).getAsString(),
-                                jsonBox.get(NOME_CAIXA).getAsString());
-                    }
-                }
-
-                if (supervisorArray != null) {
-                    mDataBaseBoundSupervisorHelper = new DataBaseBoundSupervisorHelper(getBaseContext());
-
-                    for (int i = 0; i < supervisorArray.size(); i++) {
-                        JsonElement jsonElement = supervisorArray.get(i);
-                        JsonObject jsonSupervisor = jsonElement.getAsJsonObject();
-
-                        mDataBaseBoundSupervisorHelper.addData(
-                                jsonSupervisor.get(ID_SUPERVISOR).getAsString(),
-                                jsonSupervisor.get(REGISTRADO_POR).getAsString(),
-                                jsonSupervisor.get(VINCULO).getAsString(),
-                                jsonSupervisor.get(NOME_SUPERVISOR).getAsString());
-                    }
-                }
-
-                if (clinicalDataObject != null) {
-                    mDataBaseClinicalDataHelper = new DataBaseClinicalDataHelper(getBaseContext());
-                    JsonArray clinicalDataNamesArray = clinicalDataObject.getAsJsonArray("clinicalDataNames");
-
-                    for (int i = 0; i < clinicalDataNamesArray.size(); i++) {
-                        String name = clinicalDataNamesArray.get(i).getAsString();
-
-                        mDataBaseClinicalDataHelper.addData(
-                                name,
-                                clinicalDataObject.get(name).getAsString());
-
-                    }
-                }
+                LoadDataBase loadDataBase = new LoadDataBase();
+                loadDataBase.loadDataBaseUser(
+                        alarmsArray,
+                        boxArray,
+                        supervisorArray,
+                        clinicalDataObject,
+                        mDataBaseAlarmsHelper,
+                        mDataBaseBoxHelper,
+                        mDataBaseClinicalDataHelper,
+                        mDataBaseBoundSupervisorHelper);
 
                 Intent intent = new Intent(LoginActivity.this, FragmentsActivity.class);
                 intent.putExtra(OPEN_BOX_FRAG, false);
@@ -403,23 +343,17 @@ public class LoginActivity extends AppCompatActivity {
                 getBaseContext().deleteDatabase("alarms_table");
                 getBaseContext().deleteDatabase("boxes_table");
                 getBaseContext().deleteDatabase("bound_supervisors_table");
-                getBaseContext().deleteDatabase("bound_user_table");
                 getBaseContext().deleteDatabase("clinical_data_table");
 
-                if (usersArray != null) {
-                    mDataBaseBoundUserHelper = new DataBaseBoundUserHelper(getBaseContext());
+                getBaseContext().deleteDatabase("bound_user_table");
 
-                    for (int i = 0; i < usersArray.size(); i++) {
-                        JsonElement jsonElement = usersArray.get(i);
-                        JsonObject jsonUser = jsonElement.getAsJsonObject();
+                mDataBaseBoundUserHelper = new DataBaseBoundUserHelper(getBaseContext());
 
-                        mDataBaseBoundUserHelper.addData(
-                                jsonUser.get("uuidUser").getAsString(),
-                                jsonUser.get(REGISTRADO_POR).getAsString(),
-                                jsonUser.get(VINCULO).getAsString(),
-                                jsonUser.get(NOME_USER).getAsString());
-                    }
-                }
+                LoadDataBase loadDataBase = new LoadDataBase();
+                loadDataBase.loadDataBaseSupervisor(
+                        usersArray,
+                        mDataBaseBoundUserHelper
+                );
 
                 Intent intent = new Intent(LoginActivity.this, FragmentsActivity.class);
                 intent.putExtra(OPEN_BOX_FRAG, false);

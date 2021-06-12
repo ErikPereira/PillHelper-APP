@@ -64,6 +64,7 @@ import static com.example.pillhelper.utils.Constants.SEXTA;
 import static com.example.pillhelper.utils.Constants.SONORO;
 import static com.example.pillhelper.utils.Constants.TERCA;
 import static com.example.pillhelper.utils.Constants.VEZES_DIA;
+import static com.example.pillhelper.utils.Constants.WHO_USER_FRAG;
 
 public class IntervalAlarmActivity extends AppCompatActivity {
 
@@ -224,6 +225,7 @@ public class IntervalAlarmActivity extends AppCompatActivity {
                     Intent intent = new Intent(getBaseContext(), FragmentsActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra(OPEN_BOX_FRAG, false);
+                    intent.putExtra(WHO_USER_FRAG, "user");
                     startActivity(intent);
                     finish();
                 } else
@@ -275,6 +277,7 @@ public class IntervalAlarmActivity extends AppCompatActivity {
                     Intent intent = new Intent(getBaseContext(), FragmentsActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra(OPEN_BOX_FRAG, false);
+                    intent.putExtra(WHO_USER_FRAG, "user");
                     startActivity(intent);
                     finish();
                 } else

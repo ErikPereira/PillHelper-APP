@@ -2,6 +2,7 @@ package com.example.pillhelper.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.util.Log;
@@ -20,11 +21,20 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.pillhelper.R;
+import com.example.pillhelper.activity.FragmentsActivity;
+import com.example.pillhelper.activity.LoginActivity;
 import com.example.pillhelper.dataBaseSupervisor.DataBaseBoundUserHelper;
+import com.example.pillhelper.dataBaseUser.DataBaseAlarmsHelper;
+import com.example.pillhelper.dataBaseUser.DataBaseBoundSupervisorHelper;
+import com.example.pillhelper.dataBaseUser.DataBaseBoxHelper;
+import com.example.pillhelper.dataBaseUser.DataBaseClinicalDataHelper;
 import com.example.pillhelper.item.BoundItem;
 import com.example.pillhelper.services.JsonPlaceHolderApi;
 import com.example.pillhelper.singleton.SupervisorIdSingleton;
+import com.example.pillhelper.singleton.UserIdSingleton;
 import com.example.pillhelper.utils.Constants;
+import com.example.pillhelper.utils.LoadDataBase;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -44,6 +54,8 @@ import static com.example.pillhelper.utils.Constants.ID_SUPERVISOR;
 import static com.example.pillhelper.utils.Constants.NOME_USER;
 import static com.example.pillhelper.utils.Constants.REGISTRADO_POR;
 import static com.example.pillhelper.utils.Constants.VINCULO;
+import static com.example.pillhelper.utils.Constants.OPEN_BOX_FRAG;
+import static com.example.pillhelper.utils.Constants.WHO_USER_FRAG;
 
 public class BoundUserListAdapter extends ArrayAdapter<BoundItem> {
 
@@ -51,10 +63,14 @@ public class BoundUserListAdapter extends ArrayAdapter<BoundItem> {
 
     private Context mContext;
     private int mResource;
-    private DataBaseBoundUserHelper mDataBaseBoundUserHelper;
     private JsonPlaceHolderApi jsonPlaceHolderApi;
     private EditText editTextName;
     private Cursor data;
+    DataBaseAlarmsHelper mDataBaseAlarmsHelper;
+    DataBaseBoxHelper mDataBaseBoxHelper;
+    DataBaseBoundSupervisorHelper mDataBaseBoundSupervisorHelper;
+    DataBaseBoundUserHelper mDataBaseBoundUserHelper;
+    DataBaseClinicalDataHelper mDataBaseClinicalDataHelper;
 
     public BoundUserListAdapter(Context context, int resource, ArrayList<BoundItem> objects) {
         super(context, resource, objects);
@@ -165,6 +181,47 @@ public class BoundUserListAdapter extends ArrayAdapter<BoundItem> {
 
         TextView nameView = view.findViewById(R.id.supervisor_name);
         nameView.setText(data.getString(3));
+
+        ImageView bondImage = view.findViewById(R.id.adapter_image_bound);
+
+        String bond = data.getString(2);
+
+        switch (bond.toLowerCase()){
+            case "wait":
+                bondImage.setImageResource(R.drawable.ic_supervisor_gray_48dp);
+                break;
+            case "refused":
+                bondImage.setImageResource(R.drawable.ic_supervisor_red_48dp);
+                break;
+            case "accepted":
+                bondImage.setImageResource(R.drawable.ic_supervisor_green_48dp);
+                break;
+            default:
+                bondImage.setImageResource(R.drawable.ic_supervisor_48dp);
+        }
+
+        bondImage.setOnClickListener(v -> {
+            //ToDo: Verificar caso para mostrar infos do Usuario para o Supervisor
+            Intent intent = new Intent(mContext, FragmentsActivity.class);
+            intent.putExtra(OPEN_BOX_FRAG, false);
+            intent.putExtra(WHO_USER_FRAG, "user");
+            UserIdSingleton.getInstance().setUserId(data.getString(0));
+
+            getContext().deleteDatabase("alarms_table");
+            getContext().deleteDatabase("boxes_table");
+            getContext().deleteDatabase("bound_supervisors_table");
+            getContext().deleteDatabase("clinical_data_table");
+
+            postGetUser(data.getString(0));
+
+            mContext.startActivity(intent);
+            intent.putExtra(WHO_USER_FRAG, "supervisor");
+
+            getContext().deleteDatabase("alarms_table");
+            getContext().deleteDatabase("boxes_table");
+            getContext().deleteDatabase("bound_supervisors_table");
+            getContext().deleteDatabase("clinical_data_table");
+        });
     }
 
     private void createPostUpdateUser(String uuidUser, String registeredBy, String bond, String newName) {
@@ -267,6 +324,56 @@ public class BoundUserListAdapter extends ArrayAdapter<BoundItem> {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private void postGetUser(String uuidUser) {
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        JsonPlaceHolderApi jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
+        Call<JsonObject> call = jsonPlaceHolderApi.postUserData(Constants.TOKEN_ACCESS,
+                uuidUser);
+
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                if (!response.isSuccessful()) {
+                    Toast.makeText(getContext(), "Um erro ocorreu", Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "onResponse: " + response);
+                    return;
+                }
+
+                JsonObject jsonObject = response.body();
+                JsonArray alarmsArray = jsonObject.getAsJsonObject("response").getAsJsonArray("alarms");
+                JsonArray boxArray = jsonObject.getAsJsonObject("response").getAsJsonArray("box");
+                JsonArray supervisorArray = jsonObject.getAsJsonObject("response").getAsJsonArray("supervisors");
+                JsonObject clinicalDataObject = jsonObject.getAsJsonObject("response").getAsJsonObject("clinicalData");
+
+                mDataBaseAlarmsHelper = new DataBaseAlarmsHelper(getContext());
+                mDataBaseBoxHelper = new DataBaseBoxHelper(getContext());
+                mDataBaseBoundSupervisorHelper = new DataBaseBoundSupervisorHelper(getContext());
+                mDataBaseClinicalDataHelper = new DataBaseClinicalDataHelper(getContext());
+
+                LoadDataBase loadDataBase = new LoadDataBase();
+                loadDataBase.loadDataBaseUser(
+                        alarmsArray,
+                        boxArray,
+                        supervisorArray,
+                        clinicalDataObject,
+                        mDataBaseAlarmsHelper,
+                        mDataBaseBoxHelper,
+                        mDataBaseClinicalDataHelper,
+                        mDataBaseBoundSupervisorHelper);
+
+                Log.e(TAG, "onResponse: " + response);
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.e(TAG, "onFailure:" + t);
+            }
+        });
     }
 
 }

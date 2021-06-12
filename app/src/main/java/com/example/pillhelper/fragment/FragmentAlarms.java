@@ -21,6 +21,8 @@ import com.example.pillhelper.item.AlarmItem;
 
 import java.util.ArrayList;
 
+import static com.example.pillhelper.utils.Constants.WHO_USER_FRAG;
+
 public class FragmentAlarms extends Fragment {
 
     private static final String TAG = "FragmentAlarms";
@@ -58,6 +60,7 @@ public class FragmentAlarms extends Fragment {
             Intent intent = new Intent(getContext(), RegisterAlarmActivity.class);
             intent.putExtra("IS_EDIT", true);
             intent.putExtra("POSITION", position);
+            intent.putExtra(WHO_USER_FRAG, "user");
             startActivity(intent);
         });
 

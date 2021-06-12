@@ -34,11 +34,9 @@ public class FragmentsActivity extends AppCompatActivity {
     private Fragment actualFragment;
     private static final int MY_CAMERA_REQUEST_CODE = 100;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        final String whoUserFrag = getIntent().getStringExtra(WHO_USER_FRAG);
+        String whoUserFrag = getIntent().getStringExtra(WHO_USER_FRAG);
         super.onCreate(savedInstanceState);
         bindingUser = ActivityFragmentsBinding.inflate(getLayoutInflater());
         bindingSupervisor = ActivityFragmentsSupervisorBinding.inflate(getLayoutInflater());

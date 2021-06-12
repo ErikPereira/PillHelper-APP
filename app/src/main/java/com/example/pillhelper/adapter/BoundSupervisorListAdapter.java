@@ -2,6 +2,7 @@ package com.example.pillhelper.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.util.Log;
@@ -141,6 +142,7 @@ public class BoundSupervisorListAdapter extends ArrayAdapter<BoundItem> {
 
             AlertDialog dialog = builder.create();
             dialog.show();
+
         });
 
         ImageView imageView = convertView.findViewById(R.id.supervisor_list_image);
@@ -165,6 +167,24 @@ public class BoundSupervisorListAdapter extends ArrayAdapter<BoundItem> {
 
         TextView nameView = view.findViewById(R.id.supervisor_name);
         nameView.setText(data.getString(3));
+
+        ImageView bondImage = view.findViewById(R.id.adapter_image_bound);
+
+        String bond = data.getString(2);
+
+        switch (bond.toLowerCase()){
+            case "wait":
+                bondImage.setImageResource(R.drawable.ic_supervisor_gray_48dp);
+                break;
+            case "refused":
+                bondImage.setImageResource(R.drawable.ic_supervisor_red_48dp);
+                break;
+            case "accepted":
+                bondImage.setImageResource(R.drawable.ic_supervisor_green_48dp);
+                break;
+            default:
+                bondImage.setImageResource(R.drawable.ic_supervisor_48dp);
+        }
     }
 
     private void createPostUpdateSupervisor(String uuidSupervisor, String registeredBy, String bond, String newName) {
