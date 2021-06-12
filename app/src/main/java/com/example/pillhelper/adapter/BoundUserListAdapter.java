@@ -166,7 +166,7 @@ public class BoundUserListAdapter extends ArrayAdapter<BoundItem> {
 
             builder.setMessage(R.string.dialog_message)
                     .setTitle(R.string.dialog_title)
-                    .setPositiveButton(R.string.ok, (dialog, id) -> createPostDeleteUser(position, getItem(position).getUuid()))
+                    .setPositiveButton(R.string.ok, (dialog, id) -> createPostDeleteUser(position, getItem(position).getUuid(), "deleted"))
                     .setNegativeButton(R.string.cancel, (dialog, id) -> dialog.dismiss());
 
             AlertDialog dialog = builder.create();
@@ -175,28 +175,86 @@ public class BoundUserListAdapter extends ArrayAdapter<BoundItem> {
 
         ImageView bondImage = convertView.findViewById(R.id.adapter_image_bound);
         bondImage.setOnClickListener(u -> {
+            data = mDataBaseBoundUserHelper.getData();
+            data.move(position + 1);
 
-            UserIdSingleton.getInstance().setUserId(getItem(position).getUuid());
+            String bond = data.getString(2);
+            String getRegisteredBy = getItem(position).getRegisteredBy();
+            String name = getItem(position).getName();
+            String uuidUser = getItem(position).getUuid();
 
-            getContext().deleteDatabase("alarms_table");
-            getContext().deleteDatabase("boxes_table");
-            getContext().deleteDatabase("bound_supervisors_table");
-            getContext().deleteDatabase("clinical_data_table");
+            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+            String msg;
 
-            postGetUser(getItem(position).getUuid());
+            switch (bond.toLowerCase()){
+                case "accepted":
+                    msg = "Vínculo permitido!\n\nDeseja visualizar informações do usuário " + name + " ?";
+                    builder.setMessage(msg)
+                            .setTitle("Status do vínculo")
+                            .setPositiveButton(R.string.ok, (dialog, id) -> {
+                                UserIdSingleton.getInstance().setUserId(uuidUser);
 
-            Intent intent = new Intent(mContext, FragmentsActivity.class);
-            intent.putExtra(OPEN_BOX_FRAG, false);
-            intent.putExtra(WHO_USER_FRAG, "user");
-            notifyDataSetChanged();
-            mContext.startActivity(intent);
+                                getContext().deleteDatabase("alarms_table");
+                                getContext().deleteDatabase("boxes_table");
+                                getContext().deleteDatabase("bound_supervisors_table");
+                                getContext().deleteDatabase("clinical_data_table");
 
-            intent.putExtra(WHO_USER_FRAG, "supervisor");
+                                postGetUser(getItem(position).getUuid());
 
-            getContext().deleteDatabase("alarms_table");
-            getContext().deleteDatabase("boxes_table");
-            getContext().deleteDatabase("bound_supervisors_table");
-            getContext().deleteDatabase("clinical_data_table");
+                                Intent intent = new Intent(mContext, FragmentsActivity.class);
+                                intent.putExtra(OPEN_BOX_FRAG, false);
+                                intent.putExtra(WHO_USER_FRAG, "user");
+                                notifyDataSetChanged();
+                                mContext.startActivity(intent);
+
+                                intent.putExtra(WHO_USER_FRAG, "supervisor");
+
+                                getContext().deleteDatabase("alarms_table");
+                                getContext().deleteDatabase("boxes_table");
+                                getContext().deleteDatabase("bound_supervisors_table");
+                                getContext().deleteDatabase("clinical_data_table");
+                            })
+                            .setNegativeButton(R.string.cancel, (dialog, id) -> dialog.dismiss());
+                    break;
+                case "wait":
+                    if (getRegisteredBy.toLowerCase().equals("supervisor")){
+                        msg = "Vínculo aguardando resposta!\n\nPor favor, aguarde o usuário " + name + " aceitar o vínculo.";
+                        builder.setMessage(msg)
+                                .setTitle("Status do vínculo")
+                                .setPositiveButton(R.string.ok, (dialog, id) -> dialog.dismiss());
+
+                    }
+                    else {
+                        msg = "Vínculo Solicitado!\n\nDeseja aceitar o vínculo do usuário " + name + " ?";
+                        builder.setMessage(msg)
+                                .setTitle("Status do vínculo")
+                                .setPositiveButton("Aceitar", (dialog, id) -> createPostUpdateUser(uuidUser, getRegisteredBy, "accepted", name))
+                                .setNegativeButton("Negar", (dialog, id) ->{
+                                    createPostUpdateUser(uuidUser, getRegisteredBy, "refused", name);
+                                    createPostDeleteUser(position, uuidUser, "refused");
+                                });
+
+                    }
+                    break;
+
+                case "refused":
+                    msg = "Vínculo Recusado!\n\nEsta tentativa de vínculo será excluido\n\nPor favor, entre e contato com o usuário " + name + " e tente novamente.";
+                    builder.setMessage(msg)
+                            .setTitle("Status do vínculo")
+                            .setPositiveButton(R.string.ok, (dialog, id) -> createPostDeleteUser(position, uuidUser, "deleted"));
+                    break;
+                case "deleted":
+                    msg = "Vínculo Deletado!\n\nEste vínculo será excluido\n\nPor favor, entre e contato com o usuário " + name + " e tente novamente.";
+                    builder.setMessage(msg)
+                            .setTitle("Status do vínculo")
+                            .setPositiveButton(R.string.ok, (dialog, id) -> createPostDeleteUser(position, uuidUser, "deleted"));
+                    break;
+                default:
+
+            }
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
         });
 
         return convertView;
@@ -217,14 +275,11 @@ public class BoundUserListAdapter extends ArrayAdapter<BoundItem> {
             case "wait":
                 bondImage.setImageResource(R.drawable.ic_supervisor_gray_48dp);
                 break;
-            case "refused":
-                bondImage.setImageResource(R.drawable.ic_supervisor_red_48dp);
-                break;
             case "accepted":
                 bondImage.setImageResource(R.drawable.ic_supervisor_green_48dp);
                 break;
             default:
-                bondImage.setImageResource(R.drawable.ic_supervisor_48dp);
+                bondImage.setImageResource(R.drawable.ic_supervisor_red_48dp);
         }
 
     }
@@ -261,8 +316,8 @@ public class BoundUserListAdapter extends ArrayAdapter<BoundItem> {
         });
     }
 
-    private void createPostDeleteUser(int position, String uuidUser){
-        String requestStr = formatJSONDeleteUser(uuidUser);
+    private void createPostDeleteUser(int position, String uuidUser, String bond){
+        String requestStr = formatJSONDeleteUser(uuidUser, bond);
         JsonObject request = JsonParser.parseString(requestStr).getAsJsonObject();
 
         Call<JsonObject> call = jsonPlaceHolderApi.postDeleteUserInSupervisor(Constants.TOKEN_ACCESS, request);
@@ -317,12 +372,13 @@ public class BoundUserListAdapter extends ArrayAdapter<BoundItem> {
         return null;
     }
 
-    private String formatJSONDeleteUser(String uuidUser) {
+    private String formatJSONDeleteUser(String uuidUser, String bond) {
         final JSONObject root = new JSONObject();
 
         try {
             root.put(ID_SUPERVISOR, SupervisorIdSingleton.getInstance().getSupervisorId());
             root.put("uuidUser", uuidUser);
+            root.put("bondUser", bond);
 
             return root.toString();
         } catch (JSONException e) {

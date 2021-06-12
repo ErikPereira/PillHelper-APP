@@ -21,6 +21,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.pillhelper.R;
+import com.example.pillhelper.activity.FragmentsActivity;
 import com.example.pillhelper.dataBaseUser.DataBaseBoundSupervisorHelper;
 import com.example.pillhelper.item.BoundItem;
 import com.example.pillhelper.services.JsonPlaceHolderApi;
@@ -43,8 +44,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import static com.example.pillhelper.utils.Constants.BASE_URL;
 import static com.example.pillhelper.utils.Constants.ID_SUPERVISOR;
 import static com.example.pillhelper.utils.Constants.NOME_SUPERVISOR;
+import static com.example.pillhelper.utils.Constants.OPEN_BOX_FRAG;
 import static com.example.pillhelper.utils.Constants.REGISTRADO_POR;
 import static com.example.pillhelper.utils.Constants.VINCULO;
+import static com.example.pillhelper.utils.Constants.WHO_USER_FRAG;
 
 public class BoundSupervisorListAdapter extends ArrayAdapter<BoundItem> {
 
@@ -151,8 +154,69 @@ public class BoundSupervisorListAdapter extends ArrayAdapter<BoundItem> {
 
             builder.setMessage(R.string.dialog_message)
                     .setTitle(R.string.dialog_title)
-                    .setPositiveButton(R.string.ok, (dialog, id) -> createPostDeleteSupervisor(position, getItem(position).getUuid()))
+                    .setPositiveButton(R.string.ok, (dialog, id) -> createPostDeleteSupervisor(position, getItem(position).getUuid(), "deleted"))
                     .setNegativeButton(R.string.cancel, (dialog, id) -> dialog.dismiss());
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        });
+
+        ImageView bondImage = convertView.findViewById(R.id.adapter_image_bound);
+        bondImage.setOnClickListener(u -> {
+            data = mDataBaseBoundSupervisorHelper.getData();
+            data.move(position + 1);
+
+            String bond = data.getString(2);
+            String getRegisteredBy = getItem(position).getRegisteredBy();
+            String name = getItem(position).getName();
+            String uuidSupervisor = getItem(position).getUuid();
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+            String msg;
+
+            switch (bond.toLowerCase()){
+                case "accepted":
+                    msg = "Vínculo permitido!";
+                    builder.setMessage(msg)
+                            .setTitle("Status do vínculo")
+                            .setPositiveButton(R.string.ok, (dialog, id) -> dialog.dismiss());
+                    break;
+                case "wait":
+                    if (getRegisteredBy.toLowerCase().equals("user")){
+                        msg = "Vínculo aguardando resposta!\n\nPor favor, aguarde o supervisor " + name + " aceitar o vínculo.";
+                        builder.setMessage(msg)
+                                .setTitle("Status do vínculo")
+                                .setPositiveButton(R.string.ok, (dialog, id) -> dialog.dismiss());
+
+                    }
+                    else {
+                        msg = "Vínculo Solicitado!\n\nDeseja aceitar o vínculo do supervisor " + name + " ?";
+                        builder.setMessage(msg)
+                                .setTitle("Status do vínculo")
+                                .setPositiveButton("Aceitar", (dialog, id) -> createPostUpdateSupervisor(uuidSupervisor, getRegisteredBy, "accepted", name))
+                                .setNegativeButton("Negar", (dialog, id) -> {
+                                    createPostUpdateSupervisor(uuidSupervisor, getRegisteredBy, "refused", name);
+                                    createPostDeleteSupervisor(position, uuidSupervisor, "refused");
+                                });
+
+                    }
+                    break;
+
+                case "refused":
+                    msg = "Vínculo Recusado!\n\nEsta tentativa de vínculo será excluido\n\nPor favor, entre e contato com o usuário " + name + " e tente novamente.";
+                    builder.setMessage(msg)
+                            .setTitle("Status do vínculo")
+                            .setPositiveButton(R.string.ok, (dialog, id) -> createPostDeleteSupervisor(position, uuidSupervisor, "deleted"));
+                    break;
+                case "deleted":
+                    msg = "Vínculo Deletado!\n\nEste vínculo será excluido\n\nPor favor, entre e contato com o usuário " + name + " e tente novamente.";
+                    builder.setMessage(msg)
+                            .setTitle("Status do vínculo")
+                            .setPositiveButton(R.string.ok, (dialog, id) -> createPostDeleteSupervisor(position, uuidSupervisor, "deleted"));
+                    break;
+                default:
+
+            }
 
             AlertDialog dialog = builder.create();
             dialog.show();
@@ -176,14 +240,11 @@ public class BoundSupervisorListAdapter extends ArrayAdapter<BoundItem> {
             case "wait":
                 bondImage.setImageResource(R.drawable.ic_supervisor_gray_48dp);
                 break;
-            case "refused":
-                bondImage.setImageResource(R.drawable.ic_supervisor_red_48dp);
-                break;
             case "accepted":
                 bondImage.setImageResource(R.drawable.ic_supervisor_green_48dp);
                 break;
             default:
-                bondImage.setImageResource(R.drawable.ic_supervisor_48dp);
+                bondImage.setImageResource(R.drawable.ic_supervisor_red_48dp);
         }
     }
 
@@ -219,8 +280,8 @@ public class BoundSupervisorListAdapter extends ArrayAdapter<BoundItem> {
         });
     }
 
-    private void createPostDeleteSupervisor(int position, String uuidSupervisor){
-        String requestStr = formatJSONDeleteSupervisor(uuidSupervisor);
+    private void createPostDeleteSupervisor(int position, String uuidSupervisor, String bond){
+        String requestStr = formatJSONDeleteSupervisor(uuidSupervisor, bond);
         JsonObject request = JsonParser.parseString(requestStr).getAsJsonObject();
 
         Call<JsonObject> call = jsonPlaceHolderApi.postDeleteSupervisorInUser(Constants.TOKEN_ACCESS, request);
@@ -275,12 +336,13 @@ public class BoundSupervisorListAdapter extends ArrayAdapter<BoundItem> {
         return null;
     }
 
-    private String formatJSONDeleteSupervisor(String uuidSupervisor) {
+    private String formatJSONDeleteSupervisor(String uuidSupervisor, String bond) {
         final JSONObject root = new JSONObject();
 
         try {
             root.put("uuidUser", UserIdSingleton.getInstance().getUserId());
             root.put(ID_SUPERVISOR, uuidSupervisor);
+            root.put("bondSupervisor", bond);
 
             return root.toString();
         } catch (JSONException e) {
