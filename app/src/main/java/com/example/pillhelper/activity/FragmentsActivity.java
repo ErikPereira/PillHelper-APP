@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -43,6 +44,10 @@ public class FragmentsActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        if (TextUtils.isEmpty(whoUserFrag)) {
+            whoUserFrag = "user";
+        }
 
         if (whoUserFrag.equals("user")) {
             setContentView(bindingUser.getRoot());
