@@ -175,9 +175,7 @@ public class BoundUserListAdapter extends ArrayAdapter<BoundItem> {
 
         ImageView bondImage = convertView.findViewById(R.id.adapter_image_bound);
         bondImage.setOnClickListener(u -> {
-            Intent intent = new Intent(mContext, FragmentsActivity.class);
-            intent.putExtra(OPEN_BOX_FRAG, false);
-            intent.putExtra(WHO_USER_FRAG, "user");
+
             UserIdSingleton.getInstance().setUserId(getItem(position).getUuid());
 
             getContext().deleteDatabase("alarms_table");
@@ -187,7 +185,12 @@ public class BoundUserListAdapter extends ArrayAdapter<BoundItem> {
 
             postGetUser(getItem(position).getUuid());
 
+            Intent intent = new Intent(mContext, FragmentsActivity.class);
+            intent.putExtra(OPEN_BOX_FRAG, false);
+            intent.putExtra(WHO_USER_FRAG, "user");
+            notifyDataSetChanged();
             mContext.startActivity(intent);
+
             intent.putExtra(WHO_USER_FRAG, "supervisor");
 
             getContext().deleteDatabase("alarms_table");
@@ -368,6 +371,7 @@ public class BoundUserListAdapter extends ArrayAdapter<BoundItem> {
                         mDataBaseClinicalDataHelper,
                         mDataBaseBoundSupervisorHelper);
 
+                notifyDataSetChanged();
                 Log.e(TAG, "onResponse: " + response);
             }
 
