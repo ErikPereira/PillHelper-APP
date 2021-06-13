@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:background="?android:attr/windowBackground"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:menu="@menu/bottom_navigation_menu" />
+        app:menu="@menu/bottom_navigation_menu_supervisor" />
 
     <ProgressBar
         android:id="@+id/progress_bar_list"

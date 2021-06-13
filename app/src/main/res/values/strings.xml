@@ -23,6 +23,9 @@
     <string name="login_type_senha">Senha</string>
     <string name="menu_alarme">Alarmes</string>
     <string name="menu_caixas">Caixas</string>
+    <string name="menu_supervisor">Supervisor</string>
+    <string name="menu_usuarios">Usuários</string>
+    <string name="menu_dados_clinicos">Dados Clínicos</string>
     <string name="login_back_button">Voltar</string>
 
     <!--Box founded activity-->
@@ -55,6 +58,7 @@
     <string name="button_back_clock_interval">Voltar</string>
     <string name="inf_interval_clock">Digite as informações</string>
     <string name="box_list_item_image_description">Deletar Caixa</string>
+    <string name="supervisor_list_item_image_description">Deletar Supervisor</string>
 
     <!-- Mensagens gerais para ambos os relógios-->
     <string name="dialog_message">Quer mesmo deletar?</string>
@@ -73,6 +77,13 @@
 
     <string name="dialog_change_name_title">Altere o Nome da Caixa</string>
     <string name="dialog_change_name_hint">Nome da Caixa</string>
+
+    <string name="dialog_change_name_title_supervisor">Altere o Nome do Supervisor</string>
+    <string name="dialog_change_name_hint_supervisor">Nome do Supervisor</string>
+
+    <string name="dialog_change_name_title_user">Altere o Nome do Usuário</string>
+    <string name="dialog_change_name_hint_user">Nome do Usuário</string>
+
     <!-- Dias da semana-->
     <string name="sunday">D</string>
     <string name="monday">S</string>
@@ -85,6 +96,8 @@
     <string name="days_of_week_info">Selecione os dias da semana:</string>
     <string name="dialog_text_start_time_info">Informe o horário que o medicamento deve começar a ser tomado</string>
     <string name="dialog_text_how_many_times_info">Informe quantas vezes deve-se tomar o medicamento por dia</string>
+    <string name="dialog_text_user_name_info">Informe o nome do usuário, opcional</string>
+    <string name="dialog_text_user_email_info">Informe o email do usuário, obrigatório</string>
     <string name="dialog_text_time_interval_info">Informe o período de tempo entre cada medicação</string>
 
     <!-- Toque do alarme-->
@@ -103,4 +116,26 @@
     <string name="alarm_box_types_title">Tipos de alarme na caixa:</string>
 
     <string name="qr_warning_text">Foque no QR Code</string>
+
+    <!-- Register Supervisor -->
+    <string name="register_supervisor_title">Cadastrar Supervisor</string>
+    <string name="register_usuario_title">Cadastrar Usuário</string>
+    <string name="inf_text_Supervisor">Novo Vínculo</string>
+    <string name="supervisor_email">Email</string>
+    <string name="supervisor_cell">Celular</string>
+    <string name="supervisor_name">Nome</string>
+    <string name="dialog_text_supervisor_name_info">Informe o nome do supervisor, opcional</string>
+    <string name="dialog_text_supervisor_email_info">Informe o email do supervisor, obrigatório</string>
+    <string name="select_supervisor_text">Informe a forma de salvar o novo vínculo:</string>
+
+    <!-- Register Clinical Data-->
+    <string name="register_clinical_data_title">Cadastrar Dados Clínicos</string>
+    <string name="dialog_change_clinical_data_hint">Novo valor</string>
+    <string name="dialog_change_name_title_clinical_data">Altere o valor do dado Clínico</string>
+    <string name="inf_text_clinical_data">Novo Dado Clínico</string>
+    <string name="clinical_data_name">Nome do Dado Clínico</string>
+    <string name="clinical_data_value">Valor do Dado Clínico</string>
+    <string name="dialog_text_clinical_data_name_info">Informe o nome do Dado Clínico, obrigatório</string>
+    <string name="dialog_text_clinical_data_value_info">Informe o valor do Dado Clínico, opcional</string>
+
 </resources>
