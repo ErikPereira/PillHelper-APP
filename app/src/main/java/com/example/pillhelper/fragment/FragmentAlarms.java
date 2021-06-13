@@ -15,11 +15,13 @@ import com.example.pillhelper.adapter.AlarmListAdapter;
 import com.example.pillhelper.R;
 import com.example.pillhelper.activity.AllMedicinesActivity;
 import com.example.pillhelper.activity.RegisterAlarmActivity;
-import com.example.pillhelper.dataBase.DataBaseAlarmsHelper;
+import com.example.pillhelper.dataBaseUser.DataBaseAlarmsHelper;
 import com.example.pillhelper.databinding.FragmentAlarmsBinding;
 import com.example.pillhelper.item.AlarmItem;
 
 import java.util.ArrayList;
+
+import static com.example.pillhelper.utils.Constants.WHO_USER_FRAG;
 
 public class FragmentAlarms extends Fragment {
 
@@ -58,6 +60,7 @@ public class FragmentAlarms extends Fragment {
             Intent intent = new Intent(getContext(), RegisterAlarmActivity.class);
             intent.putExtra("IS_EDIT", true);
             intent.putExtra("POSITION", position);
+            intent.putExtra(WHO_USER_FRAG, "user");
             startActivity(intent);
         });
 

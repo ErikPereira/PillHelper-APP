@@ -11,7 +11,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.pillhelper.R;
-import com.example.pillhelper.dataBase.DataBaseClinicalDataHelper;
+import com.example.pillhelper.dataBaseUser.DataBaseClinicalDataHelper;
 import com.example.pillhelper.databinding.ActivityRegisterClinicalDataBinding;
 import com.example.pillhelper.services.JsonPlaceHolderApi;
 import com.example.pillhelper.utils.Constants;
@@ -30,6 +30,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.example.pillhelper.utils.Constants.BASE_URL;
 import static com.example.pillhelper.utils.Constants.OPEN_BOX_FRAG;
+import static com.example.pillhelper.utils.Constants.WHO_USER_FRAG;
 
 public class RegisterClinicalDataActivity extends AppCompatActivity {
     private static final String TAG = "RegisterClinicalDataActivity";
@@ -120,6 +121,7 @@ public class RegisterClinicalDataActivity extends AppCompatActivity {
                     Intent intent = new Intent(getBaseContext(), FragmentsActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra(OPEN_BOX_FRAG, false);
+                    intent.putExtra(WHO_USER_FRAG, "user");
                     startActivity(intent);
                     finish();
                 }

@@ -1,4 +1,4 @@
-package com.example.pillhelper.dataBase;
+package com.example.pillhelper.dataBaseUser;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -13,14 +13,14 @@ import static com.example.pillhelper.utils.Constants.NOME_SUPERVISOR;
 
 import androidx.annotation.Nullable;
 
-public class DataBaseSupervisorHelper extends SQLiteOpenHelper {
-    private static final String TABLE_NAME = "supervisors_table";
+public class DataBaseBoundSupervisorHelper extends SQLiteOpenHelper {
+    private static final String TABLE_NAME = "bound_supervisors_table";
     private static final String COL0 = ID_SUPERVISOR;
     private static final String COL1 = REGISTRADO_POR;
     private static final String COL2 = VINCULO;
     private static final String COL3 = NOME_SUPERVISOR;
 
-    public DataBaseSupervisorHelper(@Nullable Context context) {
+    public DataBaseBoundSupervisorHelper(@Nullable Context context) {
         super(context, TABLE_NAME, null, 1);
     }
 

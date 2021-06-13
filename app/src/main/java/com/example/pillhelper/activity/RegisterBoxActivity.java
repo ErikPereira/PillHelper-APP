@@ -18,7 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.example.pillhelper.utils.Constants;
-import com.example.pillhelper.dataBase.DataBaseBoxHelper;
+import com.example.pillhelper.dataBaseUser.DataBaseBoxHelper;
 import com.example.pillhelper.services.JsonPlaceHolderApi;
 import com.example.pillhelper.singleton.UserIdSingleton;
 import com.example.pillhelper.databinding.ActivityRegisterBoxBinding;
@@ -43,6 +43,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import static com.example.pillhelper.utils.Constants.BASE_URL;
 import static com.example.pillhelper.utils.Constants.ID_CAIXA;
 import static com.example.pillhelper.utils.Constants.OPEN_BOX_FRAG;
+import static com.example.pillhelper.utils.Constants.WHO_USER_FRAG;
 
 public class RegisterBoxActivity extends AppCompatActivity {
 
@@ -163,6 +164,7 @@ public class RegisterBoxActivity extends AppCompatActivity {
                         Intent intent = new Intent(getBaseContext(), FragmentsActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.putExtra(OPEN_BOX_FRAG, true);
+                        intent.putExtra(WHO_USER_FRAG, "user");
                         startActivity(intent);
                         finish();
                     } else

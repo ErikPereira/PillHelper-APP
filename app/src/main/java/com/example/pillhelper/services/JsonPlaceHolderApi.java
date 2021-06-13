@@ -13,6 +13,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 
+import static com.example.pillhelper.utils.Constants.ID_SUPERVISOR;
 import static com.example.pillhelper.utils.Constants.ID_USUARIO;
 
 public interface JsonPlaceHolderApi {
@@ -24,6 +25,11 @@ public interface JsonPlaceHolderApi {
     @POST(Constants.INSERT_ONE_SUPERVISOR)
     Call<JsonObject> postCreateSupervisors(@Header("authorization") String token,
                                     @Body JsonObject body);
+
+    @FormUrlEncoded
+    @POST(Constants.SUPERVISOR_DATA)
+    Call<JsonObject> postSupervisorData(@Header("authorization") String token,
+                                  @Field(ID_SUPERVISOR) String id);
 
     @FormUrlEncoded
     @POST(Constants.LOGIN_USER)
@@ -67,9 +73,21 @@ public interface JsonPlaceHolderApi {
     Call<JsonObject> postDeleteSupervisorInUser(@Header("authorization") String token,
                                                 @Body JsonObject body);
 
+    @POST(Constants.UPDATE_USER_IN_SUPERVISOR)
+    Call<JsonObject> postUpdateUserInSupervisor(@Header("authorization") String token,
+                                                @Body JsonObject body);
+
+    @POST(Constants.DELETE_USER_IN_SUPERVISOR)
+    Call<JsonObject> postDeleteUserInSupervisor(@Header("authorization") String token,
+                                                @Body JsonObject body);
+
     @POST(Constants.REGISTER_SUPERVISOR)
     Call<JsonObject> postRegisterSupervisor(@Header("authorization") String token,
                                                 @Body JsonObject body);
+
+    @POST(Constants.REGISTER_USER)
+    Call<JsonObject> postRegisterUser(@Header("authorization") String token,
+                                            @Body JsonObject body);
 
     @POST(Constants.UPDATE_CLINICAL_DATA)
     Call<JsonObject> postUpdateClinicalData(@Header("authorization") String token,

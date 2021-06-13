@@ -9,7 +9,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.pillhelper.utils.Constants;
-import com.example.pillhelper.dataBase.DataBaseUserHelper;
+import com.example.pillhelper.dataBaseUser.DataBaseUserHelper;
 import com.example.pillhelper.services.JsonPlaceHolderApi;
 import com.example.pillhelper.utils.MaskEditUtil;
 import com.example.pillhelper.databinding.ActivityRegisterBinding;

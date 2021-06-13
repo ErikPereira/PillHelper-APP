@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.pillhelper.adapter.BoxListAdapter;
 import com.example.pillhelper.R;
-import com.example.pillhelper.dataBase.DataBaseBoxHelper;
+import com.example.pillhelper.dataBaseUser.DataBaseBoxHelper;
 import com.example.pillhelper.databinding.FragmentBoxesBinding;
 import com.example.pillhelper.item.BoxItem;
 

@@ -1,4 +1,4 @@
-package com.example.pillhelper.dataBase;
+package com.example.pillhelper.dataBaseUser;
 
 import android.content.ContentValues;
 import android.content.Context;

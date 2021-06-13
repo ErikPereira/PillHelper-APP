@@ -20,7 +20,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.pillhelper.R;
 import com.example.pillhelper.singleton.UserIdSingleton;
-import com.example.pillhelper.dataBase.DataBaseBoxHelper;
+import com.example.pillhelper.dataBaseUser.DataBaseBoxHelper;
 import com.example.pillhelper.item.BoxItem;
 import com.example.pillhelper.services.JsonPlaceHolderApi;
 import com.example.pillhelper.utils.Constants;

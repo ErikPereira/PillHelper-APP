@@ -11,40 +11,39 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.pillhelper.R;
-import com.example.pillhelper.adapter.SupervisorListAdapter;
-import com.example.pillhelper.dataBase.DataBaseSupervisorHelper;
+import com.example.pillhelper.adapter.BoundUserListAdapter;
+import com.example.pillhelper.dataBaseSupervisor.DataBaseBoundUserHelper;
 import com.example.pillhelper.databinding.FragmentSupervisorsBinding;
-import com.example.pillhelper.item.SupervisorItem;
+import com.example.pillhelper.item.BoundItem;
 
 import java.util.ArrayList;
 
-public class FragmentSupervisors extends Fragment {
+public class FragmentBoundUsers extends Fragment {
     private FragmentSupervisorsBinding binding;
-    private DataBaseSupervisorHelper mDataBaseSupervisorHelper;
+    private DataBaseBoundUserHelper mDataBaseBoundUserHelper;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-
         binding = FragmentSupervisorsBinding.inflate(getLayoutInflater());
 
-        mDataBaseSupervisorHelper = new DataBaseSupervisorHelper(getContext());
+        mDataBaseBoundUserHelper = new DataBaseBoundUserHelper(getContext());
 
-        Cursor data = mDataBaseSupervisorHelper.getData();
-        ArrayList<SupervisorItem> supervisors = new ArrayList<>();
+        Cursor data = mDataBaseBoundUserHelper.getData();
+        ArrayList<BoundItem> user = new ArrayList<>();
 
         while (data.moveToNext()) {
-            String uuidSupervisor = data.getString(0);
+            String uuidUser = data.getString(0);
             String registeredBy = data.getString(1);
             String bond = data.getString(2);
             String name = data.getString(3);
 
-            SupervisorItem supervisor = new SupervisorItem(uuidSupervisor, registeredBy, bond, name);
-            supervisors.add(supervisor);
+            BoundItem u = new BoundItem(uuidUser, registeredBy, bond, name);
+            user.add(u);
         }
 
-        SupervisorListAdapter adapter = new SupervisorListAdapter(getContext(), R.layout.supervisors_list_item, supervisors);
+        BoundUserListAdapter adapter = new BoundUserListAdapter(getContext(), R.layout.supervisors_list_item, user);
         binding.supervisorListView.setAdapter(adapter);
 
         return binding.getRoot();

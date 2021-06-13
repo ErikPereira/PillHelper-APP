@@ -10,7 +10,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.pillhelper.dataBase.DataBaseAlarmsHelper;
+import com.example.pillhelper.dataBaseUser.DataBaseAlarmsHelper;
 import com.example.pillhelper.R;
 import com.example.pillhelper.databinding.ActivityRegisterAlarmBinding;
 
