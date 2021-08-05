@@ -12,7 +12,7 @@ public class Constants {
     public static final String DELETE_ALARM = "deleteAlarmUser";//POST PARA ALTERAR UM ALARME
     public static final String CREATE_BOX = "registerBox";//POST PARA CRIAR E ALTERAR UMA CAIXA
     public static final String UPDATE_BOX = "updateBoxUser";//POST PARA CRIAR E ALTERAR UMA CAIXA
-    public static final String DELETE_BOX = "deletecheckLoginBoxInUser";//POST PARA DELETAR UMA CAIXA
+    public static final String DELETE_BOX = "deleteBoxInUser";//POST PARA DELETAR UMA CAIXA
     public static final String UPDATE_SUPERVISOR_IN_USER = "updateSupervisorInUser"; // POST para atualizar os dados do supervisor dentro de um usuario
     public static final String DELETE_SUPERVISOR_IN_USER = "deleteSupervisorInUser"; // POST para deletar os dados do supervisor dentro de um usuario
     public static final String REGISTER_SUPERVISOR = "registerSupervisor"; // POST para registar um supervisor dentro de um usuario
@@ -55,7 +55,12 @@ public class Constants {
     public static final String ID_CAIXA = "uuidBox";
     public static final String NOME_CAIXA = "nameBox";
     public static final String NOME_USER = "name";
-    public static final String MUDAR_USUARIO = "mudarUsuario";
+
+    public static final String NAME_BULLA        = "nameBulla";
+    public static final String TITLE_BULLA       = "title";
+    public static final String DESCRIPTION_BULLA = "description";
+    public static final String INFORMATION_BULLA = "information";
+
 
     public static final String NAME_CLINICAL_DATA = "name";
     public static final String VALUE_CLINICAL_DATA = "value";
