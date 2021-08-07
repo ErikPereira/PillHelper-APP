@@ -23,6 +23,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.example.pillhelper.R;
 import com.example.pillhelper.activity.FragmentsActivity;
 import com.example.pillhelper.activity.LoginActivity;
+import com.example.pillhelper.dataBaseBulla.DataBaseBullaHelper;
 import com.example.pillhelper.dataBaseSupervisor.DataBaseBoundUserHelper;
 import com.example.pillhelper.dataBaseUser.DataBaseAlarmsHelper;
 import com.example.pillhelper.dataBaseUser.DataBaseBoundSupervisorHelper;
@@ -71,6 +72,7 @@ public class BoundUserListAdapter extends ArrayAdapter<BoundItem> {
     DataBaseBoundSupervisorHelper mDataBaseBoundSupervisorHelper;
     DataBaseBoundUserHelper mDataBaseBoundUserHelper;
     DataBaseClinicalDataHelper mDataBaseClinicalDataHelper;
+    DataBaseBullaHelper mDataBaseBullaHelper;
 
     public BoundUserListAdapter(Context context, int resource, ArrayList<BoundItem> objects) {
         super(context, resource, objects);
@@ -410,11 +412,13 @@ public class BoundUserListAdapter extends ArrayAdapter<BoundItem> {
                 JsonArray boxArray = jsonObject.getAsJsonObject("response").getAsJsonArray("box");
                 JsonArray supervisorArray = jsonObject.getAsJsonObject("response").getAsJsonArray("supervisors");
                 JsonObject clinicalDataObject = jsonObject.getAsJsonObject("response").getAsJsonObject("clinicalData");
+                JsonArray bullasArray = jsonObject.getAsJsonObject("response").getAsJsonArray("bulla");
 
                 mDataBaseAlarmsHelper = new DataBaseAlarmsHelper(getContext());
                 mDataBaseBoxHelper = new DataBaseBoxHelper(getContext());
                 mDataBaseBoundSupervisorHelper = new DataBaseBoundSupervisorHelper(getContext());
                 mDataBaseClinicalDataHelper = new DataBaseClinicalDataHelper(getContext());
+                mDataBaseBullaHelper = new DataBaseBullaHelper(getContext());
 
                 LoadDataBase loadDataBase = new LoadDataBase();
                 loadDataBase.loadDataBaseUser(
@@ -422,10 +426,12 @@ public class BoundUserListAdapter extends ArrayAdapter<BoundItem> {
                         boxArray,
                         supervisorArray,
                         clinicalDataObject,
+                        bullasArray,
                         mDataBaseAlarmsHelper,
                         mDataBaseBoxHelper,
                         mDataBaseClinicalDataHelper,
-                        mDataBaseBoundSupervisorHelper);
+                        mDataBaseBoundSupervisorHelper,
+                        mDataBaseBullaHelper);
 
                 notifyDataSetChanged();
                 Log.e(TAG, "onResponse: " + response);

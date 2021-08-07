@@ -18,6 +18,15 @@ import static com.example.pillhelper.utils.Constants.ID_USUARIO;
 
 public interface JsonPlaceHolderApi {
 
+    @POST(Constants.REMOVE_BULLA)
+    Call<JsonObject> postRemoveBulla(@Header("authorization") String token,
+                                    @Body JsonObject body);
+
+    @POST(Constants.TEXT_RECOGNIZER)
+    Call<JsonObject> postTextRecognizer(@Header("authorization") String token,
+                                    @Body JsonObject body);
+
+
     @POST(Constants.CREATE_USER)
     Call<JsonObject> postCreateUser(@Header("authorization") String token,
                                     @Body JsonObject body);

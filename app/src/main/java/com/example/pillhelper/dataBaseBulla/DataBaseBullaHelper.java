@@ -56,7 +56,7 @@ public class DataBaseBullaHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
-    public Cursor getAllData() {
+    public Cursor getData() {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT * FROM " + TABLE_NAME;
         return db.rawQuery(query, null);

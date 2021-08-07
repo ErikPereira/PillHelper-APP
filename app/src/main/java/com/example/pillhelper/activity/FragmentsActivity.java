@@ -18,6 +18,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.pillhelper.databinding.ActivityFragmentsSupervisorBinding;
 import com.example.pillhelper.fragment.FragmentAlarms;
 import com.example.pillhelper.fragment.FragmentBoxes;
+import com.example.pillhelper.fragment.FragmentBullas;
 import com.example.pillhelper.R;
 import com.example.pillhelper.databinding.ActivityFragmentsBinding;
 import com.example.pillhelper.fragment.FragmentClinicalData;
@@ -110,9 +111,18 @@ public class FragmentsActivity extends AppCompatActivity {
         else {
             setContentView(bindingSupervisor.getRoot());
             bindingSupervisor.bottomNavigation.setOnNavigationItemSelectedListener(item -> {
-                bindingSupervisor.fabFragment.setImageDrawable(getBaseContext().getDrawable(R.drawable.ic_add_supervisor_white_24dp));
-                actualFragment = new FragmentBoundUsers();
-                loadFragment(actualFragment);
+                switch (item.getItemId()) {
+                    case R.id.nav_usuarios:
+                        bindingSupervisor.fabFragment.setImageDrawable(getBaseContext().getDrawable(R.drawable.ic_add_supervisor_white_24dp));
+                        actualFragment = new FragmentBoundUsers();
+                        loadFragment(actualFragment);
+                        break;
+                    case R.id.nav_bulas:
+                        bindingSupervisor.fabFragment.setImageDrawable(getBaseContext().getDrawable(R.drawable.ic_camera_24dp));
+                        actualFragment = new FragmentBullas();
+                        loadFragment(actualFragment);
+                        break;
+                }
                 return true;
             });
 
@@ -137,6 +147,9 @@ public class FragmentsActivity extends AppCompatActivity {
 
         else if (fragment instanceof FragmentBoundUsers)
             getSupportActionBar().setTitle(R.string.menu_usuarios);
+
+        else if (fragment instanceof FragmentBullas)
+            getSupportActionBar().setTitle("Bulas");
 
         else getSupportActionBar().setTitle(R.string.menu_caixas);
 

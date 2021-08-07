@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.pillhelper.dataBaseBulla.DataBaseBullaHelper;
 import com.example.pillhelper.dataBaseSupervisor.DataBaseBoundUserHelper;
 import com.example.pillhelper.dataBaseUser.DataBaseClinicalDataHelper;
 import com.example.pillhelper.dataBaseUser.DataBaseBoundSupervisorHelper;
@@ -85,6 +86,7 @@ public class LoginActivity extends AppCompatActivity {
     DataBaseBoundSupervisorHelper mDataBaseBoundSupervisorHelper;
     DataBaseBoundUserHelper mDataBaseBoundUserHelper;
     DataBaseClinicalDataHelper mDataBaseClinicalDataHelper;
+    DataBaseBullaHelper mDataBaseBullaHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -277,11 +279,13 @@ public class LoginActivity extends AppCompatActivity {
                 JsonArray boxArray = jsonObject.getAsJsonObject("response").getAsJsonArray("box");
                 JsonArray supervisorArray = jsonObject.getAsJsonObject("response").getAsJsonArray("supervisors");
                 JsonObject clinicalDataObject = jsonObject.getAsJsonObject("response").getAsJsonObject("clinicalData");
+                JsonArray bullasArray = jsonObject.getAsJsonObject("response").getAsJsonArray("bulla");
 
                 getBaseContext().deleteDatabase("alarms_table");
                 getBaseContext().deleteDatabase("boxes_table");
                 getBaseContext().deleteDatabase("bound_supervisors_table");
                 getBaseContext().deleteDatabase("clinical_data_table");
+                getBaseContext().deleteDatabase("bulla_table");
 
                 getBaseContext().deleteDatabase("bound_user_table");
 
@@ -289,6 +293,8 @@ public class LoginActivity extends AppCompatActivity {
                 mDataBaseBoxHelper = new DataBaseBoxHelper(getBaseContext());
                 mDataBaseBoundSupervisorHelper = new DataBaseBoundSupervisorHelper(getBaseContext());
                 mDataBaseClinicalDataHelper = new DataBaseClinicalDataHelper(getBaseContext());
+                mDataBaseBullaHelper = new DataBaseBullaHelper(getBaseContext());
+
 
                 LoadDataBase loadDataBase = new LoadDataBase();
                 loadDataBase.loadDataBaseUser(
@@ -296,10 +302,12 @@ public class LoginActivity extends AppCompatActivity {
                         boxArray,
                         supervisorArray,
                         clinicalDataObject,
+                        bullasArray,
                         mDataBaseAlarmsHelper,
                         mDataBaseBoxHelper,
                         mDataBaseClinicalDataHelper,
-                        mDataBaseBoundSupervisorHelper);
+                        mDataBaseBoundSupervisorHelper,
+                        mDataBaseBullaHelper);
 
                 Intent intent = new Intent(LoginActivity.this, FragmentsActivity.class);
                 intent.putExtra(OPEN_BOX_FRAG, false);
@@ -339,21 +347,27 @@ public class LoginActivity extends AppCompatActivity {
 
                 JsonObject jsonObject = response.body();
                 JsonArray usersArray = jsonObject.getAsJsonObject("response").getAsJsonArray("users");
+                JsonArray bullasArray = jsonObject.getAsJsonObject("response").getAsJsonArray("bulla");
 
                 getBaseContext().deleteDatabase("alarms_table");
                 getBaseContext().deleteDatabase("boxes_table");
                 getBaseContext().deleteDatabase("bound_supervisors_table");
                 getBaseContext().deleteDatabase("clinical_data_table");
+                getBaseContext().deleteDatabase("bulla_table");
 
                 getBaseContext().deleteDatabase("bound_user_table");
 
                 mDataBaseBoundUserHelper = new DataBaseBoundUserHelper(getBaseContext());
+                mDataBaseBullaHelper = new DataBaseBullaHelper(getBaseContext());
 
                 LoadDataBase loadDataBase = new LoadDataBase();
                 loadDataBase.loadDataBaseSupervisor(
                         usersArray,
-                        mDataBaseBoundUserHelper
+                        bullasArray,
+                        mDataBaseBoundUserHelper,
+                        mDataBaseBullaHelper
                 );
+
 
                 Intent intent = new Intent(LoginActivity.this, FragmentsActivity.class);
                 intent.putExtra(OPEN_BOX_FRAG, false);

@@ -7,6 +7,7 @@ import com.example.pillhelper.dataBaseUser.DataBaseAlarmsHelper;
 import com.example.pillhelper.dataBaseUser.DataBaseBoundSupervisorHelper;
 import com.example.pillhelper.dataBaseUser.DataBaseBoxHelper;
 import com.example.pillhelper.dataBaseUser.DataBaseClinicalDataHelper;
+import com.example.pillhelper.dataBaseBulla.DataBaseBullaHelper;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -14,15 +15,18 @@ import com.google.gson.JsonObject;
 import static com.example.pillhelper.utils.Constants.ALARM_TYPE;
 import static com.example.pillhelper.utils.Constants.ATIVO;
 import static com.example.pillhelper.utils.Constants.BOX_POSITION;
+import static com.example.pillhelper.utils.Constants.DESCRIPTION_BULLA;
 import static com.example.pillhelper.utils.Constants.DOMINGO;
 import static com.example.pillhelper.utils.Constants.DOSAGEM;
 import static com.example.pillhelper.utils.Constants.HORA;
 import static com.example.pillhelper.utils.Constants.ID_ALARME;
 import static com.example.pillhelper.utils.Constants.ID_CAIXA;
 import static com.example.pillhelper.utils.Constants.ID_SUPERVISOR;
+import static com.example.pillhelper.utils.Constants.INFORMATION_BULLA;
 import static com.example.pillhelper.utils.Constants.LUMINOSO;
 import static com.example.pillhelper.utils.Constants.MEDICINE_TYPE;
 import static com.example.pillhelper.utils.Constants.MINUTO;
+import static com.example.pillhelper.utils.Constants.NAME_BULLA;
 import static com.example.pillhelper.utils.Constants.NOME_CAIXA;
 import static com.example.pillhelper.utils.Constants.NOME_REMEDIO;
 import static com.example.pillhelper.utils.Constants.NOME_SUPERVISOR;
@@ -40,12 +44,13 @@ import static com.example.pillhelper.utils.Constants.SEGUNDA;
 import static com.example.pillhelper.utils.Constants.SEXTA;
 import static com.example.pillhelper.utils.Constants.SONORO;
 import static com.example.pillhelper.utils.Constants.TERCA;
+import static com.example.pillhelper.utils.Constants.TITLE_BULLA;
 import static com.example.pillhelper.utils.Constants.VEZES_DIA;
 import static com.example.pillhelper.utils.Constants.VINCULO;
 
 public class LoadDataBase {
 
-    public void loadDataBaseUser(JsonArray alarmsArray, JsonArray boxArray, JsonArray supervisorArray, JsonObject clinicalDataObject, DataBaseAlarmsHelper mDataBaseAlarmsHelper, DataBaseBoxHelper mDataBaseBoxHelper, DataBaseClinicalDataHelper mDataBaseClinicalDataHelper, DataBaseBoundSupervisorHelper mDataBaseBoundSupervisorHelper){
+    public void loadDataBaseUser(JsonArray alarmsArray, JsonArray boxArray, JsonArray supervisorArray, JsonObject clinicalDataObject, JsonArray bullasArray, DataBaseAlarmsHelper mDataBaseAlarmsHelper, DataBaseBoxHelper mDataBaseBoxHelper, DataBaseClinicalDataHelper mDataBaseClinicalDataHelper, DataBaseBoundSupervisorHelper mDataBaseBoundSupervisorHelper, DataBaseBullaHelper mDataBaseBullaHelper){
         if (alarmsArray != null) {
 
             for (int i = 0; i < alarmsArray.size(); i++) {
@@ -118,9 +123,28 @@ public class LoadDataBase {
 
             }
         }
+        
+        if (bullasArray != null) {
+            for (int i = 0; i < bullasArray.size(); i++) {
+                JsonElement jsonElement = bullasArray.get(i);
+                JsonObject jsonBulla = jsonElement.getAsJsonObject();
+                JsonArray arrayBullaInformation = jsonBulla.getAsJsonArray("information");
+                String nameBulla = jsonBulla.get(NAME_BULLA).getAsString();
+
+                for (int j = 0; j  < arrayBullaInformation.size(); j++) {
+                    JsonElement jsonElementBulla = arrayBullaInformation.get(j);
+                    JsonObject bullaInformation = jsonElementBulla.getAsJsonObject();
+                    mDataBaseBullaHelper.addData(
+                            nameBulla,
+                            bullaInformation.get(TITLE_BULLA).getAsString(),
+                            bullaInformation.get(DESCRIPTION_BULLA).getAsString(),
+                            bullaInformation.get(INFORMATION_BULLA).getAsString());
+                }
+            }
+        }
     }
 
-    public void loadDataBaseSupervisor(JsonArray usersArray, DataBaseBoundUserHelper mDataBaseBoundUserHelper){
+    public void loadDataBaseSupervisor(JsonArray usersArray, JsonArray bullasArray, DataBaseBoundUserHelper mDataBaseBoundUserHelper,DataBaseBullaHelper mDataBaseBullaHelper){
         if (usersArray != null) {
             for (int i = 0; i < usersArray.size(); i++) {
                 JsonElement jsonElement = usersArray.get(i);
@@ -131,6 +155,25 @@ public class LoadDataBase {
                         jsonUser.get(REGISTRADO_POR).getAsString(),
                         jsonUser.get(VINCULO).getAsString(),
                         jsonUser.get(NOME_USER).getAsString());
+            }
+        }
+
+        if (bullasArray != null) {
+            for (int i = 0; i < bullasArray.size(); i++) {
+                JsonElement jsonElement = bullasArray.get(i);
+                JsonObject jsonBulla = jsonElement.getAsJsonObject();
+                JsonArray arrayBullaInformation = jsonBulla.getAsJsonArray("information");
+                String nameBulla = jsonBulla.get(NAME_BULLA).getAsString();
+
+                for (int j = 0; j  < arrayBullaInformation.size(); j++) {
+                    JsonElement jsonElementBulla = arrayBullaInformation.get(j);
+                    JsonObject bullaInformation = jsonElementBulla.getAsJsonObject();
+                    mDataBaseBullaHelper.addData(
+                            nameBulla,
+                            bullaInformation.get(TITLE_BULLA).getAsString(),
+                            bullaInformation.get(DESCRIPTION_BULLA).getAsString(),
+                            bullaInformation.get(INFORMATION_BULLA).getAsString());
+                }
             }
         }
 
