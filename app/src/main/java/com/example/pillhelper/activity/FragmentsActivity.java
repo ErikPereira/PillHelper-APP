@@ -149,7 +149,7 @@ public class FragmentsActivity extends AppCompatActivity {
             getSupportActionBar().setTitle(R.string.menu_usuarios);
 
         else if (fragment instanceof FragmentBullas)
-            getSupportActionBar().setTitle("Bulas");
+            getSupportActionBar().setTitle(R.string.menu_bulas);
 
         else getSupportActionBar().setTitle(R.string.menu_caixas);
 

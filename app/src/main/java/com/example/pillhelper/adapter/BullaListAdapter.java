@@ -110,7 +110,7 @@ public class BullaListAdapter extends ArrayAdapter<BullaItem> {
 
             builder.setMessage(R.string.dialog_message)
                     .setTitle(R.string.dialog_title)
-                    .setPositiveButton(R.string.ok, (dialog, id) -> createPostRemoveBulla(getItem(position).getNameBulla()))
+                    .setPositiveButton(R.string.ok, (dialog, id) -> createPostRemoveBulla(position, getItem(position).getNameBulla()))
                     .setNegativeButton(R.string.cancel, (dialog, id) -> dialog.dismiss());
 
             AlertDialog dialog = builder.create();
@@ -121,18 +121,17 @@ public class BullaListAdapter extends ArrayAdapter<BullaItem> {
     }
 
     private void loadDataToView(View view, int position){
-        data = mDataBaseBullaHelper.getData();
-        data.move(position + 1);
+        BullaItem bulla = bullas.get(position);
 
         TextView nameView = view.findViewById(R.id.name_bulla);
-        nameView.setText(data.getString(0));
+        nameView.setText(bulla.getNameBulla());
     }
 
-    private void createPostRemoveBulla(String nameBulla) {
+    private void createPostRemoveBulla(int position, String nameBulla) {
         String requestStr = formatJSONRemoveBulla(nameBulla);
         JsonObject request = JsonParser.parseString(requestStr).getAsJsonObject();
 
-        Call<JsonObject> call = jsonPlaceHolderApi.postUpdateBox(Constants.TOKEN_ACCESS, request);
+        Call<JsonObject> call = jsonPlaceHolderApi.postRemoveBulla(Constants.TOKEN_ACCESS, request);
 
         call.enqueue(new Callback<JsonObject>() {
             @Override
@@ -142,11 +141,18 @@ public class BullaListAdapter extends ArrayAdapter<BullaItem> {
                     return;
                 }
 
-                mDataBaseBullaHelper.removeData(nameBulla);
+                Log.e(TAG, "onResponse: " + response);
 
-                notifyDataSetChanged();
+                int isDeleted = mDataBaseBullaHelper.removeData(nameBulla);
+
+                if (isDeleted > 0) {
+                    BullaListAdapter.this.remove(getItem(position));
+                    BullaListAdapter.this.notifyDataSetChanged();
+                } else Toast.makeText(getContext(), "Algo deu errado", Toast.LENGTH_LONG).show();
 
                 Log.e(TAG, "onResponse: " + response);
+
+
             }
 
             @Override
