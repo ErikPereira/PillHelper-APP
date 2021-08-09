@@ -2,6 +2,7 @@ package com.example.pillhelper.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.text.TextUtils;
 import android.util.Log;
@@ -20,8 +21,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.pillhelper.R;
+import com.example.pillhelper.activity.BullaInformationActivity;
 import com.example.pillhelper.dataBaseBulla.DataBaseBullaHelper;
-import com.example.pillhelper.item.BoxItem;
 import com.example.pillhelper.item.BullaItem;
 import com.example.pillhelper.services.JsonPlaceHolderApi;
 import com.example.pillhelper.singleton.SupervisorIdSingleton;
@@ -51,8 +52,6 @@ public class BullaListAdapter extends ArrayAdapter<BullaItem> {
     private int mResource;
     private DataBaseBullaHelper mDataBaseBullaHelper;
     private JsonPlaceHolderApi jsonPlaceHolderApi;
-    private EditText editTextName;
-    private Cursor data;
     ArrayList<BullaItem> bullas;
 
     public BullaListAdapter(Context context, int resource, ArrayList<BullaItem> objects) {
@@ -83,25 +82,28 @@ public class BullaListAdapter extends ArrayAdapter<BullaItem> {
 
         constraintLayout.setOnClickListener(v -> {
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-            LayoutInflater insideInflater = LayoutInflater.from(getContext());
+            Intent intent = new Intent(getContext(), BullaInformationActivity.class);
+            String bullaInformation = "<resource>\n<string name=\"my_string\"> ";
+            ArrayList<String> titles = getItem(position).getTitle();
+            ArrayList<String> descriptions = getItem(position).getDescription();
+            ArrayList<String> informations = getItem(position).getInformation();
 
-            View view = insideInflater.inflate(R.layout.layout_dialog_box, parent, false);
+            for (int i = 0; i < titles.size(); i++) {
+                String title = titles.get(i);
+                String description = descriptions.get(i);
+                String information = informations.get(i);
 
-            builder.setView(view)
-                    .setTitle(R.string.dialog_change_name_title)
-                    .setNegativeButton(R.string.cancel, (dialog, id) -> dialog.dismiss())
-                    .setPositiveButton(R.string.ok, (dialog, which) -> {
-                        data = mDataBaseBullaHelper.getData();
-                        data.move(position + 1);
+                bullaInformation += "<big><b>" + title +"</big></b>"
+                                + "<br><br><b>" + description +"</b>"
+                                + "<br><br>\t\t" + information + "<br><br>";
+            }
+            //bullaInformation = bullaInformation.replaceAll("<br>","\t\t");
+            bullaInformation = bullaInformation.replaceAll("____","_");
+            bullaInformation += "</string>\n </resources>";
+            intent.putExtra("BULLA_INFORMATION", bullaInformation);
+            intent.putExtra("NAME_BULLA", getItem(position).getNameBulla());
 
-                        String newName = editTextName.getText().toString();
-                    });
-
-            editTextName = view.findViewById(R.id.edit_box_name);
-
-            AlertDialog dialog = builder.create();
-            dialog.show();
+            mContext.startActivity(intent);
         });
 
         ImageView imageView = convertView.findViewById(R.id.bulla_list_image);

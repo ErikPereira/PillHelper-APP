@@ -42,6 +42,9 @@
             android:name="com.example.pillhelper.activity.AllMedicinesActivity"
             android:parentActivityName="com.example.pillhelper.activity.FragmentsActivity" />
         <activity
+            android:name="com.example.pillhelper.activity.BullaInformationActivity"
+            android:parentActivityName="com.example.pillhelper.activity.FragmentsActivity" />
+        <activity
             android:name="com.example.pillhelper.activity.RegisterBoxActivity"
             android:parentActivityName="com.example.pillhelper.activity.FragmentsActivity" />
         <activity
