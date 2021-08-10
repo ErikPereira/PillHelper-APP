@@ -3,8 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/Erik Bezerra/Desktop/git - TCC/PillHelper-APP/app/src/main/res/layout/activity_all_medicines.xml" value="0.1743659420289855" />
+        <entry key="..\:/Users/Erik Bezerra/Desktop/git - TCC/PillHelper-APP/app/src/main/res/layout/activity_alarm_active.xml" value="0.1" />
+        <entry key="..\:/Users/Erik Bezerra/Desktop/git - TCC/PillHelper-APP/app/src/main/res/layout/activity_all_medicines.xml" value="0.33" />
         <entry key="..\:/Users/Erik Bezerra/Desktop/git - TCC/PillHelper-APP/app/src/main/res/layout/activity_bulla_information.xml" value="0.22" />
+        <entry key="..\:/Users/Erik Bezerra/Desktop/git - TCC/PillHelper-APP/app/src/main/res/layout/activity_fixed_alarm.xml" value="0.33" />
+        <entry key="..\:/Users/Erik Bezerra/Desktop/git - TCC/PillHelper-APP/app/src/main/res/layout/activity_fragments_supervisor.xml" value="0.13722826086956522" />
+        <entry key="..\:/Users/Erik Bezerra/Desktop/git - TCC/PillHelper-APP/app/src/main/res/layout/activity_main.xml" value="0.13722826086956522" />
+        <entry key="..\:/Users/Erik Bezerra/Desktop/git - TCC/PillHelper-APP/app/src/main/res/layout/activity_register_alarm.xml" value="0.13722826086956522" />
+        <entry key="..\:/Users/Erik Bezerra/Desktop/git - TCC/PillHelper-APP/app/src/main/res/layout/activity_register_box.xml" value="0.13722826086956522" />
+        <entry key="..\:/Users/Erik Bezerra/Desktop/git - TCC/PillHelper-APP/app/src/main/res/layout/activity_register_supervisor.xml" value="0.13722826086956522" />
+        <entry key="..\:/Users/Erik Bezerra/Desktop/git - TCC/PillHelper-APP/app/src/main/res/layout/activity_search_bullas.xml" value="0.18" />
+        <entry key="..\:/Users/Erik Bezerra/Desktop/git - TCC/PillHelper-APP/app/src/main/res/layout/fragment_clinical_data.xml" value="0.13722826086956522" />
+        <entry key="..\:/Users/Erik Bezerra/Desktop/git - TCC/PillHelper-APP/app/src/main/res/layout/layout_dialog_supervisor.xml" value="0.13722826086956522" />
       </map>
     </option>
   </component>

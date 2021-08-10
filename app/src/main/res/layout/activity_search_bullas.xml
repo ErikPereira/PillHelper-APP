@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.RegisterAlarmActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/info_search_bulla"
+                style="@style/MainTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:text="Buscar Novas Bulas"
+                android:textAlignment="center" />
+
+            <ImageView
+                android:id="@+id/bulla_image"
+                android:layout_width="385dp"
+                android:layout_height="371dp"
+                android:layout_below="@+id/info_search_bulla"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginEnd="15dp"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <Button
+                android:id="@+id/take_a_picture_button"
+                style="@style/Button_login_sign_in"
+                android:layout_width="match_parent"
+                android:layout_height="66dp"
+                android:layout_below="@+id/bulla_image"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginEnd="15dp"
+                android:background="@drawable/custom_button_login_register"
+                android:stateListAnimator="@null"
+                android:text="Tirar uma foto"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/bulla_image" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="118dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/back_button"
+                    style="@style/MainButton"
+                    android:layout_height="60dp"
+                    android:layout_below="@+id/take_a_picture_button"
+                    android:layout_marginLeft="35dp"
+                    android:layout_marginTop="40dp"
+                    android:background="@drawable/custom_button_login_register"
+                    android:stateListAnimator="@null"
+                    android:text="@string/button_back_clock_interval" />
+
+                <Button
+                    android:id="@+id/save_image_button"
+                    style="@style/MainButton"
+                    android:layout_height="60dp"
+                    android:layout_below="@+id/take_a_picture_button"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginTop="40dp"
+                    android:layout_toRightOf="@id/back_button"
+                    android:background="@drawable/custom_button_login_register"
+                    android:stateListAnimator="@null"
+                    android:text="@string/next_register_alarm" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

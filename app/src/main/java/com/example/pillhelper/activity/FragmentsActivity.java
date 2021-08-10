@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -127,8 +128,18 @@ public class FragmentsActivity extends AppCompatActivity {
             });
 
             bindingSupervisor.fabFragment.setOnClickListener(v -> {
-                Intent intent = new Intent(this, RegisterBoundUserActivity.class);
-                startActivity(intent);
+                if (actualFragment instanceof FragmentBullas) {
+                    if (!checkPermissions()) {
+                        requestPermissions();
+                    } else {
+                        Intent intent = new Intent(this, SearchBullaActivity.class);
+                        startActivity(intent);
+                    }
+                }
+                else {
+                    Intent intent = new Intent(this, RegisterBoundUserActivity.class);
+                    startActivity(intent);
+                }
             });
             bindingSupervisor.bottomNavigation.setSelectedItemId(R.id.nav_usuarios);
             bindingSupervisor.bottomNavigation.performClick();
