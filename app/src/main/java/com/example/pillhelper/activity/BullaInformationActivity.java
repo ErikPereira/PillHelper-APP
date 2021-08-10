@@ -25,9 +25,7 @@ public class BullaInformationActivity extends AppCompatActivity {
 
         String informationBulla = getIntent().getStringExtra("BULLA_INFORMATION");
         String nameBulla = getIntent().getStringExtra("NAME_BULLA");
-
         binding.infoTextBulla.setText(Html.fromHtml(informationBulla));
-        binding.infoTextBulla.setMovementMethod(new ScrollingMovementMethod());
         binding.nameBulla.setText(nameBulla);
     }
 }

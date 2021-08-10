@@ -83,7 +83,7 @@ public class BullaListAdapter extends ArrayAdapter<BullaItem> {
         constraintLayout.setOnClickListener(v -> {
 
             Intent intent = new Intent(getContext(), BullaInformationActivity.class);
-            String bullaInformation = "<resource>\n<string name=\"my_string\"> ";
+            String bullaInformation = "<resource>\n<string name=\"my_string\">";
             ArrayList<String> titles = getItem(position).getTitle();
             ArrayList<String> descriptions = getItem(position).getDescription();
             ArrayList<String> informations = getItem(position).getInformation();
@@ -93,13 +93,15 @@ public class BullaListAdapter extends ArrayAdapter<BullaItem> {
                 String description = descriptions.get(i);
                 String information = informations.get(i);
 
-                bullaInformation += "<big><b>" + title +"</big></b>"
+                bullaInformation += "<big><b>" + title +"</b></big>"
                                 + "<br><br><b>" + description +"</b>"
-                                + "<br><br>\t\t" + information + "<br><br>";
+                                + "<br><br><p align=\"justify\">\t\t" + information + "</p><br>";
             }
-            //bullaInformation = bullaInformation.replaceAll("<br>","\t\t");
+
+            bullaInformation = bullaInformation.replaceAll(". <br> ",".<br>\t\t");
             bullaInformation = bullaInformation.replaceAll("____","_");
-            bullaInformation += "</string>\n </resources>";
+            bullaInformation += "</string>\n </resources>\n";
+
             intent.putExtra("BULLA_INFORMATION", bullaInformation);
             intent.putExtra("NAME_BULLA", getItem(position).getNameBulla());
 

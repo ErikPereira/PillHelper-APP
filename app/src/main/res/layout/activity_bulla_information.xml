@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -11,7 +12,6 @@
         android:layout_marginTop="25dp"
         android:text="Informações sobre"
         android:textAlignment="center" />
-
     <TextView
         android:id="@+id/name_bulla"
         style="@style/MainTitle"
@@ -25,22 +25,34 @@
         android:text="Alektos"
         android:textAlignment="center" />
 
-    <TextView
-        android:id="@+id/info_text_bulla"
-        style="@style/MainTitle"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/name_bulla"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="15dp"
-        android:scrollbars = "vertical"
-        android:justificationMode = "inter_word"
-        android:text="Info"
-        android:textSize="24dp"
-        android:textStyle="" />
+        android:layout_below="@+id/name_bulla">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/info_text_bulla"
+                style="@style/MainTitle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/name_bulla"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginEnd="15dp"
+                android:justificationMode="inter_word"
+                android:scrollbars="vertical"
+                android:text="Info"
+                android:textSize="24dp"
+                android:textStyle=""  />
+        </LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>
