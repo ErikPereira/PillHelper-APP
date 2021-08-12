@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -47,6 +48,7 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okio.Timeout;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -135,9 +137,7 @@ public class SearchBullaActivity extends AppCompatActivity {
                 dialog.show();
                 return;
             }
-            Log.e(TAG, "pegar a imagem ");
             File image = photoFile.getAbsoluteFile();
-            Log.e(TAG, "chamar request");
             createTextRecognizer(image);
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -193,8 +193,13 @@ public class SearchBullaActivity extends AppCompatActivity {
         int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
         bmOptions.inJustDecodeBounds = false;
         bmOptions.inSampleSize = scaleFactor;
+
         Bitmap bitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath(), bmOptions);
-        binding.bullaImage.setImageBitmap(bitmap);
+        Matrix matrix = new Matrix();
+        matrix.postRotate(270);
+        Bitmap rotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+
+        binding.bullaImage.setImageBitmap(rotated);
     }
 
     private void createTextRecognizer(File image) {
@@ -206,16 +211,14 @@ public class SearchBullaActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(uuid)) {
             uuid = UserIdSingleton.getInstance().getUserId();
         }
-        Log.e(TAG, "comecei a criar o post ");
         RequestBody requestUuid = RequestBody.create(MediaType.parse("multipart/form-data"), uuid);
         MultipartBody.Part requestImage = null;
 
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), image);
         requestImage = MultipartBody.Part.createFormData("image", image.getName(), requestFile);
 
-        Log.e(TAG, "informações montadas");
-
         Call<JsonObject> call = jsonPlaceHolderApi.postTextRecognizer(Constants.TOKEN_ACCESS, requestImage, requestUuid);
+
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
