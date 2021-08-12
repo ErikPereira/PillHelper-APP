@@ -154,9 +154,6 @@ public class BullaListAdapter extends ArrayAdapter<BullaItem> {
                     BullaListAdapter.this.notifyDataSetChanged();
                 } else Toast.makeText(getContext(), "Algo deu errado", Toast.LENGTH_LONG).show();
 
-                Log.e(TAG, "onResponse: " + response);
-
-
             }
 
             @Override

@@ -2,6 +2,8 @@ package com.example.pillhelper.activity;
 
 import static android.os.Environment.getExternalStoragePublicDirectory;
 
+import static com.example.pillhelper.utils.Constants.BASE_URL;
+
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,21 +13,45 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
+import com.example.pillhelper.R;
+import com.example.pillhelper.adapter.BullaListAdapter;
+import com.example.pillhelper.dataBaseBulla.DataBaseBullaHelper;
+import com.example.pillhelper.dataBaseSupervisor.DataBaseBoundUserHelper;
 import com.example.pillhelper.databinding.ActivitySearchBullasBinding;
 import com.example.pillhelper.services.JsonPlaceHolderApi;
+import com.example.pillhelper.singleton.SupervisorIdSingleton;
+import com.example.pillhelper.singleton.UserIdSingleton;
+import com.example.pillhelper.utils.Constants;
+import com.example.pillhelper.utils.LoadDataBase;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SearchBullaActivity extends AppCompatActivity {
     private static final String TAG = "SearchBullaActivity";
@@ -34,6 +60,7 @@ public class SearchBullaActivity extends AppCompatActivity {
     static final int PERMISSION_REQUEST = 2;
     private ActivitySearchBullasBinding binding;
     private JsonPlaceHolderApi jsonPlaceHolderApi;
+    private DataBaseBullaHelper mDataBaseBullaHelper;
 
     private String currentPhotoPath;
     private File photoFile = null;
@@ -95,14 +122,42 @@ public class SearchBullaActivity extends AppCompatActivity {
                 }
             }
         });
+
+        binding.saveImageButton.setOnClickListener(v -> {
+            if(photoFile == null){
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+                builder.setMessage("Por favor, tire uma foto antes.")
+                        .setTitle("Ops, faltou algo!")
+                        .setPositiveButton(R.string.ok, (dialog, id) -> dialog.dismiss());
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+                return;
+            }
+            Log.e(TAG, "pegar a imagem ");
+            File image = photoFile.getAbsoluteFile();
+            Log.e(TAG, "chamar request");
+            createTextRecognizer(image);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+            builder.setMessage("Por favor, aguarde alguns momentos para visualizar sua nova bula")
+                    .setTitle("Processando!")
+                    .setPositiveButton(R.string.ok, (dialog, id) -> {
+                        dialog.dismiss();
+                        finish();
+                    });
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
-            Log.e(TAG, "Olaaaaaa mundo");
-            Log.e(TAG, "valor do data: " + data);
             sendBroadcast(new Intent(
                     Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
                     Uri.fromFile(photoFile))
@@ -114,7 +169,7 @@ public class SearchBullaActivity extends AppCompatActivity {
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
+        String imageFileName = "JPG" + timeStamp + "";
         File storageDir = getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
@@ -140,5 +195,49 @@ public class SearchBullaActivity extends AppCompatActivity {
         bmOptions.inSampleSize = scaleFactor;
         Bitmap bitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath(), bmOptions);
         binding.bullaImage.setImageBitmap(bitmap);
+    }
+
+    private void createTextRecognizer(File image) {
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create())
+                .build();
+        jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
+
+        String uuid = SupervisorIdSingleton.getInstance().getSupervisorId();
+        if (TextUtils.isEmpty(uuid)) {
+            uuid = UserIdSingleton.getInstance().getUserId();
+        }
+        Log.e(TAG, "comecei a criar o post ");
+        RequestBody requestUuid = RequestBody.create(MediaType.parse("multipart/form-data"), uuid);
+        MultipartBody.Part requestImage = null;
+
+        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), image);
+        requestImage = MultipartBody.Part.createFormData("image", image.getName(), requestFile);
+
+        Log.e(TAG, "informações montadas");
+
+        Call<JsonObject> call = jsonPlaceHolderApi.postTextRecognizer(Constants.TOKEN_ACCESS, requestImage, requestUuid);
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (!response.isSuccessful()){
+                    Toast.makeText(getBaseContext(), "Algo deu errado", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                Log.e(TAG, "onResponse1: " + response);
+                JsonObject postResponse = response.body();
+                JsonArray bullasArray = postResponse.get("response").getAsJsonArray();
+
+                LoadDataBase loadDataBase = new LoadDataBase();
+                loadDataBase.loadDataBaseSupervisor(null, bullasArray, null, mDataBaseBullaHelper);
+
+                Log.e(TAG, "onResponse2: " + response);
+
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Log.e(TAG, "onFailure:" + t);
+            }
+        });
     }
 }
