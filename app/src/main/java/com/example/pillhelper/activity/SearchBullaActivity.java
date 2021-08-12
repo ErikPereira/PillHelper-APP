@@ -3,6 +3,8 @@ package com.example.pillhelper.activity;
 import static android.os.Environment.getExternalStoragePublicDirectory;
 
 import static com.example.pillhelper.utils.Constants.BASE_URL;
+import static com.example.pillhelper.utils.Constants.OPEN_BOX_FRAG;
+import static com.example.pillhelper.utils.Constants.WHO_USER_FRAG;
 
 import android.Manifest;
 import android.content.Intent;
@@ -47,6 +49,7 @@ import java.util.concurrent.TimeUnit;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 import okio.Timeout;
 import retrofit2.Call;
@@ -63,6 +66,7 @@ public class SearchBullaActivity extends AppCompatActivity {
     private ActivitySearchBullasBinding binding;
     private JsonPlaceHolderApi jsonPlaceHolderApi;
     private DataBaseBullaHelper mDataBaseBullaHelper;
+    private String who = "supervisor";
 
     private String currentPhotoPath;
     private File photoFile = null;
@@ -203,13 +207,24 @@ public class SearchBullaActivity extends AppCompatActivity {
     }
 
     private void createTextRecognizer(File image) {
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create())
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .connectTimeout(3, TimeUnit.MINUTES)
+                .readTimeout(3, TimeUnit.MINUTES)
+                .writeTimeout(3, TimeUnit.MINUTES)
                 .build();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .client(okHttpClient)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
         jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
 
         String uuid = SupervisorIdSingleton.getInstance().getSupervisorId();
         if (TextUtils.isEmpty(uuid)) {
             uuid = UserIdSingleton.getInstance().getUserId();
+            who = "user";
         }
         RequestBody requestUuid = RequestBody.create(MediaType.parse("multipart/form-data"), uuid);
         MultipartBody.Part requestImage = null;
@@ -228,12 +243,19 @@ public class SearchBullaActivity extends AppCompatActivity {
                 }
                 Log.e(TAG, "onResponse1: " + response);
                 JsonObject postResponse = response.body();
+
                 JsonArray bullasArray = postResponse.get("response").getAsJsonArray();
+                mDataBaseBullaHelper = new DataBaseBullaHelper(getBaseContext());
 
                 LoadDataBase loadDataBase = new LoadDataBase();
                 loadDataBase.loadDataBaseSupervisor(null, bullasArray, null, mDataBaseBullaHelper);
 
-                Log.e(TAG, "onResponse2: " + response);
+                Intent intent = new Intent(getBaseContext(), FragmentsActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra(OPEN_BOX_FRAG, false);
+                intent.putExtra(WHO_USER_FRAG, who);
+                startActivity(intent);
+                finish();
 
             }
 
