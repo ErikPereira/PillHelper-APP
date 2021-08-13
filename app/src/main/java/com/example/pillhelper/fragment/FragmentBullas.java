@@ -59,6 +59,11 @@ public class FragmentBullas extends Fragment {
         }
         BullaItem bulla = new BullaItem(nameBulla, title, description, information);
         bullas.add(bulla);
+
+        if(bullas.get(0).getNameBulla().equals("")){
+            bullas = new ArrayList<>();
+        }
+
         BullaListAdapter adapter = new BullaListAdapter(getContext(), R.layout.bulla_list_item, bullas);
         binding.bullasListView.setAdapter(adapter);
 

@@ -75,6 +75,11 @@ public class FragmentsActivity extends AppCompatActivity {
                         actualFragment = new FragmentClinicalData();
                         loadFragment(actualFragment);
                         break;
+                    case R.id.nav_bulas_user:
+                        bindingUser.fabFragment.setImageDrawable(getBaseContext().getDrawable(R.drawable.ic_camera_24dp));
+                        actualFragment = new FragmentBullas();
+                        loadFragment(actualFragment);
+                        break;
                 }
 
                 return true;
@@ -105,6 +110,14 @@ public class FragmentsActivity extends AppCompatActivity {
                     }
                 }
 
+                if (actualFragment instanceof FragmentBullas) {
+                    if (!checkPermissions()) {
+                        requestPermissions();
+                    }
+                    Intent intent = new Intent(this, SearchBullaActivity.class);
+                    startActivity(intent);
+                }
+
             });
             bindingUser.bottomNavigation.setSelectedItemId(getIntent().getBooleanExtra(OPEN_BOX_FRAG, false) ? R.id.nav_caixas : R.id.nav_alarmes);
             bindingUser.bottomNavigation.performClick();
@@ -131,10 +144,9 @@ public class FragmentsActivity extends AppCompatActivity {
                 if (actualFragment instanceof FragmentBullas) {
                     if (!checkPermissions()) {
                         requestPermissions();
-                    } else {
-                        Intent intent = new Intent(this, SearchBullaActivity.class);
-                        startActivity(intent);
                     }
+                    Intent intent = new Intent(this, SearchBullaActivity.class);
+                    startActivity(intent);
                 }
                 else {
                     Intent intent = new Intent(this, RegisterBoundUserActivity.class);
