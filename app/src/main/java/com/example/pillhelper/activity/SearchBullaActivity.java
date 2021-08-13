@@ -7,6 +7,7 @@ import static com.example.pillhelper.utils.Constants.OPEN_BOX_FRAG;
 import static com.example.pillhelper.utils.Constants.WHO_USER_FRAG;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -70,6 +71,7 @@ public class SearchBullaActivity extends AppCompatActivity {
 
     private String currentPhotoPath;
     private File photoFile = null;
+    private Object lock = new Object();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,19 +112,15 @@ public class SearchBullaActivity extends AppCompatActivity {
         binding.takeAPictureButton.setOnClickListener(v -> {
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                // Create the File where the photo should go
 
                 try {
                     photoFile = createImageFile();
                 } catch (IOException ex) {
-                    // Error occurred while creating the File
                 }
-                // Continue only if the File was successfully created
                 if (photoFile != null) {
                     Uri photoURI = FileProvider.getUriForFile(this,
                             "com.example.pillhelper.fileprovider",
                             photoFile);
-                    Log.e(TAG, "valor de photoURI: " + photoURI);
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                     startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
                 }
@@ -142,17 +140,13 @@ public class SearchBullaActivity extends AppCompatActivity {
                 return;
             }
             File image = photoFile.getAbsoluteFile();
-            createTextRecognizer(image);
+            createTextRecognizer(image, this);
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-            builder.setMessage("Por favor, aguarde alguns momentos para visualizar sua nova bula")
-                    .setTitle("Processando!")
-                    .setPositiveButton(R.string.ok, (dialog, id) -> {
-                        dialog.dismiss();
-                        finish();
-                    });
 
+            builder.setMessage("Por favor, aguarde alguns momentos para visualizar sua nova bula")
+                    .setTitle("Processando!");
             AlertDialog dialog = builder.create();
             dialog.show();
         });
@@ -200,13 +194,13 @@ public class SearchBullaActivity extends AppCompatActivity {
 
         Bitmap bitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath(), bmOptions);
         Matrix matrix = new Matrix();
-        matrix.postRotate(270);
+        matrix.postRotate(90);
         Bitmap rotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
 
         binding.bullaImage.setImageBitmap(rotated);
     }
 
-    private void createTextRecognizer(File image) {
+    private void createTextRecognizer(File image, Context context) {
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(3, TimeUnit.MINUTES)
                 .readTimeout(3, TimeUnit.MINUTES)
@@ -238,13 +232,48 @@ public class SearchBullaActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if (!response.isSuccessful()){
+                    if (response.code() == 404) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+                        builder.setMessage("Não foi possível identificar qual é o medicamento ou não possuimos a bula para esse medicamento")
+                                .setTitle("Bula não encontrada")
+                                .setPositiveButton(R.string.ok, (dialog, id) -> {
+                                    dialog.dismiss();
+                                    finish();
+                                });
+
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+                        Toast.makeText(getBaseContext(), "Usuário não encontrado", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     Toast.makeText(getBaseContext(), "Algo deu errado", Toast.LENGTH_LONG).show();
                     return;
                 }
                 Log.e(TAG, "onResponse1: " + response);
+
                 JsonObject postResponse = response.body();
+                boolean error = postResponse.get("error").getAsBoolean();
+
+                if(error) {
+                    String msg = postResponse.get("response").getAsString();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+                    builder.setMessage("A bula identificada já esta cadastrada!")
+                            .setTitle(msg)
+                            .setPositiveButton(R.string.ok, (dialog, id) -> {
+                                dialog.dismiss();
+                                finish();
+                            });
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                    Toast.makeText(getBaseContext(), "Usuário não encontrado", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 JsonArray bullasArray = postResponse.get("response").getAsJsonArray();
+
                 mDataBaseBullaHelper = new DataBaseBullaHelper(getBaseContext());
 
                 LoadDataBase loadDataBase = new LoadDataBase();
