@@ -130,10 +130,12 @@ public class LoadDataBase {
                 JsonObject jsonBulla = jsonElement.getAsJsonObject();
                 JsonArray arrayBullaInformation = jsonBulla.getAsJsonArray("information");
                 String nameBulla = jsonBulla.get(NAME_BULLA).getAsString();
+                nameBulla = nameBulla.substring(0, 1).toUpperCase() + nameBulla.substring(1).toLowerCase();
 
                 for (int j = 0; j  < arrayBullaInformation.size(); j++) {
                     JsonElement jsonElementBulla = arrayBullaInformation.get(j);
                     JsonObject bullaInformation = jsonElementBulla.getAsJsonObject();
+
                     mDataBaseBullaHelper.addData(
                             nameBulla,
                             bullaInformation.get(TITLE_BULLA).getAsString(),
@@ -164,6 +166,7 @@ public class LoadDataBase {
                 JsonObject jsonBulla = jsonElement.getAsJsonObject();
                 JsonArray arrayBullaInformation = jsonBulla.getAsJsonArray("information");
                 String nameBulla = jsonBulla.get(NAME_BULLA).getAsString();
+                nameBulla = nameBulla.substring(0, 1).toUpperCase() + nameBulla.substring(1).toLowerCase();
 
                 for (int j = 0; j  < arrayBullaInformation.size(); j++) {
                     JsonElement jsonElementBulla = arrayBullaInformation.get(j);

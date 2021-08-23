@@ -19,6 +19,8 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -143,10 +145,14 @@ public class SearchBullaActivity extends AppCompatActivity {
             createTextRecognizer(image, this);
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            LayoutInflater insideInflater = LayoutInflater.from(this);
 
+            View view = insideInflater.inflate(R.layout.layout_dialog_wait_bulla, binding.getRoot(), false);
 
-            builder.setMessage("Por favor, aguarde alguns momentos para visualizar sua nova bula")
-                    .setTitle("Processando!");
+            builder.setView(view)
+                    .setTitle("Processando!")
+                    .setPositiveButton(R.string.ok, (dialog, which) -> dialog.dismiss());
+
             AlertDialog dialog = builder.create();
             dialog.show();
         });
@@ -232,9 +238,8 @@ public class SearchBullaActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if (!response.isSuccessful()){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     if (response.code() == 404) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-
                         builder.setMessage("Não foi possível identificar qual é o medicamento ou não possuimos a bula para esse medicamento")
                                 .setTitle("Bula não encontrada")
                                 .setPositiveButton(R.string.ok, (dialog, id) -> {
@@ -244,10 +249,17 @@ public class SearchBullaActivity extends AppCompatActivity {
 
                         AlertDialog dialog = builder.create();
                         dialog.show();
-                        Toast.makeText(getBaseContext(), "Usuário não encontrado", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    Toast.makeText(getBaseContext(), "Algo deu errado", Toast.LENGTH_LONG).show();
+                    builder.setMessage("Por favor, tente novamente!")
+                            .setTitle("Algo deu errado")
+                            .setPositiveButton(R.string.ok, (dialog, id) -> {
+                                dialog.dismiss();
+                                finish();
+                            });
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
                     return;
                 }
                 Log.e(TAG, "onResponse1: " + response);
