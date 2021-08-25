@@ -8,6 +8,7 @@ import com.example.pillhelper.dataBaseUser.DataBaseBoundSupervisorHelper;
 import com.example.pillhelper.dataBaseUser.DataBaseBoxHelper;
 import com.example.pillhelper.dataBaseUser.DataBaseClinicalDataHelper;
 import com.example.pillhelper.dataBaseBulla.DataBaseBullaHelper;
+import com.example.pillhelper.dataBaseBulla.DataBaseBullaUserHelper;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -50,7 +51,7 @@ import static com.example.pillhelper.utils.Constants.VINCULO;
 
 public class LoadDataBase {
 
-    public void loadDataBaseUser(JsonArray alarmsArray, JsonArray boxArray, JsonArray supervisorArray, JsonObject clinicalDataObject, JsonArray bullasArray, DataBaseAlarmsHelper mDataBaseAlarmsHelper, DataBaseBoxHelper mDataBaseBoxHelper, DataBaseClinicalDataHelper mDataBaseClinicalDataHelper, DataBaseBoundSupervisorHelper mDataBaseBoundSupervisorHelper, DataBaseBullaHelper mDataBaseBullaHelper){
+    public void loadDataBaseUser(JsonArray alarmsArray, JsonArray boxArray, JsonArray supervisorArray, JsonObject clinicalDataObject, JsonArray bullasArray, DataBaseAlarmsHelper mDataBaseAlarmsHelper, DataBaseBoxHelper mDataBaseBoxHelper, DataBaseClinicalDataHelper mDataBaseClinicalDataHelper, DataBaseBoundSupervisorHelper mDataBaseBoundSupervisorHelper, DataBaseBullaUserHelper mDataBaseBullaUserHelper){
         if (alarmsArray != null) {
 
             for (int i = 0; i < alarmsArray.size(); i++) {
@@ -136,7 +137,7 @@ public class LoadDataBase {
                     JsonElement jsonElementBulla = arrayBullaInformation.get(j);
                     JsonObject bullaInformation = jsonElementBulla.getAsJsonObject();
 
-                    mDataBaseBullaHelper.addData(
+                    mDataBaseBullaUserHelper.addData(
                             nameBulla,
                             bullaInformation.get(TITLE_BULLA).getAsString(),
                             bullaInformation.get(DESCRIPTION_BULLA).getAsString(),

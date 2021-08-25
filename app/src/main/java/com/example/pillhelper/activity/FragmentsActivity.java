@@ -115,6 +115,7 @@ public class FragmentsActivity extends AppCompatActivity {
                         requestPermissions();
                     }
                     Intent intent = new Intent(this, SearchBullaActivity.class);
+                    intent.putExtra(WHO_USER_FRAG, "user");
                     startActivity(intent);
                 }
 
@@ -146,6 +147,7 @@ public class FragmentsActivity extends AppCompatActivity {
                         requestPermissions();
                     }
                     Intent intent = new Intent(this, SearchBullaActivity.class);
+                    intent.putExtra(WHO_USER_FRAG, "supervisor");
                     startActivity(intent);
                 }
                 else {

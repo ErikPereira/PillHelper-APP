@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.pillhelper.dataBaseBulla.DataBaseBullaHelper;
+import com.example.pillhelper.dataBaseBulla.DataBaseBullaUserHelper;
 import com.example.pillhelper.dataBaseSupervisor.DataBaseBoundUserHelper;
 import com.example.pillhelper.dataBaseUser.DataBaseClinicalDataHelper;
 import com.example.pillhelper.dataBaseUser.DataBaseBoundSupervisorHelper;
@@ -87,6 +88,7 @@ public class LoginActivity extends AppCompatActivity {
     DataBaseBoundUserHelper mDataBaseBoundUserHelper;
     DataBaseClinicalDataHelper mDataBaseClinicalDataHelper;
     DataBaseBullaHelper mDataBaseBullaHelper;
+    DataBaseBullaUserHelper mDataBaseBullaUserHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -286,14 +288,14 @@ public class LoginActivity extends AppCompatActivity {
                 getBaseContext().deleteDatabase("bound_supervisors_table");
                 getBaseContext().deleteDatabase("clinical_data_table");
                 getBaseContext().deleteDatabase("bulla_table");
-
+                getBaseContext().deleteDatabase("bulla_table_user");
                 getBaseContext().deleteDatabase("bound_user_table");
 
                 mDataBaseAlarmsHelper = new DataBaseAlarmsHelper(getBaseContext());
                 mDataBaseBoxHelper = new DataBaseBoxHelper(getBaseContext());
                 mDataBaseBoundSupervisorHelper = new DataBaseBoundSupervisorHelper(getBaseContext());
                 mDataBaseClinicalDataHelper = new DataBaseClinicalDataHelper(getBaseContext());
-                mDataBaseBullaHelper = new DataBaseBullaHelper(getBaseContext());
+                mDataBaseBullaUserHelper = new DataBaseBullaUserHelper(getBaseContext());
 
 
                 LoadDataBase loadDataBase = new LoadDataBase();
@@ -307,7 +309,7 @@ public class LoginActivity extends AppCompatActivity {
                         mDataBaseBoxHelper,
                         mDataBaseClinicalDataHelper,
                         mDataBaseBoundSupervisorHelper,
-                        mDataBaseBullaHelper);
+                        mDataBaseBullaUserHelper);
 
                 Intent intent = new Intent(LoginActivity.this, FragmentsActivity.class);
                 intent.putExtra(OPEN_BOX_FRAG, false);
@@ -354,7 +356,7 @@ public class LoginActivity extends AppCompatActivity {
                 getBaseContext().deleteDatabase("bound_supervisors_table");
                 getBaseContext().deleteDatabase("clinical_data_table");
                 getBaseContext().deleteDatabase("bulla_table");
-
+                getBaseContext().deleteDatabase("bulla_table_user");
                 getBaseContext().deleteDatabase("bound_user_table");
 
                 mDataBaseBoundUserHelper = new DataBaseBoundUserHelper(getBaseContext());

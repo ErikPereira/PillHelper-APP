@@ -33,6 +33,7 @@ import androidx.core.content.FileProvider;
 import com.example.pillhelper.R;
 import com.example.pillhelper.adapter.BullaListAdapter;
 import com.example.pillhelper.dataBaseBulla.DataBaseBullaHelper;
+import com.example.pillhelper.dataBaseBulla.DataBaseBullaUserHelper;
 import com.example.pillhelper.dataBaseSupervisor.DataBaseBoundUserHelper;
 import com.example.pillhelper.databinding.ActivitySearchBullasBinding;
 import com.example.pillhelper.services.JsonPlaceHolderApi;
@@ -69,7 +70,8 @@ public class SearchBullaActivity extends AppCompatActivity {
     private ActivitySearchBullasBinding binding;
     private JsonPlaceHolderApi jsonPlaceHolderApi;
     private DataBaseBullaHelper mDataBaseBullaHelper;
-    private String who = "supervisor";
+    private DataBaseBullaUserHelper mDataBaseBullaUserHelper;
+    private String who;
 
     private String currentPhotoPath;
     private File photoFile = null;
@@ -78,6 +80,7 @@ public class SearchBullaActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        who = getIntent().getStringExtra(WHO_USER_FRAG);
         binding = ActivitySearchBullasBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -220,12 +223,15 @@ public class SearchBullaActivity extends AppCompatActivity {
                 .build();
 
         jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
+        String uuid;
 
-        String uuid = SupervisorIdSingleton.getInstance().getSupervisorId();
-        if (TextUtils.isEmpty(uuid)) {
+        if (who.equals("user")) {
             uuid = UserIdSingleton.getInstance().getUserId();
-            who = "user";
         }
+        else {
+            uuid = SupervisorIdSingleton.getInstance().getSupervisorId();
+        }
+
         RequestBody requestUuid = RequestBody.create(MediaType.parse("multipart/form-data"), uuid);
         MultipartBody.Part requestImage = null;
 
@@ -280,21 +286,53 @@ public class SearchBullaActivity extends AppCompatActivity {
 
                     AlertDialog dialog = builder.create();
                     dialog.show();
-                    Toast.makeText(getBaseContext(), "Usuário não encontrado", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 JsonArray bullasArray = postResponse.get("response").getAsJsonArray();
 
                 mDataBaseBullaHelper = new DataBaseBullaHelper(getBaseContext());
+                mDataBaseBullaUserHelper = new DataBaseBullaUserHelper(getBaseContext());
 
                 LoadDataBase loadDataBase = new LoadDataBase();
-                loadDataBase.loadDataBaseSupervisor(null, bullasArray, null, mDataBaseBullaHelper);
+                if (who.equals("user")) {
+                    loadDataBase.loadDataBaseUser(
+                            null,
+                            null,
+                            null,
+                            null,
+                            bullasArray,
+                            null,
+                            null,
+                            null,
+                            null,
+                            mDataBaseBullaUserHelper);
+                }
+                else {
+                    loadDataBase.loadDataBaseSupervisor(
+                            null,
+                            bullasArray,
+                            null,
+                            mDataBaseBullaHelper);
+                }
 
                 Intent intent = new Intent(getBaseContext(), FragmentsActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra(OPEN_BOX_FRAG, false);
                 intent.putExtra(WHO_USER_FRAG, who);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+                builder.setMessage("Bula encontrada e disponivel para consulta!")
+                        .setTitle("Bula cadastrada com sucesso!")
+                        .setPositiveButton(R.string.ok, (dialog, id) -> {
+                            dialog.dismiss();
+                            finish();
+                        });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
                 startActivity(intent);
                 finish();
 

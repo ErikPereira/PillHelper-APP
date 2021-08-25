@@ -8,13 +8,15 @@ public class BullaItem {
     private ArrayList<String> title;
     private ArrayList<String> description;
     private ArrayList<String> information;
+    private String who;
 
     public BullaItem(String nameBulla, ArrayList<String> title, ArrayList<String> description,
-                     ArrayList<String> information) {
+                     ArrayList<String> information, String who) {
         this.nameBulla = nameBulla;
         this.title = title;
         this.description = description;
         this.information = information;
+        this.who = who;
     }
 
     public String getNameBulla() {
@@ -31,6 +33,14 @@ public class BullaItem {
 
     public ArrayList<String> getInformation() {
         return information;
+    }
+
+    public String getWho() {
+        return who;
+    }
+
+    public void setWho(String who) {
+        this.who = who;
     }
 
     public void setNameBulla(String nameBulla) {

@@ -23,6 +23,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.example.pillhelper.R;
 import com.example.pillhelper.activity.BullaInformationActivity;
 import com.example.pillhelper.dataBaseBulla.DataBaseBullaHelper;
+import com.example.pillhelper.dataBaseBulla.DataBaseBullaUserHelper;
 import com.example.pillhelper.item.BullaItem;
 import com.example.pillhelper.services.JsonPlaceHolderApi;
 import com.example.pillhelper.singleton.SupervisorIdSingleton;
@@ -43,6 +44,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.example.pillhelper.utils.Constants.BASE_URL;
+import static com.example.pillhelper.utils.Constants.WHO_USER_FRAG;
 
 public class BullaListAdapter extends ArrayAdapter<BullaItem> {
 
@@ -51,6 +53,7 @@ public class BullaListAdapter extends ArrayAdapter<BullaItem> {
     private Context mContext;
     private int mResource;
     private DataBaseBullaHelper mDataBaseBullaHelper;
+    private DataBaseBullaUserHelper mDataBaseBullaUserHelper;
     private JsonPlaceHolderApi jsonPlaceHolderApi;
     ArrayList<BullaItem> bullas;
 
@@ -60,6 +63,7 @@ public class BullaListAdapter extends ArrayAdapter<BullaItem> {
         mContext = context;
         mResource = resource;
         mDataBaseBullaHelper = new DataBaseBullaHelper(context);
+        mDataBaseBullaUserHelper = new DataBaseBullaUserHelper(context);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -146,8 +150,14 @@ public class BullaListAdapter extends ArrayAdapter<BullaItem> {
                 }
 
                 Log.e(TAG, "onResponse: " + response);
+                int isDeleted;
+                if (bullas.get(position).getWho().equals("user")) {
+                    isDeleted = mDataBaseBullaUserHelper.removeData(nameBulla);
+                }
+                else {
+                    isDeleted = mDataBaseBullaHelper.removeData(nameBulla);
+                }
 
-                int isDeleted = mDataBaseBullaHelper.removeData(nameBulla);
 
                 if (isDeleted > 0) {
                     BullaListAdapter.this.remove(getItem(position));
@@ -172,7 +182,7 @@ public class BullaListAdapter extends ArrayAdapter<BullaItem> {
                 uuid = UserIdSingleton.getInstance().getUserId();
             }
             root.put("uuid", uuid);
-            root.put("nameBulla", String.valueOf(nameBulla));
+            root.put("nameBulla", String.valueOf(nameBulla).toLowerCase());
 
             return root.toString();
         } catch (JSONException e) {

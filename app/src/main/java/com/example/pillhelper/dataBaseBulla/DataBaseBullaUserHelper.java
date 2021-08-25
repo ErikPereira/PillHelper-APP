@@ -1,5 +1,10 @@
 package com.example.pillhelper.dataBaseBulla;
 
+import static com.example.pillhelper.utils.Constants.DESCRIPTION_BULLA;
+import static com.example.pillhelper.utils.Constants.INFORMATION_BULLA;
+import static com.example.pillhelper.utils.Constants.NAME_BULLA;
+import static com.example.pillhelper.utils.Constants.TITLE_BULLA;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -8,20 +13,15 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
-import static com.example.pillhelper.utils.Constants.NAME_BULLA;
-import static com.example.pillhelper.utils.Constants.TITLE_BULLA;
-import static com.example.pillhelper.utils.Constants.DESCRIPTION_BULLA;
-import static com.example.pillhelper.utils.Constants.INFORMATION_BULLA;
+public class DataBaseBullaUserHelper extends SQLiteOpenHelper {
 
-public class DataBaseBullaHelper extends SQLiteOpenHelper {
-
-    private static final String TABLE_NAME = "bulla_table";
+    private static final String TABLE_NAME = "bulla_table_user";
     private static final String COL0 = NAME_BULLA;
     private static final String COL1 = TITLE_BULLA;
     private static final String COL2 = DESCRIPTION_BULLA;
     private static final String COL3 = INFORMATION_BULLA;
 
-    public DataBaseBullaHelper(@Nullable Context context) {
+    public DataBaseBullaUserHelper(@Nullable Context context) {
         super(context, TABLE_NAME, null, 1);
     }
 
