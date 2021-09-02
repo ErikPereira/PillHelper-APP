@@ -2,7 +2,7 @@ package com.example.pillhelper.utils;
 
 public class Constants {
 
-    public static final String BASE_URL = "http://192.168.1.12:3000/"; //URL BASE
+    public static final String BASE_URL = "http://192.168.1.11:3000/"; //URL BASE
     public static final String TOKEN_ACCESS = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiZGV2Iiwic3lzdGVtIjoiQVBJIn0.6lrvVMtHdb6P5f-Au4c36SK1OT8kb0_gg5BuEok_TpU";
     public static final String CREATE_USER = "insertOneUser";//O POST PARA CRIAR O USUARIO
     public static final String LOGIN_USER = "checkLogin";//POST PARA EFETUAR O LOGIN

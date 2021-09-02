@@ -136,7 +136,7 @@ public class BullaListAdapter extends ArrayAdapter<BullaItem> {
     }
 
     private void createPostRemoveBulla(int position, String nameBulla) {
-        String requestStr = formatJSONRemoveBulla(nameBulla);
+        String requestStr = formatJSONRemoveBulla(nameBulla, position);
         JsonObject request = JsonParser.parseString(requestStr).getAsJsonObject();
 
         Call<JsonObject> call = jsonPlaceHolderApi.postRemoveBulla(Constants.TOKEN_ACCESS, request);
@@ -173,13 +173,16 @@ public class BullaListAdapter extends ArrayAdapter<BullaItem> {
         });
     }
 
-    private String formatJSONRemoveBulla(String nameBulla) {
+    private String formatJSONRemoveBulla(String nameBulla, int position) {
         final JSONObject root = new JSONObject();
 
         try {
-            String uuid = SupervisorIdSingleton.getInstance().getSupervisorId();
-            if (TextUtils.isEmpty(uuid)) {
+            String uuid;
+            if (bullas.get(position).getWho().equals("user")) {
                 uuid = UserIdSingleton.getInstance().getUserId();
+            }
+            else {
+                uuid = SupervisorIdSingleton.getInstance().getSupervisorId();
             }
             root.put("uuid", uuid);
             root.put("nameBulla", String.valueOf(nameBulla).toLowerCase());
