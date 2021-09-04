@@ -301,7 +301,7 @@ public class IntervalAlarmActivity extends AppCompatActivity {
         try {
             JSONObject updateAlarm = new JSONObject();
             updateAlarm.put(ID_ALARME, String.valueOf(uuidAlarm));
-            updateAlarm.put(ALARM_TYPE, String.valueOf(1));
+            updateAlarm.put(ALARM_TYPE, String.valueOf(0));
             updateAlarm.put(MEDICINE_TYPE, String.valueOf(medicineType));
             updateAlarm.put(ATIVO, String.valueOf(active));
             updateAlarm.put(NOME_REMEDIO, String.valueOf(name));
@@ -344,7 +344,7 @@ public class IntervalAlarmActivity extends AppCompatActivity {
         try {
             JSONObject newAlarm = new JSONObject();
 
-            newAlarm.put(ALARM_TYPE, String.valueOf(2));
+            newAlarm.put(ALARM_TYPE, String.valueOf(0));
             newAlarm.put(MEDICINE_TYPE, String.valueOf(medicineType));
             newAlarm.put(ATIVO, String.valueOf(1));
             newAlarm.put(NOME_REMEDIO, String.valueOf(name));

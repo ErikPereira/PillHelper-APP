@@ -73,6 +73,7 @@ public class FragmentAlarms extends Fragment {
             }
 
             intent.putStringArrayListExtra("MEDICINE_NAME_LIST", listaNomeMedicamentos);
+
             startActivity(intent);
         });
 

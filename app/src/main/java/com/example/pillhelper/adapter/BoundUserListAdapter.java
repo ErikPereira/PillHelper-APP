@@ -23,6 +23,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.example.pillhelper.R;
 import com.example.pillhelper.activity.FragmentsActivity;
 import com.example.pillhelper.activity.LoginActivity;
+import com.example.pillhelper.dataBaseBulla.DataBaseBullaHelper;
+import com.example.pillhelper.dataBaseBulla.DataBaseBullaUserHelper;
 import com.example.pillhelper.dataBaseSupervisor.DataBaseBoundUserHelper;
 import com.example.pillhelper.dataBaseUser.DataBaseAlarmsHelper;
 import com.example.pillhelper.dataBaseUser.DataBaseBoundSupervisorHelper;
@@ -50,9 +52,12 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.example.pillhelper.utils.Constants.BASE_URL;
+import static com.example.pillhelper.utils.Constants.DESCRIPTION_BULLA;
 import static com.example.pillhelper.utils.Constants.ID_SUPERVISOR;
+import static com.example.pillhelper.utils.Constants.INFORMATION_BULLA;
 import static com.example.pillhelper.utils.Constants.NOME_USER;
 import static com.example.pillhelper.utils.Constants.REGISTRADO_POR;
+import static com.example.pillhelper.utils.Constants.TITLE_BULLA;
 import static com.example.pillhelper.utils.Constants.VINCULO;
 import static com.example.pillhelper.utils.Constants.OPEN_BOX_FRAG;
 import static com.example.pillhelper.utils.Constants.WHO_USER_FRAG;
@@ -71,6 +76,8 @@ public class BoundUserListAdapter extends ArrayAdapter<BoundItem> {
     DataBaseBoundSupervisorHelper mDataBaseBoundSupervisorHelper;
     DataBaseBoundUserHelper mDataBaseBoundUserHelper;
     DataBaseClinicalDataHelper mDataBaseClinicalDataHelper;
+    DataBaseBullaHelper mDataBaseBullaHelper;
+    DataBaseBullaUserHelper mDataBaseBullaUserHelper;
 
     public BoundUserListAdapter(Context context, int resource, ArrayList<BoundItem> objects) {
         super(context, resource, objects);
@@ -198,7 +205,8 @@ public class BoundUserListAdapter extends ArrayAdapter<BoundItem> {
                                 getContext().deleteDatabase("boxes_table");
                                 getContext().deleteDatabase("bound_supervisors_table");
                                 getContext().deleteDatabase("clinical_data_table");
-
+                                getContext().deleteDatabase("bulla_table_user");
+                                notifyDataSetChanged();
                                 postGetUser(getItem(position).getUuid());
 
                                 Intent intent = new Intent(mContext, FragmentsActivity.class);
@@ -213,6 +221,8 @@ public class BoundUserListAdapter extends ArrayAdapter<BoundItem> {
                                 getContext().deleteDatabase("boxes_table");
                                 getContext().deleteDatabase("bound_supervisors_table");
                                 getContext().deleteDatabase("clinical_data_table");
+                                getContext().deleteDatabase("bulla_table_user");
+                                notifyDataSetChanged();
                             })
                             .setNegativeButton(R.string.cancel, (dialog, id) -> dialog.dismiss());
                     break;
@@ -410,11 +420,13 @@ public class BoundUserListAdapter extends ArrayAdapter<BoundItem> {
                 JsonArray boxArray = jsonObject.getAsJsonObject("response").getAsJsonArray("box");
                 JsonArray supervisorArray = jsonObject.getAsJsonObject("response").getAsJsonArray("supervisors");
                 JsonObject clinicalDataObject = jsonObject.getAsJsonObject("response").getAsJsonObject("clinicalData");
+                JsonArray bullasArray = jsonObject.getAsJsonObject("response").getAsJsonArray("bulla");
 
                 mDataBaseAlarmsHelper = new DataBaseAlarmsHelper(getContext());
                 mDataBaseBoxHelper = new DataBaseBoxHelper(getContext());
                 mDataBaseBoundSupervisorHelper = new DataBaseBoundSupervisorHelper(getContext());
                 mDataBaseClinicalDataHelper = new DataBaseClinicalDataHelper(getContext());
+                mDataBaseBullaUserHelper = new DataBaseBullaUserHelper(getContext());
 
                 LoadDataBase loadDataBase = new LoadDataBase();
                 loadDataBase.loadDataBaseUser(
@@ -422,10 +434,12 @@ public class BoundUserListAdapter extends ArrayAdapter<BoundItem> {
                         boxArray,
                         supervisorArray,
                         clinicalDataObject,
+                        bullasArray,
                         mDataBaseAlarmsHelper,
                         mDataBaseBoxHelper,
                         mDataBaseClinicalDataHelper,
-                        mDataBaseBoundSupervisorHelper);
+                        mDataBaseBoundSupervisorHelper,
+                        mDataBaseBullaUserHelper);
 
                 notifyDataSetChanged();
                 Log.e(TAG, "onResponse: " + response);
@@ -437,6 +451,5 @@ public class BoundUserListAdapter extends ArrayAdapter<BoundItem> {
             }
         });
     }
-
 }
 
