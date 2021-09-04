@@ -18,4 +18,9 @@
         android:id="@+id/nav_dados_clinicos"
         android:icon="@drawable/ic_dadosclinicos_black_24dp"
         android:title="@string/menu_dados_clinicos"/>
+
+    <item
+        android:id="@+id/nav_bulas_user"
+        android:icon="@drawable/ic_bulla_image_24dp"
+        android:title="@string/menu_bulas"/>
 </menu>

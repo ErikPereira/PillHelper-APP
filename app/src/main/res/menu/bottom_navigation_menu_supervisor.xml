@@ -4,5 +4,9 @@
         android:id="@+id/nav_usuarios"
         android:icon="@drawable/ic_supervisor_black_24dp"
         android:title="@string/menu_usuarios"/>
+    <item
+        android:id="@+id/nav_bulas"
+        android:icon="@drawable/ic_bulla_image_24dp"
+        android:title="@string/menu_bulas"/>
 
 </menu>

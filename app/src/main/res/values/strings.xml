@@ -25,6 +25,7 @@
     <string name="menu_caixas">Caixas</string>
     <string name="menu_supervisor">Supervisor</string>
     <string name="menu_usuarios">Usuários</string>
+    <string name="menu_bulas">Bulas</string>
     <string name="menu_dados_clinicos">Dados Clínicos</string>
     <string name="login_back_button">Voltar</string>
 
@@ -59,6 +60,7 @@
     <string name="inf_interval_clock">Digite as informações</string>
     <string name="box_list_item_image_description">Deletar Caixa</string>
     <string name="supervisor_list_item_image_description">Deletar Supervisor</string>
+    <string name="bulla_list_item_image_description">Deletar Bula</string>
 
     <!-- Mensagens gerais para ambos os relógios-->
     <string name="dialog_message">Quer mesmo deletar?</string>
