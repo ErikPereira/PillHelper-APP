@@ -1,17 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <com.miguelcatalan.materialsearchview.MaterialSearchView
+        android:id="@+id/search_view"
+        style="@style/MainTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        app:searchBackground="?attr/colorPrimary"
+        app:searchCloseIcon="@drawable/ic_close_24"
+        app:searchBackIcon="@drawable/ic_arrow_back_24"
+        app:searchSuggestionBackground="?attr/colorPrimary"
+        />
 
     <TextView
         android:id="@+id/title_bulla"
         style="@style/MainTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="15dp"
         android:text="Informações sobre"
+        android:layout_below="@+id/search_view"
         android:textAlignment="center" />
+
     <TextView
         android:id="@+id/name_bulla"
         style="@style/MainTitle"
@@ -26,6 +42,7 @@
         android:textAlignment="center" />
 
     <ScrollView
+        android:id="@+id/textViewWrapper"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/name_bulla">
@@ -33,7 +50,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/info_text_bulla"
@@ -51,7 +68,7 @@
                 android:scrollbars="vertical"
                 android:text="Info"
                 android:textSize="24dp"
-                android:textStyle=""  />
+                android:textStyle="" />
         </LinearLayout>
     </ScrollView>
 

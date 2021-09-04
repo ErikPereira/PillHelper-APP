@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Erik Bezerra/Desktop/git - TCC/PillHelper-APP/app/src/main/res/drawable/ic_arrow_back_24.xml" value="0.2203125" />
+        <entry key="..\:/Users/Erik Bezerra/Desktop/git - TCC/PillHelper-APP/app/src/main/res/drawable/ic_search_24dp.xml" value="0.2203125" />
         <entry key="..\:/Users/Erik Bezerra/Desktop/git - TCC/PillHelper-APP/app/src/main/res/drawable/spinner_arrow.xml" value="0.1125" />
         <entry key="..\:/Users/Erik Bezerra/Desktop/git - TCC/PillHelper-APP/app/src/main/res/layout/activity_alarm_active.xml" value="0.1" />
         <entry key="..\:/Users/Erik Bezerra/Desktop/git - TCC/PillHelper-APP/app/src/main/res/layout/activity_all_medicines.xml" value="0.33" />
@@ -10,6 +12,7 @@
         <entry key="..\:/Users/Erik Bezerra/Desktop/git - TCC/PillHelper-APP/app/src/main/res/layout/activity_fixed_alarm.xml" value="0.33" />
         <entry key="..\:/Users/Erik Bezerra/Desktop/git - TCC/PillHelper-APP/app/src/main/res/layout/activity_fragments.xml" value="0.22" />
         <entry key="..\:/Users/Erik Bezerra/Desktop/git - TCC/PillHelper-APP/app/src/main/res/layout/activity_fragments_supervisor.xml" value="0.13722826086956522" />
+        <entry key="..\:/Users/Erik Bezerra/Desktop/git - TCC/PillHelper-APP/app/src/main/res/layout/activity_login.xml" value="0.1" />
         <entry key="..\:/Users/Erik Bezerra/Desktop/git - TCC/PillHelper-APP/app/src/main/res/layout/activity_main.xml" value="0.13722826086956522" />
         <entry key="..\:/Users/Erik Bezerra/Desktop/git - TCC/PillHelper-APP/app/src/main/res/layout/activity_register_alarm.xml" value="0.13722826086956522" />
         <entry key="..\:/Users/Erik Bezerra/Desktop/git - TCC/PillHelper-APP/app/src/main/res/layout/activity_register_box.xml" value="0.13722826086956522" />
@@ -25,6 +28,7 @@
         <entry key="..\:/Users/Erik Bezerra/Desktop/git - TCC/PillHelper-APP/app/src/main/res/layout/supervisors_list_item.xml" value="0.12182971014492754" />
         <entry key="..\:/Users/Erik Bezerra/Desktop/git - TCC/PillHelper-APP/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Erik Bezerra/Desktop/git - TCC/PillHelper-APP/app/src/main/res/menu/bottom_navigation_menu_supervisor.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Erik Bezerra/Desktop/git - TCC/PillHelper-APP/app/src/main/res/menu/bottom_search_menu.xml" value="0.22" />
         <entry key="..\:/Users/Erik Bezerra/Desktop/git - TCC/PillHelper-APP/app/src/main/res/xml/gradient_spinner.xml" value="0.1" />
       </map>
     </option>
